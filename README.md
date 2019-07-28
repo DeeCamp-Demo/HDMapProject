@@ -72,3 +72,30 @@ git commit -m "..."
 ```
 git push origin master
 ```
+
+### git配置 (ubuntu) (配置过则忽略)
+1. 配置名称和电子邮件：
+```
+git config --global user.name "zhangjing"
+git config --global user.email "joeyzhang0401@gmail.com"
+
+git config --list #check
+```
+2. git push/pull免输入账号和密码
+
+2.1 创建文件，进入文件，输入内容：
+```
+cd ~
+touch .git-credentials
+vim .git-credentials
+https://{username}:{password}@github.com
+```
+2.2 配置credential
+```
+git config --global credential.helper store
+```
+2.3 check，打开~/.gitconfig文件，会发现多了一项:
+```
+[credential]
+    helper = store
+```
