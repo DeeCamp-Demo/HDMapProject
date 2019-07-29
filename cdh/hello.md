@@ -1,0 +1,1 @@
+# Visualize the map via RViz or XViz
