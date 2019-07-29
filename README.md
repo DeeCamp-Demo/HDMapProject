@@ -76,8 +76,8 @@ git push origin master
 ### git配置 (ubuntu) (配置过则忽略)
 1. 配置名称和电子邮件：
 ```
-git config --global user.name "zhangjing"
-git config --global user.email "joeyzhang0401@gmail.com"
+git config --global user.name "your_github_account"
+git config --global user.email "account_related_email_address"
 
 git config --list #check
 ```
