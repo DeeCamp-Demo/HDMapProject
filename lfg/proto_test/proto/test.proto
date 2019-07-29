@@ -1,0 +1,6 @@
+syntax = "proto2";
+package test;
+message ConstraintSetConfig {
+  required bool using_hsv = 1;
+}
+
