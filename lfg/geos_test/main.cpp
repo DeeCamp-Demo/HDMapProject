@@ -2,7 +2,12 @@
 #include <iostream>
 using  namespace std;
 GeometryFactory factory;
-
+Point* createGeosPoint(double x,double y)
+{
+    Coordinate pt(x,y);
+    Point* p=factory.createPoint(pt);
+    return p;
+}
 int main()
 {
     cout << GEOS_VERSION;
