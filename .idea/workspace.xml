@@ -11,50 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43137a28-7796-44e2-bc93-d3242f98ae34" name="Default Changelist" comment="write prototxt">
-      <change afterPath="$PROJECT_DIR$/hxc/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/Divider.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/Divider.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/HDMap.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/HDMap.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/LaneMarking.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/LaneMarking.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/SourceInfo.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/SourceInfo.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/TrafficLight.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/TrafficLight.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/Divider.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/HDMap.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/LaneMarking.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/SourceInfo.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/TrafficLight.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/read.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/Divider.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/HDMap.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/LaneMarking.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/SourceInfo.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/TrafficLight.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/Divider.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/Divider.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/HDMap.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/HDMap.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/LaneMarking.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/LaneMarking.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/SourceInfo.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/SourceInfo.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/TrafficLight.pb.cc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto/build/TrafficLight.pb.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/proto配置.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/readme.assets/1564418759305.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/readme.assets/1564418805058.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hxc/readme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/kyj/TODO List.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data-reference/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data-reference/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hxc/高精地图加载.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hxc/高精地图加载2.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kyj/Hello.txt" beforeDir="false" />
-    </list>
+    <list default="true" id="43137a28-7796-44e2-bc93-d3242f98ae34" name="Default Changelist" comment="write prototxt" />
     <ignored path="$PROJECT_DIR$/lfg/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/lfg/geos_test/cmake-build-debug/" />
@@ -70,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+            <state relative-caret-position="252">
+              <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -262,7 +219,7 @@
       <workItem from="1564429550957" duration="352000" />
       <workItem from="1564430030711" duration="50000" />
       <workItem from="1564433672559" duration="10542000" />
-      <workItem from="1564477692142" duration="8511000" />
+      <workItem from="1564477692142" duration="8688000" />
     </task>
     <task id="LOCAL-00001" summary="test with clion">
       <created>1564425683550</created>
@@ -296,7 +253,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21589000" />
+    <option name="totallyTimeSpent" value="21766000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1920" height="1054" extended-state="6" />
@@ -307,7 +264,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32890365" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.17165005" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.17165005" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -506,8 +463,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+        <state relative-caret-position="252">
+          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
         </state>
       </provider>
     </entry>
