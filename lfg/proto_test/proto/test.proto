@@ -7,6 +7,6 @@ message ArmorSize {
 message ConstraintSetConfig{
   required bool using_hsv = 1;
   required float num = 2;
-  required ArmorSize armor_size = 3;
+  repeated ArmorSize armor_size = 3;
 }
 
