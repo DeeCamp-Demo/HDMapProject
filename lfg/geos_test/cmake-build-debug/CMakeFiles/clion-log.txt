@@ -1,0 +1,8 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lfg/my_work/deecamp/HDMapProject/lfg/geos_test
+-- Configuring done
+CMake Error in CMakeLists.txt:
+  Specified unknown feature "cxx_std_11" for target "geos_test".
+
+
+-- Generating done
+-- Build files have been written to: /home/lfg/my_work/deecamp/HDMapProject/lfg/geos_test/cmake-build-debug

@@ -1,0 +1,14 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - not found
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Found Protobuf: /usr/local/lib/libprotobuf.a  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/cmake-build-debug
