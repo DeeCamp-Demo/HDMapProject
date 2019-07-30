@@ -6,26 +6,36 @@
 
 #IncludeRegexTransform: 
 
-..//io/io.h
+..//io/io2.h
 iomanip
 -
 iostream
 -
 string
 -
-stdint.h
--
-fcntl.h
--
-unistd.h
--
 google/protobuf/message.h
+../io/google/protobuf/message.h
+fcntl.h
 -
 google/protobuf/io/coded_stream.h
 -
 google/protobuf/io/zero_copy_stream_impl.h
 -
 google/protobuf/text_format.h
+-
+stdint.h
+-
+algorithm
+-
+fstream
+-
+vector
+-
+limits
+-
+proto/test.pb.h
+../io/proto/test.pb.h
+unistd.h
 -
 
 ..//proto/test.pb.h
@@ -109,10 +119,10 @@ prototest.h
 /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/src/prototest.h
 
 /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/src/prototest.h
+io/io2.h
+/home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/src/io/io2.h
 proto/test.pb.h
 /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/src/proto/test.pb.h
-io/io.h
-/home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/src/io/io.h
 
 /usr/local/include/google/protobuf/arena.h
 limits
