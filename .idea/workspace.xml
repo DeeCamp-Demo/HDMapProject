@@ -11,17 +11,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43137a28-7796-44e2-bc93-d3242f98ae34" name="Default Changelist" comment="test with clion">
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/ReadProtoFromTextFile/readproto.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/ReadProtoFromTextFile/readproto.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/config/test.prototxt" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/config/test.prototxt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/proto/test.proto" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/proto/test.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/prototest.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/prototest.h" beforeDir="false" />
-    </list>
+    <list default="true" id="43137a28-7796-44e2-bc93-d3242f98ae34" name="Default Changelist" comment="write prototxt" />
     <ignored path="$PROJECT_DIR$/lfg/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/" />
+    <ignored path="$PROJECT_DIR$/lfg/geos_test/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+            <state relative-caret-position="252">
+              <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -43,8 +36,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lfg/proto_test/config/test.prototxt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            <state relative-caret-position="180">
+              <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lfg/proto_test/proto/test.pb.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="390" column="33" selection-start-line="390" selection-start-column="33" selection-end-line="390" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -52,8 +54,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lfg/proto_test/proto/test.proto">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="8" column="25" lean-forward="true" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
+            <state relative-caret-position="36">
+              <caret line="1" column="12" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lfg/proto_test/config/new.prototxt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="156">
+              <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
+              <folding>
+                <element signature="e#68#86#0" expanded="true" />
+                <element signature="e#525#543#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -74,6 +103,11 @@
       <find>ConstraintSetConfig</find>
       <find>full_path</find>
       <find>ReadProtoFromTextFile</find>
+      <find>bool ReadProtoFromTextFile</find>
+      <find>string</find>
+      <find>WriteProtoToTextFile</find>
+      <find>CHECK</find>
+      <find>new_net</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -91,15 +125,21 @@
         <option value="$PROJECT_DIR$/lfg/proto_test/prototest.h" />
         <option value="$PROJECT_DIR$/lfg/proto_test/ReadProto/readproto.cpp" />
         <option value="$PROJECT_DIR$/lfg/proto_test/ReadProto/readproto.h" />
-        <option value="$PROJECT_DIR$/lfg/proto_test/src/prototest.h" />
-        <option value="$PROJECT_DIR$/lfg/proto_test/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/lfg/proto_test/io/io.h" />
         <option value="$PROJECT_DIR$/lfg/proto_test/proto/test.proto" />
         <option value="$PROJECT_DIR$/lfg/proto_test/config/test.prototxt" />
+        <option value="$PROJECT_DIR$/lfg/geos_test/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/lfg/geos_test/main.cpp" />
+        <option value="$PROJECT_DIR$/lfg/proto_test/io/io.h" />
+        <option value="$PROJECT_DIR$/lfg/proto_test/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/lfg/proto_test/io/io2.cpp" />
+        <option value="$PROJECT_DIR$/lfg/proto_test/io/io3.h" />
+        <option value="$PROJECT_DIR$/lfg/proto_test/src/prototest.h" />
+        <option value="$PROJECT_DIR$/lfg/proto_test/io/io2.h" />
         <option value="$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp" />
       </list>
     </option>
   </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="146" />
     <option name="width" value="1697" />
@@ -113,6 +153,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -131,37 +172,15 @@
               <item name="lfg" type="462c0819:PsiDirectoryNode" />
               <item name="proto_test" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="proto_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HDMapProject" type="462c0819:PsiDirectoryNode" />
-              <item name="lfg" type="462c0819:PsiDirectoryNode" />
-              <item name="proto_test" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="proto_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HDMapProject" type="462c0819:PsiDirectoryNode" />
-              <item name="lfg" type="462c0819:PsiDirectoryNode" />
-              <item name="proto_test" type="462c0819:PsiDirectoryNode" />
-              <item name="io" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="proto_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="HDMapProject" type="462c0819:PsiDirectoryNode" />
-              <item name="lfg" type="462c0819:PsiDirectoryNode" />
-              <item name="proto_test" type="462c0819:PsiDirectoryNode" />
-              <item name="proto" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lfg/proto_test/CMakeLists.txt" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.customizations" />
@@ -199,7 +218,8 @@
       <workItem from="1564429507316" duration="18000" />
       <workItem from="1564429550957" duration="352000" />
       <workItem from="1564430030711" duration="50000" />
-      <workItem from="1564433672559" duration="10247000" />
+      <workItem from="1564433672559" duration="10542000" />
+      <workItem from="1564477692142" duration="8688000" />
     </task>
     <task id="LOCAL-00001" summary="test with clion">
       <created>1564425683550</created>
@@ -215,23 +235,36 @@
       <option name="project" value="LOCAL" />
       <updated>1564436350172</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="test with clion">
+      <created>1564446081300</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1564446081300</updated>
+    </task>
+    <task id="LOCAL-00004" summary="write prototxt">
+      <created>1564485902739</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1564485902739</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12783000" />
+    <option name="totallyTimeSpent" value="21766000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1920" height="1054" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24462366" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2483871" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" sideWeight="0.49946237" weight="0.32890365" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2868217" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32890365" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.17165005" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -241,6 +274,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053763" side_tool="true" weight="0.44186047" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32890365" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.3532669" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.49946237" weight="0.35215947" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -261,9 +295,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="test with clion" />
     <MESSAGE value="test proto" />
-    <option name="LAST_COMMIT_MESSAGE" value="test proto" />
+    <MESSAGE value="test with clion" />
+    <MESSAGE value="write prototxt" />
+    <option name="LAST_COMMIT_MESSAGE" value="write prototxt" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lfg/README.md">
@@ -278,171 +313,158 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/CMakeLists.txt" />
     <entry file="file://$PROJECT_DIR$/lfg/test_geos.cpp" />
-    <entry file="file://$PROJECT_DIR$/lfg/geos_test/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="6" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProtoFromTextFile/readproto.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="8" column="19" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/cmake-protobuf-example/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProtoFromTextFile/readproto.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="18" column="45" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
-          <folding>
-            <element signature="e#37#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/prototest.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/prototest.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProto/readproto.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProto/readproto.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="2" column="2" lean-forward="true" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
-          <folding>
-            <element signature="e#105#123#0" expanded="true" />
-            <element signature="e#597#606#0" expanded="true" />
-            <element signature="e#1469#1478#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/proto_test/proto/test.pb.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="57" column="6" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/cmake-google-protobuf-example/build/Makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="117" selection-start-line="117" selection-end-line="117" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProtoFromTextFile/readproto.h" />
+    <entry file="file://$PROJECT_DIR$/lfg/cmake-protobuf-example/main.cpp" />
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProtoFromTextFile/readproto.cpp" />
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/prototest.cpp" />
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/prototest.h" />
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProto/readproto.cpp" />
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/ReadProto/readproto.h" />
+    <entry file="file://$PROJECT_DIR$/lfg/cmake-google-protobuf-example/build/Makefile" />
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/proto/test.pb.cc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-540" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/protobuf/protobuf.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-108" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/protobuf/Makefile">
+    <entry file="file://$PROJECT_DIR$/lfg/protobuf/protobuf.h" />
+    <entry file="file://$PROJECT_DIR$/lfg/protobuf/Makefile" />
+    <entry file="file://$PROJECT_DIR$/lfg/protobuf/protobuf.cpp" />
+    <entry file="file://$PROJECT_DIR$/lfg/cmake-google-protobuf-example/CMakeLists.txt" />
+    <entry file="file://$PROJECT_DIR$/lfg/protobuf/proto/txt.prototxt" />
+    <entry file="file://$PROJECT_DIR$/lfg/protobuf/proto/addressbook.proto" />
+    <entry file="file:///usr/local/include/geos_c.h">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/protobuf/protobuf.cpp">
+    <entry file="file://$PROJECT_DIR$/lfg/geos_test/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-720">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="288">
+          <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/cmake-google-protobuf-example/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="26" selection-end-column="60" />
-        </state>
-      </provider>
+    <entry file="file:///usr/include/c++/5/iostream">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/protobuf/proto/txt.prototxt">
+    <entry file="file://$PROJECT_DIR$/lfg/geos_test/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lfg/protobuf/proto/addressbook.proto">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-36">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+        <state relative-caret-position="144">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        <state relative-caret-position="144">
+          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="33" column="42" lean-forward="true" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
+        <state relative-caret-position="193">
+          <caret line="21" column="14" lean-forward="true" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
           <folding>
             <element signature="e#104#122#0" expanded="true" />
-            <marker date="1564445342702" expanded="false" signature="1116:1127" ph="..." />
+            <element signature="e#514#523#0" expanded="true" />
+            <element signature="e#1523#1532#0" expanded="true" />
+            <element signature="e#1696#1705#0" expanded="true" />
+            <element signature="e#2889#2898#0" expanded="true" />
+            <element signature="e#2980#2989#0" expanded="true" />
+            <marker date="1564481802173" expanded="false" signature="1116:1127" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io3.cpp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io3.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="4" />
+          <folding>
+            <element signature="e#87#105#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="24" column="4" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+          <folding>
+            <element signature="e#68#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/unistd.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="355" column="11" selection-start-line="355" selection-start-column="11" selection-end-line="355" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="2" selection-start-column="2" selection-end-column="2" />
+        <state relative-caret-position="252">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
           <folding>
-            <element signature="e#104#130#0" expanded="true" />
+            <element signature="e#68#86#0" expanded="true" />
+            <element signature="e#525#543#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#338#372#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/config/new.prototxt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lfg/proto_test/proto/test.pb.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="390" column="33" selection-start-line="390" selection-start-column="33" selection-end-line="390" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/proto/test.proto">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="8" column="25" lean-forward="true" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
+        <state relative-caret-position="36">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/config/test.prototxt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="180">
+          <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+        <state relative-caret-position="252">
+          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
         </state>
       </provider>
     </entry>

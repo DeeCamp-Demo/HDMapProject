@@ -90,5 +90,8 @@ namespace protoio{
     inline bool ReadYmlFromFile(const std::string &file_name, T *yml_type) {
         return ReadYmlFromFile(file_name.c_str(), yml_type);
     }
+
+
+
 }
 #endif //HDMAPPROJECT_READPROTO_H

@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/geos_test.dir/main.cpp.o  -o geos_test /usr/local/lib/libgeos.so.3.8.0 -Wl,-rpath,/usr/local/lib 

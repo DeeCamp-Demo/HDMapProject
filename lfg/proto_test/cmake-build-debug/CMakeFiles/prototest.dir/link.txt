@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/prototest.dir/src/prototest.cpp.o  -o prototest 
