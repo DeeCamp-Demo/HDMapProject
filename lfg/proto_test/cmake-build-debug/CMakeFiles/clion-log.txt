@@ -1,4 +1,0 @@
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test
--- Configuring done
--- Generating done
--- Build files have been written to: /home/lfg/my_work/deecamp/HDMapProject/lfg/proto_test/cmake-build-debug

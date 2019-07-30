@@ -11,21 +11,49 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43137a28-7796-44e2-bc93-d3242f98ae34" name="Default Changelist" comment="test with clion">
-      <change afterPath="$PROJECT_DIR$/lfg/proto_test/io/io2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/geos_test/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/geos_test/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/geos_test/cmake-build-debug/CMakeFiles/geos_test.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/geos_test/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/geos_test/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/CMakeFiles/proto_test.dir/src/prototest.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/proto_test" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/proto_test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/io/io.h" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/io/io.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lfg/proto_test/src/prototest.h" beforeDir="false" afterPath="$PROJECT_DIR$/lfg/proto_test/src/prototest.h" afterDir="false" />
+    <list default="true" id="43137a28-7796-44e2-bc93-d3242f98ae34" name="Default Changelist" comment="write prototxt">
+      <change afterPath="$PROJECT_DIR$/hxc/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/Divider.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/Divider.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/HDMap.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/HDMap.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/LaneMarking.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/LaneMarking.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/SourceInfo.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/SourceInfo.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/TrafficLight.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/incude/TrafficLight.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/Divider.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/HDMap.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/LaneMarking.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/SourceInfo.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/proto/TrafficLight.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/map_analyze/read.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/Divider.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/HDMap.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/LaneMarking.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/SourceInfo.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/TrafficLight.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/Divider.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/Divider.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/HDMap.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/HDMap.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/LaneMarking.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/LaneMarking.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/SourceInfo.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/SourceInfo.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/TrafficLight.pb.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto/build/TrafficLight.pb.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/proto配置.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/readme.assets/1564418759305.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/readme.assets/1564418805058.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hxc/readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kyj/TODO List.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-reference/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data-reference/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hxc/高精地图加载.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hxc/高精地图加载2.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kyj/Hello.txt" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/lfg/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/lfg/proto_test/cmake-build-debug/" />
@@ -42,8 +70,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="3" column="22" lean-forward="true" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+            <state relative-caret-position="324">
+              <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -84,23 +112,10 @@
         <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="156">
-              <caret line="65" column="28" lean-forward="true" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
+              <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
               <folding>
                 <element signature="e#68#86#0" expanded="true" />
                 <element signature="e#525#543#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#338#372#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -194,6 +209,12 @@
               <item name="HDMapProject" type="462c0819:PsiDirectoryNode" />
               <item name="lfg" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="proto_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="HDMapProject" type="462c0819:PsiDirectoryNode" />
+              <item name="lfg" type="462c0819:PsiDirectoryNode" />
+              <item name="proto_test" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -241,7 +262,7 @@
       <workItem from="1564429550957" duration="352000" />
       <workItem from="1564430030711" duration="50000" />
       <workItem from="1564433672559" duration="10542000" />
-      <workItem from="1564477692142" duration="8080000" />
+      <workItem from="1564477692142" duration="8511000" />
     </task>
     <task id="LOCAL-00001" summary="test with clion">
       <created>1564425683550</created>
@@ -264,11 +285,18 @@
       <option name="project" value="LOCAL" />
       <updated>1564446081300</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="write prototxt">
+      <created>1564485902739</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1564485902739</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21158000" />
+    <option name="totallyTimeSpent" value="21589000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1920" height="1054" extended-state="6" />
@@ -312,7 +340,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test proto" />
     <MESSAGE value="test with clion" />
-    <option name="LAST_COMMIT_MESSAGE" value="test with clion" />
+    <MESSAGE value="write prototxt" />
+    <option name="LAST_COMMIT_MESSAGE" value="write prototxt" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lfg/README.md">
@@ -432,7 +461,7 @@
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/io/io2.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
-          <caret line="65" column="28" lean-forward="true" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
+          <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
           <folding>
             <element signature="e#68#86#0" expanded="true" />
             <element signature="e#525#543#0" expanded="true" />
@@ -477,8 +506,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lfg/proto_test/src/prototest.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="3" column="22" lean-forward="true" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        <state relative-caret-position="324">
+          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
         </state>
       </provider>
     </entry>
