@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/hdmap.dir/src/ReadHDMap.cpp.o CMakeFiles/hdmap.dir/HDMap.pb.cc.o CMakeFiles/hdmap.dir/LaneMarking.pb.cc.o CMakeFiles/hdmap.dir/SourceInfo.pb.cc.o CMakeFiles/hdmap.dir/TrafficLight.pb.cc.o CMakeFiles/hdmap.dir/Divider.pb.cc.o  -o hdmap -Wl,-rpath,/usr/local/lib /usr/local/lib/libprotobuf.so -lpthread 

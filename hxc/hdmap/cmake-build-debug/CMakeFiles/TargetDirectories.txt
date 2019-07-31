@@ -1,3 +1,0 @@
-/home/catalina/proto_ws/lfg/hdmap/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/catalina/proto_ws/lfg/hdmap/cmake-build-debug/CMakeFiles/hdmap.dir
-/home/catalina/proto_ws/lfg/hdmap/cmake-build-debug/CMakeFiles/edit_cache.dir
