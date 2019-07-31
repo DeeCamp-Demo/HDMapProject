@@ -26,23 +26,21 @@ using namespace cv;
 
 class DepthMapping {
 private:
-    vector<Point> points_target;               //target region points
-    
-    Mat ref;                            //ref image
-    SE3 pose_ref_TWC;                   //ref_pose
-
-    vector<Mat> currs;                  //curr images
-    vector<Pose> poses_curr_TWC;        //curr poses
-
+    vector<Point_label> points_target;               //target region points
+    Mat ref;                                         //ref image
+    SE3 pose_ref_TWC;                                //ref_pose
+    vector<Mat> currs;                               //curr images
+    vector<Pose_id> poses_curr_TWC;                  //curr poses
 
 public:
     // CONSTRUCTOR
-    DepthMapping(Mat& ref, SE3& pose_ref, vector<Mat>& currs, vector<Pose>& poses_curr, vector<Point> points) {
+    DepthMapping(Mat& ref, SE3& pose_ref, vector<Mat>& currs, vector<Pose_id>& poses_curr, vector<Point_label> points) {
         this->ref = ref;
         this->pose_ref_TWC = pose_ref;
 
         this->currs = currs;
         this->poses_curr_TWC = poses_curr;
+
         this->points_target = points;
         cout << "neighbors size: " << currs.size() << endl;
     }
@@ -71,7 +69,7 @@ public:
         int match_count = 0, converge_count = 0, diverge_count = 0;
         int total = (width - boarder) * (height - boarder);
 
-        for (Point p : points_target) {
+        for (Point_label p : points_target) {
             int x = p.x;
             int y = p.y;
             // 遍历每个像素

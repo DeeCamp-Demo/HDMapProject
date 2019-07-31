@@ -21,8 +21,8 @@ int main (int argc, char** argv) {
     Mat ref;                                                    //　当前要进行深度估计的image
     SE3 pose_ref;                                               //　当前要进行深度估计的image的pose
     vector<Mat> currs;                                          //  前后相邻frames
-    Vector<Pose> poses_curr;                                    //  前后相邻frames对应的pose    
-    vector<Point> points;                                       //  目标区域的点集（带label）
+    vector<Pose_id> poses_curr;                              //  前后相邻frames对应的pose    
+    vector<Point_label> points;                                      //  目标区域的点集（带label）
     
     DepthMapping DM(ref, pose_ref, currs, poses_curr, points);
     bool ret = DM.build_depthMap(depth, depth_cov);
@@ -37,5 +37,4 @@ int main (int argc, char** argv) {
     cout<<"done."<< endl;
 
     return 0;
-
 }

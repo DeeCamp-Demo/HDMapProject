@@ -33,12 +33,12 @@ typedef struct Point_tag {
     int x;
     int y;
     string label;
-} Point;
+} Point_label;
 
 //camera pose with image id
 typedef struct Pose_tag {
     SE3 tf;
     string image_id;
-} Pose;
+} Pose_id;
 
 #endif /* consts_h */
