@@ -28,6 +28,17 @@ const int max_frames = 200;
 const double init_depth   = 3.0;    // 深度初始值
 const double init_cov2    = 3.0;    // 方差初始值
 
+//region point with label
+typedef struct Point_tag {
+    int x;
+    int y;
+    string label;
+} Point;
 
+//camera pose with image id
+typedef struct Pose_tag {
+    SE3 tf;
+    string image_id;
+} Pose;
 
 #endif /* consts_h */

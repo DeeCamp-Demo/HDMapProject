@@ -26,76 +26,25 @@ using namespace cv;
 
 class DepthMapping {
 private:
-    // data to load
-    int curr_index;
-    int neighbor_frames;
-    int start_index;
-    Mat ref;                      //ref image
-    SE3 pose_ref_TWC;             //ref_pose
-    vector<Mat> currs;            //curr images
-    vector<SE3> poses_TWC;        //curr poses
+    vector<Point> points_target;               //target region points
+    
+    Mat ref;                            //ref image
+    SE3 pose_ref_TWC;                   //ref_pose
+
+    vector<Mat> currs;                  //curr images
+    vector<Pose> poses_curr_TWC;        //curr poses
+
 
 public:
     // CONSTRUCTOR
-    DepthMapping(const int& curr_index, const int& neighbor_frames, const string& path) {
-        this->curr_index = curr_index;
-        this->neighbor_frames = neighbor_frames;
-        start_index = getStartIndex();
+    DepthMapping(Mat& ref, SE3& pose_ref, vector<Mat>& currs, vector<Pose>& poses_curr, vector<Point> points) {
+        this->ref = ref;
+        this->pose_ref_TWC = pose_ref;
 
-        loadData(path);
-        cout << "read files from " << start_index << " to " << start_index + neighbor_frames << endl;
+        this->currs = currs;
+        this->poses_curr_TWC = poses_curr;
+        this->points_target = points;
         cout << "neighbors size: " << currs.size() << endl;
-    }
-
-    // helper function for constructor
-    int getStartIndex() {
-        if (curr_index < neighbor_frames / 2) {
-            start_index = 0;
-        }
-        else if (curr_index > max_frames - neighbor_frames / 2) {
-            start_index = max_frames - neighbor_frames;
-        }
-        else {
-            start_index = curr_index - neighbor_frames;
-        }
-        cout << "start_index: " << start_index << endl;
-        return start_index;
-    }
-
-    // helper function for constructor: load data from path
-    void loadData(const string& path) {
-        string txt_path = path+"/first_200_frames_traj_over_table_input_sequence.txt";
-        std::ifstream input( txt_path );
-        int counter = 0;
-        string line;
-        while( getline( input, line ) ) {
-            if (counter < start_index) {
-                counter++;
-                continue;
-            }
-            if (counter > start_index + neighbor_frames) break;
-
-            //parse the line
-            istringstream iss(line);
-            string image_name;
-            iss>>image_name;
-            double data[7];
-            for (double& d : data) iss>>d;
-
-            // read ref
-            if (counter == curr_index) { 
-                ref = imread(path + string("/images/") + image_name, 0);
-                pose_ref_TWC = SE3(Quaterniond(data[6], data[3], data[4], data[5]), Vector3d(data[0], data[1], data[2]));
-                counter++;
-                continue;
-            }
-
-            //read currs
-            Mat curr = imread(path + string("/images/") + image_name, 0);
-            currs.push_back(curr);
-            poses_TWC.push_back(SE3( Quaterniond(data[6], data[3], data[4], data[5]), Vector3d(data[0], data[1], data[2])));
-            counter++;
-        }
     }
 
     // main method
@@ -105,7 +54,7 @@ public:
 
             Mat& curr = currs[ind];
             if (curr.data == nullptr) continue;
-            SE3 pose_curr_TWC = poses_TWC[ind];
+            SE3 pose_curr_TWC = poses_curr_TWC[ind].tf;
             SE3 pose_T_C_R = pose_curr_TWC.inverse() * pose_ref_TWC;
             
             update( ref, curr, pose_T_C_R, depth, depth_cov );
@@ -121,35 +70,33 @@ public:
     bool update(const Mat& ref, const Mat& curr, const SE3& T_C_R, Mat& depth, Mat& depth_cov ){
         int match_count = 0, converge_count = 0, diverge_count = 0;
         int total = (width - boarder) * (height - boarder);
-        cout << "boarder: " << boarder << endl;
-        #pragma omp parallel for
-        for ( int x=boarder; x<width-boarder; x++ ) {
-        #pragma omp parallel for
-            for ( int y=boarder; y<height-boarder; y++ ){
-                // 遍历每个像素
-                if ( depth_cov.ptr<double>(y)[x] < min_cov) { // 深度已收敛
-                    converge_count++;
-                    continue;
-                }
-                if ( depth_cov.ptr<double>(y)[x] > max_cov) { // 深度已发散
-                    diverge_count++;
-                    continue;
-                }
 
-                // 在极线上搜索 (x,y) 的匹配 
-                Vector2d pt_curr; 
-                bool ret = epipolarSearch ( ref, curr, T_C_R, Vector2d(x,y), depth.ptr<double>(y)[x], sqrt(depth_cov.ptr<double>(y)[x]),pt_curr);
-                if ( ret == false ) { // 匹配失败
-                    continue;
-                }
-                
-                // 取消该注释以显示匹配
-                match_count++;
-                // showEpipolarMatch( ref, curr, Vector2d(x,y), pt_curr );
-                
-                // 匹配成功，更新深度图 
-                updateDepthFilter( Vector2d(x,y), pt_curr, T_C_R, depth, depth_cov );
+        for (Point p : points_target) {
+            int x = p.x;
+            int y = p.y;
+            // 遍历每个像素
+            if ( depth_cov.ptr<double>(y)[x] < min_cov) { // 深度已收敛
+                converge_count++;
+                continue;
             }
+            if ( depth_cov.ptr<double>(y)[x] > max_cov) { // 深度已发散
+                diverge_count++;
+                continue;
+            }
+
+            // 在极线上搜索 (x,y) 的匹配 
+            Vector2d pt_curr; 
+            bool ret = epipolarSearch ( ref, curr, T_C_R, Vector2d(x,y), depth.ptr<double>(y)[x], sqrt(depth_cov.ptr<double>(y)[x]),pt_curr);
+            if ( ret == false ) { // 匹配失败
+                continue;
+            }
+            
+            // 取消该注释以显示匹配
+            match_count++;
+            // showEpipolarMatch( ref, curr, Vector2d(x,y), pt_curr );
+            
+            // 匹配成功，更新深度图 
+            updateDepthFilter( Vector2d(x,y), pt_curr, T_C_R, depth, depth_cov );
         }
         cout << "match_count: " << match_count << endl;
         printf("found %.2f%% matches! ", (float)match_count / total * 100);
