@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jianghc/testproject/deecamp/Utils.h
+math.h
+-
+iomanip
+-
+iostream
+-
+Eigen/Dense
+-
+Eigen/Core
+-
+
+/home/jianghc/testproject/deecamp/main.cpp
+iostream
+-
+Utils.h
+/home/jianghc/testproject/deecamp/Utils.h
+math.h
+-
+iomanip
+-
+
