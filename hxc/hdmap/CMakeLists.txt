@@ -16,11 +16,11 @@ set(PROTO_FILES
         )
 
 set(SRC_FILES
-        src/ReadHDMap.cpp
+        src/test.cpp
         )
 
 set(HDR_FILES
-        src/ReadHDMap.h utils/calulate.h)
+        utils/read_hdmap.h utils/calulate.h src/test.cpp src/test.h)
 
 
 PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HDR ${PROTO_FILES})

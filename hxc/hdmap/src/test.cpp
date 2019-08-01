@@ -3,22 +3,25 @@
 //
 #include "test.h"
 int main(){
-
 //    test测试
-//    std::string gps_file_name = "../data/gps/20190123112838_3faf30bde99e0f126cda2432ec90a621_4deecamp_gps.pb";
     string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
-//    std::cout << "input scene_id: " << scene_id << endl;
 
-//    根据scene_id获取相应的图像数据
+//    根据scene_id获取GPS数据
     GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
-//      读取所有gpsInfo
-//    std::cout << "get size: " << gpsInfoEach.gpsPoints.size() << endl;
+    vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
+    for (int k = 0; k < points.size(); ++k) {
+//        cout << " points:" << points[k].points.x<<"," << points[k].points.y << "," << points[k].points.z << endl;
+//        cout << " heading:" << points[k].heading << endl;
+    }
+
 //    读取hdMap
     HDMAP readMap = ReadHDMap::getHDMAP();
-//    std::cout << "test hd map:" << readMap.tafficlights.data()->id << endl;
+    vector<DividerEach> dividerEach = readMap.dividers;
+    for (int j = 0; j < dividerEach.size(); ++j) {
+//        std::cout << "test hd map:" << readMap.dividers[19].divider_vec[5].x << endl;
+    }
 
-//    遍历gps文件,获取其文件名/scene_id/日期，根据日期大小编号存入数组
-//      根据gps文件名，遍历image文件夹，取出指定图片名称集合
+//    根据scene_id获取相应图片名称集合,按顺序存储
     vector<ImageBatch> dataFiles = ReadHDMap::getAllImageBatch();
 //    cout << "dfgfb:"<< dataFiles.size()<<" dfgfd:"<< dataFiles[100].images_vec.size()<< endl;
 
@@ -31,7 +34,7 @@ int main(){
     if (flag == 0)
     {
         for (int i = 0; i < gps_files.size(); ++i) {
-            cout << "gps files:" << gps_files[i]<<endl;
+//            cout << "gps files:" << gps_files[i]<<endl;
         }
     }
 
@@ -41,7 +44,12 @@ int main(){
     //    imageBatch要判空
     ImageBatch imageBatch = ReadHDMap::getImageBatchBySceneId(id);
     for (int i = 0; i < imageBatch.images_vec.size(); ++i) {
-        cout << "image batch " << imageBatch.images_vec[i] << endl;
+//        cout << "image batch " << imageBatch.images_vec[i] << endl;
     }
+
+//    获取gps点与对应一张图片
+    vector<GpsImageBatch> gpsImageBatch_vec = ReadHDMap::getAllGpsImageBatch();
+    GpsImageBatch gpsImageBatch = ReadHDMap::getGpsImageBatchByImageId(scene_id, 2);
+    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
 }
 
