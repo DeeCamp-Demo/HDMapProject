@@ -14,11 +14,13 @@ int main (int argc, char** argv) {
     const int ref_gps_index = atoi(argv[1]);                    // 当前gps的index     
     const int ref_img_index = atoi(argv[2]);                    // 在当前gps里的image index
     const string gps_path(argv[3]);                             // 当前gps的file path
+
+    int total_img_index=0;
     
     // get ref and currs
     string ref_path;                                                                // 当前要进行深度估计的image path
     vector<string> currs_path;                                                      // 前后相邻frames的image paths
-    getImgPaths(gps_path, ref_gps_index, ref_img_index, ref_path, currs_path);
+    getImgPaths(gps_path, ref_gps_index, ref_img_index, ref_path, currs_path, total_img_index);
     Mat ref = imread(ref_path, 0);                                                  // 当前要进行深度估计的image
     vector<Mat> currs;                                                              // 前后相邻frames
     for (string curr_path : currs_path) {
@@ -55,11 +57,15 @@ bool getFilesFromDir(const string& gps_path, vector<string>& filenames);
 // inputs:  gps_path, ref_gps_index, ref_img_index
 // outputs: ref_path and currs_path
 bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& ref_img_index, 
-                 const string& ref_path, const vector<string>& currs_path) {                 
+                 const string& ref_path, const vector<string>& currs_path, int& total_img_index) {                 
     // get scene_id
     const string  gps_file_folder = "../data/gps";
     vector<string> gps_files;
     bool flag = calulate::getAllFiles(gps_file_folder,gps_files);
+
+    // 更新 total imgae index
+    total_img_index += gps_files.size()
+
     //  需要自行判断fileName是否存在 flag 0正确查询  -1 错误查询
     calulate::sortedVector(gps_files);
     if (flag == 0)
@@ -69,8 +75,8 @@ bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& re
         }
     }
     
-    int num = gps_files[10].find_last_of(".");
-    string scene_id = gps_files[10].substr(0, num-14);
+    int num = gps_files[ref_gps_index].find_last_of(".");
+    string scene_id = gps_files[ref_gps_index].substr(0, num-14);
     
     //    imageBatch要判空
     ImageBatch imageBatch = ReadHDMap::getImageBatchBySceneId(scene_id);          // API
@@ -82,7 +88,7 @@ bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& re
 //
 //    ref_img_rt = gpsRT.rt(ref_img_gps);
     
-
+    int start_index;
     // get currs_path
     // 需要用到上一段gps的frames
     if (ref_img_index < (neighbor_frames / 2)){
@@ -92,12 +98,14 @@ bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& re
                 if (i == ref_img_index) continue;                           //避开ref_path
                 currs_path.push_back(curr_img_list[i]);
             }
+            start_index = 0;
         }
         // 当前gps不是第一个
+
         else{
             // API
-            GPSInfoEach before_gpsInfoEach = getGPSInfoEachBySceneId(gps_files[ref_gps_index - 1]);
-            vector<string> before_img_list = before_gpsInfoEach.img_list;   // ref_gps_index的before所指引的gps对应的image文件名称
+            ImageBatch BimageBatch = ReadHDMap::getImageBatchBySceneId(gps_files[ref_gps_index-1].substr(0, num-14)); 
+            vector<string> before_img_list = BimageBatch.img_list;   // ref_gps_index的before所指引的gps对应的image文件名称
             int end = ref_img_index + neighbor_frames / 2;                  // end in curr_list
             int start = before_img_list.size() - (neighbor_frames - end);   // start in before_list
 
@@ -108,12 +116,13 @@ bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& re
                 if (i == ref_img_index) continue;
                 currs_path.push_back(curr_img_list[i]);
             }
+            
         }
     }
     // 需要用到下一段gps的frames
     else if (ref_img_index > curr_img_list.size() - neighbor_frames / 2) {
         // 当前gps是最后一个
-        if (ref_gps_index == total_gps - 1) {
+        if (ref_gps_index == gps_files.size() - 1) {
             for (int i = curr_img_list.size() - neighbor_frames - 1; i < curr_img_list; i++) {
                 if (i == ref_img_index) continue;                           //避开ref_path
                 currs_path.push_back(curr_img_list[i]);   
@@ -122,8 +131,8 @@ bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& re
         // 当前gps不是最后一个
         else{
             // API
-            GPSInfoEach next_gpsInfoEach = getGPSInfoEachBySceneId(gps_files[ref_gps_index + 1]);
-            vector<string> next_img_list = next_gpsInfoEach.img_list;       // ref_gps_index的next所指引的gps对应的image文件名称 
+            ImageBatch NimageBatch = ReadHDMap::getImageBatchBySceneId(gps_files[ref_gps_index+1].substr(0, num-14)); 
+            vector<string> before_img_list = NimageBatch.img_list;       // ref_gps_index的next所指引的gps对应的image文件名称 
             int start = ref_img_index - neighbor_frames / 2;
             int end = neighbor_frames - (curr_img_list.size() - start);
 
@@ -145,4 +154,7 @@ bool getImgPaths(const string& gps_path, const int& ref_gps_index, const int& re
 
     return true;
 }
+
+
+bool getPoses
 
