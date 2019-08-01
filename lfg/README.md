@@ -1,11 +1,12 @@
 # hdmap_pub
 下有三个功能包
 * hd_map(python)  
-读取hdmap.pb以自定义消息类型发出   	divider,trafficlight,lanemark三个topic  
+	读取hdmap.pb以自定义消息类型发出   	divider,trafficlight,lanemark三个topic  
 * hdmap_viewer(C++,pcl)  
 接收上述topic，并连线用pcl.visualizer显示出来  
 * pcl_online_viewer(C++,pcl)  
-一个接收点云topic用pcl.visualizer可视化的demo
+一个接收点云topic用pcl.visualizer可视化的demo  
+** 点云更新还会有id冲突，待改**  
 # proto_test
 C++读取pb文件
 # prototest
