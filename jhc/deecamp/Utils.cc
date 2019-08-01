@@ -65,9 +65,6 @@ void Utils::convertGCJO2ToLonlat(const Utils::new3s_PointXYZ GCJ02_coord, Utils:
     double lat = GCJ02_coord.get_x();
     double lon = GCJ02_coord.get_y();
     double height = GCJ02_coord.get_z();
-    double PI = 3.14159265358979324;//圆周率
-    double a = 6378245.0;//克拉索夫斯基椭球参数长半轴a
-    double ee = 0.00669342162296594323;//克拉索夫斯基椭球参数第一偏心率平方
     double dLat = transformLat(lon - 105.0, lat - 35.0);
     double dLon = transformLon(lon - 105.0, lat - 35.0);
     double radLat = lat / 180.0 * PI;
@@ -79,6 +76,24 @@ void Utils::convertGCJO2ToLonlat(const Utils::new3s_PointXYZ GCJ02_coord, Utils:
     lat_lon_coord.set_x(lat - dLat);
     lat_lon_coord.set_y(lon - dLon);
     lat_lon_coord.set_z(height);
+}
+
+void Utils::convertLonlatToGCJ02(const Utils::new3s_PointXYZ lat_lon_coord, Utils::new3s_PointXYZ& GCJ02_coord)
+{
+    double lat = lat_lon_coord.get_x();
+    double lon = lat_lon_coord.get_y();
+    double height = lat_lon_coord.get_z();
+    double dLat = transformLat(lon - 105.0, lat - 35.0);
+    double dLon = transformLon(lon - 105.0, lat - 35.0);
+    double radLat = lat / 180.0 * PI;
+    double magic = sin(radLat);
+    magic = 1 - ee * magic * magic;
+    double sqrtMagic = sqrt(magic);
+    dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * PI);
+    dLon = (dLon * 180.0) / (a / sqrtMagic * cos(radLat) * PI);
+    GCJ02_coord.set_x(lat + dLat);
+    GCJ02_coord.set_y(lon + dLon);
+    GCJ02_coord.set_z(height);
 }
 
 // WGS84 转 ECEF
@@ -127,6 +142,26 @@ void Utils::convertXYZToENU(Utils::new3s_PointXYZ llh_coord, const Utils::new3s_
 
 }
 
+void Utils::convertENUToXYZ(Utils::new3s_PointXYZ llh_coord, Utils::new3s_PointXYZ enu_coord ,Utils::new3s_PointXYZ& xyz_coord)
+{
+    double E[9];
+    double pos[3];
+    double r[3];
+    double e[3];
+    pos[0] = deg2rad(llh_coord.get_x());
+    pos[1] = deg2rad(llh_coord.get_y());
+    pos[2] = 0;
+
+    e[0] = enu_coord.get_x();
+    e[1] = enu_coord.get_y();
+    e[2] = enu_coord.get_z();
+    xyz2enu(pos,E);
+    matmul("TN",3,1,3,1.0,E,e,0.0,r);
+    xyz_coord.set_x(r[0]);
+    xyz_coord.set_y(r[1]);
+    xyz_coord.set_z(r[2]);
+}
+
 void Utils::convertXYZToLLH(const Utils::new3s_PointXYZ xyz_coord, Utils::new3s_PointXYZ& lat_lon_coord)
 {
 
@@ -166,6 +201,38 @@ void Utils::convertCJC02ToENU(const Utils::new3s_PointXYZ CJC02_coord, Utils::ne
     transform.convertXYZToENU(Original_WGS, Original_XYZ, Origianl_ENU);
     transform.convertXYZToENU(Original_WGS, XYZ_coord, ENU_coord);
     ENU_coord = ENU_coord - Origianl_ENU;
+}
+
+
+
+void Utils::readImgAndDoRectify(const cv::Mat Original, cv::Mat& TargetImg, cv::Mat K, cv::Mat distCoeffs, cv::Mat new_matrix)
+{
+    // 这步看需不要加速计算转变为 initUndistortRectifyMap + remap
+    cv::undistort(Original, TargetImg, K, distCoeffs, new_matrix);
+}
+
+cv::Mat Utils::convertAngleToR(double delta)
+{
+    cv::Mat R;
+    R = (cv::Mat_<float>(3, 3) <<
+            cos(delta), sin(delta), 0.0,
+            -sin(delta), cos(delta), 0.0,
+            0.0, 0.0, 1.0);
+    return R;
+}
+
+cv::Mat Utils::updatePose(cv::Mat pose, double header_former, double header_now, double t[3])
+{
+    // 是不是初始化，如果是初始化的时候返回一个位姿，如果非初始化返回一个位姿
+    // 这里假定是左乘更新，以东北天作为静止
+    double delta_angle = header_now - header_former;
+    cv::Mat Rb1b2 = convertAngleToR(delta_angle);
+    cv::Mat Tb1b2 = cv::Mat::eye(4, 4, CV_64F);
+    Rb1b2.copyTo(Tb1b2.rowRange(0, 3).colRange(0, 3));
+    Tb1b2.row(0).col(3) = t[0];
+    Tb1b2.row(1).col(3) = t[1];
+    Tb1b2.row(2).col(3) = t[2];
+    return Tb1b2*pose;
 }
 
 

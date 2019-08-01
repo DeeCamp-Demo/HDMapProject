@@ -60,28 +60,28 @@ include CMakeFiles/deecamp.dir/flags.make
 CMakeFiles/deecamp.dir/main.cpp.o: CMakeFiles/deecamp.dir/flags.make
 CMakeFiles/deecamp.dir/main.cpp.o: ../main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/deecamp.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/main.cpp.o -c /home/jianghc/testproject/deecamp/main.cpp
+	g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/main.cpp.o -c /home/jianghc/testproject/deecamp/main.cpp
 
 CMakeFiles/deecamp.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/main.cpp > CMakeFiles/deecamp.dir/main.cpp.i
+	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/main.cpp > CMakeFiles/deecamp.dir/main.cpp.i
 
 CMakeFiles/deecamp.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/main.cpp -o CMakeFiles/deecamp.dir/main.cpp.s
+	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/main.cpp -o CMakeFiles/deecamp.dir/main.cpp.s
 
 CMakeFiles/deecamp.dir/Utils.cc.o: CMakeFiles/deecamp.dir/flags.make
 CMakeFiles/deecamp.dir/Utils.cc.o: ../Utils.cc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/deecamp.dir/Utils.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/Utils.cc.o -c /home/jianghc/testproject/deecamp/Utils.cc
+	g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/Utils.cc.o -c /home/jianghc/testproject/deecamp/Utils.cc
 
 CMakeFiles/deecamp.dir/Utils.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/Utils.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/Utils.cc > CMakeFiles/deecamp.dir/Utils.cc.i
+	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/Utils.cc > CMakeFiles/deecamp.dir/Utils.cc.i
 
 CMakeFiles/deecamp.dir/Utils.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/Utils.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/Utils.cc -o CMakeFiles/deecamp.dir/Utils.cc.s
+	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/Utils.cc -o CMakeFiles/deecamp.dir/Utils.cc.s
 
 # Object files for target deecamp
 deecamp_OBJECTS = \
@@ -94,6 +94,52 @@ deecamp_EXTERNAL_OBJECTS =
 deecamp: CMakeFiles/deecamp.dir/main.cpp.o
 deecamp: CMakeFiles/deecamp.dir/Utils.cc.o
 deecamp: CMakeFiles/deecamp.dir/build.make
+deecamp: /usr/local/lib/libopencv_stitching.so.3.4.3
+deecamp: /usr/local/lib/libopencv_superres.so.3.4.3
+deecamp: /usr/local/lib/libopencv_videostab.so.3.4.3
+deecamp: /usr/local/lib/libopencv_xphoto.so.3.4.3
+deecamp: /usr/local/lib/libopencv_line_descriptor.so.3.4.3
+deecamp: /usr/local/lib/libopencv_reg.so.3.4.3
+deecamp: /usr/local/lib/libopencv_hfs.so.3.4.3
+deecamp: /usr/local/lib/libopencv_xobjdetect.so.3.4.3
+deecamp: /usr/local/lib/libopencv_tracking.so.3.4.3
+deecamp: /usr/local/lib/libopencv_xfeatures2d.so.3.4.3
+deecamp: /usr/local/lib/libopencv_saliency.so.3.4.3
+deecamp: /usr/local/lib/libopencv_bioinspired.so.3.4.3
+deecamp: /usr/local/lib/libopencv_stereo.so.3.4.3
+deecamp: /usr/local/lib/libopencv_dnn_objdetect.so.3.4.3
+deecamp: /usr/local/lib/libopencv_optflow.so.3.4.3
+deecamp: /usr/local/lib/libopencv_rgbd.so.3.4.3
+deecamp: /usr/local/lib/libopencv_fuzzy.so.3.4.3
+deecamp: /usr/local/lib/libopencv_surface_matching.so.3.4.3
+deecamp: /usr/local/lib/libopencv_structured_light.so.3.4.3
+deecamp: /usr/local/lib/libopencv_face.so.3.4.3
+deecamp: /usr/local/lib/libopencv_bgsegm.so.3.4.3
+deecamp: /usr/local/lib/libopencv_freetype.so.3.4.3
+deecamp: /usr/local/lib/libopencv_ccalib.so.3.4.3
+deecamp: /usr/local/lib/libopencv_img_hash.so.3.4.3
+deecamp: /usr/local/lib/libopencv_aruco.so.3.4.3
+deecamp: /usr/local/lib/libopencv_dpm.so.3.4.3
+deecamp: /usr/local/lib/libopencv_shape.so.3.4.3
+deecamp: /usr/local/lib/libopencv_datasets.so.3.4.3
+deecamp: /usr/local/lib/libopencv_plot.so.3.4.3
+deecamp: /usr/local/lib/libopencv_text.so.3.4.3
+deecamp: /usr/local/lib/libopencv_ml.so.3.4.3
+deecamp: /usr/local/lib/libopencv_dnn.so.3.4.3
+deecamp: /usr/local/lib/libopencv_ximgproc.so.3.4.3
+deecamp: /usr/local/lib/libopencv_viz.so.3.4.3
+deecamp: /usr/local/lib/libopencv_phase_unwrapping.so.3.4.3
+deecamp: /usr/local/lib/libopencv_photo.so.3.4.3
+deecamp: /usr/local/lib/libopencv_video.so.3.4.3
+deecamp: /usr/local/lib/libopencv_calib3d.so.3.4.3
+deecamp: /usr/local/lib/libopencv_features2d.so.3.4.3
+deecamp: /usr/local/lib/libopencv_flann.so.3.4.3
+deecamp: /usr/local/lib/libopencv_objdetect.so.3.4.3
+deecamp: /usr/local/lib/libopencv_highgui.so.3.4.3
+deecamp: /usr/local/lib/libopencv_videoio.so.3.4.3
+deecamp: /usr/local/lib/libopencv_imgcodecs.so.3.4.3
+deecamp: /usr/local/lib/libopencv_imgproc.so.3.4.3
+deecamp: /usr/local/lib/libopencv_core.so.3.4.3
 deecamp: CMakeFiles/deecamp.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable deecamp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/deecamp.dir/link.txt --verbose=$(VERBOSE)
