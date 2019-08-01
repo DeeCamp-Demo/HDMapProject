@@ -22,7 +22,8 @@ using namespace Eigen;
 #include <opencv2/imgproc/imgproc.hpp>
 
 using namespace cv;
-#include "consts.h"
+#include "utils/consts.h"
+#include "utils/read_hdmap.h"
 
 class DepthMapping {
 private:

@@ -11,7 +11,8 @@ include_directories( "/usr/include/eigen3" )
 # OpenCV
 find_package( OpenCV 3.1 REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-# Sophus 
+
+# Sophus
 find_package( Sophus REQUIRED )
 include_directories( ${Sophus_INCLUDE_DIRS} )
 
@@ -23,3 +24,10 @@ set( THIRD_PARTY_LIBS
 
 add_executable( build_depth_test build_depth_test.cpp )
 target_link_libraries( build_depth_test ${THIRD_PARTY_LIBS} )
+
+set(HDR_FILES
+src/ReadHDMap.h utils/calulate.h consts.h build_depth.h)
+
+add_executable( ${HDR_FILES} )
+
+
