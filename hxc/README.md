@@ -1,22 +1,27 @@
-#### 项目数据接口说明
+# 接口说明文档
 
-> 1. hdmap :项目工程总目录
->
-> 2. 将proto目录,utils目录下三个.h头文件全部拷贝到自己的工程目录里面
->
-> 3. data目录下的文件夹需要严格保持一致.
->
-> 4. read_map中定义了以下接口标准
->
->    ```
->    HDMAP getHDMAP() //读取整张高精地图所有元素位置
->    GPSInfoEach getGPSInfoBySceneId; //根据scene_id获取指定的GPS帧数据信息
->    vector<ImageBatch> getAllImageBatch() //获取高精地图每一帧GPS及其对应的图像集合,按顺序取
->    ImageBatch getImageBatchBySceneId(string scene_id2)//根据scene_id获取帧GPS及其对应的兔相机和
->    GpsImageBatch getGpsImageBatchByImageId(string scene_id2, int index);//根据图片的scene_id和index获取指定的GPS点及headiing信息
->    ```
 
-在test.cpp里面写了接口的使用方法
+> hdmap :项目工程总目录
+>
+> 将proto目录,utils目录下三个.h头文件全部拷贝到自己的工程目录里面
+>
+> data目录下的文件夹需要严格保持一致.
+>
+> read_map中定义了以下接口标准
+>
+
+```c++
+HDMAP getHDMAP() //读取整张高精地图所有元素位置
+GPSInfoEach getGPSInfoBySceneId; //根据scene_id获取指定的GPS帧数据信息
+vector<ImageBatch> getAllImageBatch() //获取高精地图每一帧GPS及其对应的图像集合,按顺序取
+ImageBatch getImageBatchBySceneId(string scene_id2)//根据scene_id获取帧GPS及其对应的兔相机和
+GpsImageBatch getGpsImageBatchByImageId(string scene_id2, int index);//根据图片的scene_id和index获取指定的GPS点及headiing信息
+vector<GpsImageBatch> getAllGpsImageBatch() //获取所有的GPS点及其对应的一帧图像
+```
+
+## 接口调用示例
+
+在test.cpp里面写了接口的调用方法
 
 - 1.在main.cpp里面 #include "read_hdmap.h"
 
@@ -74,7 +79,7 @@
 
 ```
 
-- 3.相应数据结构定义如下
+## 数据结构
 
 ```c++
 //点位置
