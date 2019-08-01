@@ -4,6 +4,9 @@
 #include "string.h"
 #include <iostream>
 #include <vector>
+#include <dirent.h>
+#include <stdio.h>
+#include <algorithm>
 #ifndef PROTO_TEST_CALULATE_H
 #define PROTO_TEST_CALULATE_H
 using namespace std;
@@ -113,6 +116,54 @@ namespace calulate {
             j = 0;
         }
     }
+
+    bool getAllFiles(string path, vector<string> &fileNames)
+    {
+        if (path.empty()||path.length()==0||path=="")
+        {
+            cout << "Error filePath!" << endl;
+            return -1;
+        } else
+        {
+            DIR *directory_pointer;
+            struct dirent *entry;
+            if((directory_pointer=opendir(path.c_str()))==NULL){
+                cout << "Error open!" << endl;
+                return -1;
+            } else {
+                while((entry=readdir(directory_pointer))!=NULL){
+                    if(entry->d_name[0]=='.') continue;
+                    string d_name(entry->d_name);
+
+//                    cout << " d_name: " << d_name << endl;
+                    fileNames.push_back(d_name);
+                }
+                return 0;
+            }
+        }
+    }
+
+    vector<string> sortedVector(vector<string> &fileNames){
+        if (fileNames.size()>0)
+        {
+            sort(fileNames.begin(), fileNames.end());
+
+            for (int i = 0; i < fileNames.size(); ++i) {
+/*            string gps_id = fileNames[i].substr(5, 9);//根据gps_id大小排序gps文件
+//        string num_str = d_name.substr(nops-3, nops-scene_id.length()-1); //GPS编号排序
+            stringstream ss;
+            ss<<gps_id;
+            unsigned int gps_num;
+            ss>>gps_num;*/
+//            std::cout<<"file name i:"<<fileNames[i]<<std::endl;
+            }
+            return fileNames;
+        } else{
+            std::cout<<"传入的filename 不能为空"<<std::endl;
+        }
+
+    }
+
 
 }
 #endif //PROTO_TEST_CALULATE_H
