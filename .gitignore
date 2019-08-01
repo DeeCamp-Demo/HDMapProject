@@ -5,3 +5,6 @@
 .catkin*
 .built*
 .ros*
+
+# for Clion
+.idea*
