@@ -104,7 +104,8 @@ public:
     void convertGCJO2ToLonlat(const new3s_PointXYZ GCJ02_coord, new3s_PointXYZ& lat_lon_coord);
     void convertLLHToXYZ(const new3s_PointXYZ lat_lon_coord, new3s_PointXYZ& xyz_coord);
     void convertXYZToLLH(const Utils::new3s_PointXYZ xyz_coord, Utils::new3s_PointXYZ& lat_lon_coord);
-    void convertXYZToENU(const Utils::new3s_PointXYZ xyz_coord, const Utils::new3s_PointXYZ orgxyz_coord, Utils::new3s_PointXYZ& enu_coord);
+    void convertXYZToENU(Utils::new3s_PointXYZ llh_coord, const Utils::new3s_PointXYZ xyz_coord, Utils::new3s_PointXYZ& enu_coord);
+    void convertCJC02ToENU(const Utils::new3s_PointXYZ CJC02_coord, Utils::new3s_PointXYZ &ENU_coord, Utils::new3s_PointXYZ original_CJC02);
 
 
 
@@ -119,6 +120,9 @@ private:
     const double RE_WGS84 = 6378137.0;
 
     double dot(const double *a, const double *b, int n);
+    void xyz2enu(const double *pos, double *E);
+    void matmul(const char *tr, int n, int k, int m, double alpha,
+                const double *A, const double *B, double beta, double *C);
 };
 
 

@@ -30,6 +30,34 @@ double Utils::dot(const double *a, const double *b, int n)
     return c;
 }
 
+void Utils::xyz2enu(const double *pos, double *E)
+{
+    double sinp=sin(pos[0]),cosp=cos(pos[0]),sinl=sin(pos[1]),cosl=cos(pos[1]);
+
+    E[0]=-sinl;      E[3]=cosl;       E[6]=0.0;
+    E[1]=-sinp*cosl; E[4]=-sinp*sinl; E[7]=cosp;
+    E[2]=cosp*cosl;  E[5]=cosp*sinl;  E[8]=sinp;
+}
+
+void Utils::matmul(const char *tr, int n, int k, int m, double alpha,
+            const double *A, const double *B, double beta, double *C)
+{
+    double d;
+    int i,j,x,f=tr[0]=='N'?(tr[1]=='N'?1:2):(tr[1]=='N'?3:4);
+
+    for (i=0;i<n;i++) for (j=0;j<k;j++) {
+            d=0.0;
+            switch (f) {
+                case 1: for (x=0;x<m;x++) d+=A[i+x*n]*B[x+j*m]; break;
+                case 2: for (x=0;x<m;x++) d+=A[i+x*n]*B[j+x*k]; break;
+                case 3: for (x=0;x<m;x++) d+=A[x+i*m]*B[x+j*m]; break;
+                case 4: for (x=0;x<m;x++) d+=A[x+i*m]*B[j+x*k]; break;
+            }
+            if (beta==0.0) C[i+j*n]=alpha*d; else C[i+j*n]=alpha*d+beta*C[i+j*n];
+        }
+}
+
+
 // 火星坐标系转WGS84 这里统一都是先纬度后经度
 void Utils::convertGCJO2ToLonlat(const Utils::new3s_PointXYZ GCJ02_coord, Utils::new3s_PointXYZ& lat_lon_coord)
 {
@@ -76,36 +104,26 @@ void Utils::convertLLHToXYZ(const Utils::new3s_PointXYZ lat_lon_coord, Utils::ne
 
 }
 
-void Utils::convertXYZToENU(Utils::new3s_PointXYZ xyz_coord, const Utils::new3s_PointXYZ orgxyz_coord, Utils::new3s_PointXYZ& enu_coord)
+
+void Utils::convertXYZToENU(Utils::new3s_PointXYZ llh_coord, const Utils::new3s_PointXYZ xyz_coord, Utils::new3s_PointXYZ& enu_coord)
 {
-    /*
-           inputs ::
-           xyz_coord --> ECEF xyz coordinates [meter]
-           orgxyz_coord --> ECEF xyz origin coordinates [meter]
-           outputs ::
-           osENU --> ENU position coordinates [meters]
-    */
-    Eigen::Vector3d posDiff;
-    posDiff[0] = (xyz_coord - orgxyz_coord).get_x();
-    posDiff[1] = (xyz_coord - orgxyz_coord).get_y();
-    posDiff[2] = (xyz_coord - orgxyz_coord).get_z();
+    double E[9];
 
-    Utils::new3s_PointXYZ orgLLH_coord;
-    convertXYZToLLH(orgxyz_coord, orgLLH_coord);
-    double sinPhi = sin(orgLLH_coord.get_x());
-    double cosPhi = cos(orgLLH_coord.get_x());
-    double sinLam = sin(orgLLH_coord.get_y());
-    double cosLam = cos(orgLLH_coord.get_y());
-    Eigen::Matrix3d R;
-    R << (-1*sinLam), cosLam, 0,
-    ((-1*sinPhi)*cosLam), ((-1*sinPhi)*sinLam), cosPhi,
-    (cosPhi*cosLam), (cosPhi*sinLam), sinPhi ;
-    Eigen::Vector3d pos;
-    pos = R * posDiff;
+    double pos[3];
+    double r[3];
+    double e[3];
+    pos[0] = deg2rad(llh_coord.get_x());
+    pos[1] = deg2rad(llh_coord.get_y());
+    pos[2] = 0;
+    r[0] = xyz_coord.get_x();
+    r[1] = xyz_coord.get_y();
+    r[2] = xyz_coord.get_z();
+    xyz2enu(pos,E);
+    matmul("NN",3,1,3,1.0,E,r,0.0,e);
 
-    enu_coord.set_x(pos[0]);
-    enu_coord.set_y(pos[1]);
-    enu_coord.set_z(pos[2]);
+    enu_coord.set_x(e[0]);
+    enu_coord.set_y(e[1]);
+    enu_coord.set_z(e[2]);
 
 }
 
@@ -131,6 +149,23 @@ void Utils::convertXYZToLLH(const Utils::new3s_PointXYZ xyz_coord, Utils::new3s_
     lat_lon_coord.set_x(rad2deg(pos[0]));
     lat_lon_coord.set_y(rad2deg(pos[1]));
     lat_lon_coord.set_z(pos[2]);
+}
+
+void Utils::convertCJC02ToENU(const Utils::new3s_PointXYZ CJC02_coord, Utils::new3s_PointXYZ &ENU_coord, Utils::new3s_PointXYZ original_CJC02)
+{
+    Utils::new3s_PointXYZ WGS84_coord;
+    Utils::new3s_PointXYZ XYZ_coord;
+    Utils::new3s_PointXYZ Original_WGS;
+    Utils::new3s_PointXYZ Original_XYZ;
+    Utils::new3s_PointXYZ Origianl_ENU;
+    Utils transform;
+    transform.convertGCJO2ToLonlat(CJC02_coord, WGS84_coord);
+    transform.convertGCJO2ToLonlat(original_CJC02, Original_WGS);
+    transform.convertLLHToXYZ(WGS84_coord, XYZ_coord);
+    transform.convertLLHToXYZ(Original_WGS, Original_XYZ);
+    transform.convertXYZToENU(Original_WGS, Original_XYZ, Origianl_ENU);
+    transform.convertXYZToENU(Original_WGS, XYZ_coord, ENU_coord);
+    ENU_coord = ENU_coord - Origianl_ENU;
 }
 
 
