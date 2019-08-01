@@ -267,17 +267,14 @@ class ConstraintSetConfig : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // repeated .test.ArmorSize armor_size = 3;
-  int armor_size_size() const;
+  // required .test.ArmorSize armor_size = 3;
+  bool has_armor_size() const;
   void clear_armor_size();
   static const int kArmorSizeFieldNumber = 3;
-  const ::test::ArmorSize& armor_size(int index) const;
-  ::test::ArmorSize* mutable_armor_size(int index);
-  ::test::ArmorSize* add_armor_size();
-  ::google::protobuf::RepeatedPtrField< ::test::ArmorSize >*
-      mutable_armor_size();
-  const ::google::protobuf::RepeatedPtrField< ::test::ArmorSize >&
-      armor_size() const;
+  const ::test::ArmorSize& armor_size() const;
+  ::test::ArmorSize* mutable_armor_size();
+  ::test::ArmorSize* release_armor_size();
+  void set_allocated_armor_size(::test::ArmorSize* armor_size);
 
   // required bool using_hsv = 1;
   bool has_using_hsv() const;
@@ -299,6 +296,8 @@ class ConstraintSetConfig : public ::google::protobuf::Message /* @@protoc_inser
   void clear_has_using_hsv();
   void set_has_num();
   void clear_has_num();
+  void set_has_armor_size();
+  void clear_has_armor_size();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -306,7 +305,7 @@ class ConstraintSetConfig : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
-  ::google::protobuf::RepeatedPtrField< ::test::ArmorSize > armor_size_;
+  ::test::ArmorSize* armor_size_;
   bool using_hsv_;
   float num_;
   friend struct protobuf_test_2eproto::TableStruct;
@@ -377,13 +376,13 @@ inline void ArmorSize::set_height(float value) {
 
 // required bool using_hsv = 1;
 inline bool ConstraintSetConfig::has_using_hsv() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
 inline void ConstraintSetConfig::set_has_using_hsv() {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
 }
 inline void ConstraintSetConfig::clear_has_using_hsv() {
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void ConstraintSetConfig::clear_using_hsv() {
   using_hsv_ = false;
@@ -401,13 +400,13 @@ inline void ConstraintSetConfig::set_using_hsv(bool value) {
 
 // required float num = 2;
 inline bool ConstraintSetConfig::has_num() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void ConstraintSetConfig::set_has_num() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void ConstraintSetConfig::clear_has_num() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ConstraintSetConfig::clear_num() {
   num_ = 0;
@@ -423,34 +422,50 @@ inline void ConstraintSetConfig::set_num(float value) {
   // @@protoc_insertion_point(field_set:test.ConstraintSetConfig.num)
 }
 
-// repeated .test.ArmorSize armor_size = 3;
-inline int ConstraintSetConfig::armor_size_size() const {
-  return armor_size_.size();
+// required .test.ArmorSize armor_size = 3;
+inline bool ConstraintSetConfig::has_armor_size() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ConstraintSetConfig::set_has_armor_size() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ConstraintSetConfig::clear_has_armor_size() {
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline void ConstraintSetConfig::clear_armor_size() {
-  armor_size_.Clear();
+  if (armor_size_ != NULL) armor_size_->::test::ArmorSize::Clear();
+  clear_has_armor_size();
 }
-inline const ::test::ArmorSize& ConstraintSetConfig::armor_size(int index) const {
+inline const ::test::ArmorSize& ConstraintSetConfig::armor_size() const {
+  const ::test::ArmorSize* p = armor_size_;
   // @@protoc_insertion_point(field_get:test.ConstraintSetConfig.armor_size)
-  return armor_size_.Get(index);
+  return p != NULL ? *p : *reinterpret_cast<const ::test::ArmorSize*>(
+      &::test::_ArmorSize_default_instance_);
 }
-inline ::test::ArmorSize* ConstraintSetConfig::mutable_armor_size(int index) {
+inline ::test::ArmorSize* ConstraintSetConfig::mutable_armor_size() {
+  set_has_armor_size();
+  if (armor_size_ == NULL) {
+    armor_size_ = new ::test::ArmorSize;
+  }
   // @@protoc_insertion_point(field_mutable:test.ConstraintSetConfig.armor_size)
-  return armor_size_.Mutable(index);
-}
-inline ::test::ArmorSize* ConstraintSetConfig::add_armor_size() {
-  // @@protoc_insertion_point(field_add:test.ConstraintSetConfig.armor_size)
-  return armor_size_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::test::ArmorSize >*
-ConstraintSetConfig::mutable_armor_size() {
-  // @@protoc_insertion_point(field_mutable_list:test.ConstraintSetConfig.armor_size)
-  return &armor_size_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::test::ArmorSize >&
-ConstraintSetConfig::armor_size() const {
-  // @@protoc_insertion_point(field_list:test.ConstraintSetConfig.armor_size)
   return armor_size_;
+}
+inline ::test::ArmorSize* ConstraintSetConfig::release_armor_size() {
+  // @@protoc_insertion_point(field_release:test.ConstraintSetConfig.armor_size)
+  clear_has_armor_size();
+  ::test::ArmorSize* temp = armor_size_;
+  armor_size_ = NULL;
+  return temp;
+}
+inline void ConstraintSetConfig::set_allocated_armor_size(::test::ArmorSize* armor_size) {
+  delete armor_size_;
+  armor_size_ = armor_size;
+  if (armor_size) {
+    set_has_armor_size();
+  } else {
+    clear_has_armor_size();
+  }
+  // @@protoc_insertion_point(field_set_allocated:test.ConstraintSetConfig.armor_size)
 }
 
 #ifdef __GNUC__

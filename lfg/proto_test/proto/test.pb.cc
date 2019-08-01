@@ -71,9 +71,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConstraintSetConfig, using_hsv_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConstraintSetConfig, num_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConstraintSetConfig, armor_size_),
-  0,
   1,
-  ~0u,
+  2,
+  0,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(ArmorSize)},
@@ -115,7 +115,9 @@ void TableStruct::InitDefaultsImpl() {
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_ArmorSize_default_instance_);_ConstraintSetConfig_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_ConstraintSetConfig_default_instance_);}
+      &_ConstraintSetConfig_default_instance_);_ConstraintSetConfig_default_instance_._instance.get_mutable()->armor_size_ = const_cast< ::test::ArmorSize*>(
+      ::test::ArmorSize::internal_default_instance());
+}
 
 void InitDefaults() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
@@ -128,7 +130,7 @@ void AddDescriptorsImpl() {
       "\n\ntest.proto\022\004test\"*\n\tArmorSize\022\r\n\005width"
       "\030\001 \002(\002\022\016\n\006height\030\002 \002(\002\"Z\n\023ConstraintSetC"
       "onfig\022\021\n\tusing_hsv\030\001 \002(\010\022\013\n\003num\030\002 \002(\002\022#\n"
-      "\narmor_size\030\003 \003(\0132\017.test.ArmorSize"
+      "\narmor_size\030\003 \002(\0132\017.test.ArmorSize"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
       descriptor, 154);
@@ -526,9 +528,13 @@ ConstraintSetConfig::ConstraintSetConfig(const ConstraintSetConfig& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _has_bits_(from._has_bits_),
-      _cached_size_(0),
-      armor_size_(from.armor_size_) {
+      _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_armor_size()) {
+    armor_size_ = new ::test::ArmorSize(*from.armor_size_);
+  } else {
+    armor_size_ = NULL;
+  }
   ::memcpy(&using_hsv_, &from.using_hsv_,
     static_cast<size_t>(reinterpret_cast<char*>(&num_) -
     reinterpret_cast<char*>(&using_hsv_)) + sizeof(num_));
@@ -537,9 +543,9 @@ ConstraintSetConfig::ConstraintSetConfig(const ConstraintSetConfig& from)
 
 void ConstraintSetConfig::SharedCtor() {
   _cached_size_ = 0;
-  ::memset(&using_hsv_, 0, static_cast<size_t>(
+  ::memset(&armor_size_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&num_) -
-      reinterpret_cast<char*>(&using_hsv_)) + sizeof(num_));
+      reinterpret_cast<char*>(&armor_size_)) + sizeof(num_));
 }
 
 ConstraintSetConfig::~ConstraintSetConfig() {
@@ -548,6 +554,7 @@ ConstraintSetConfig::~ConstraintSetConfig() {
 }
 
 void ConstraintSetConfig::SharedDtor() {
+  if (this != internal_default_instance()) delete armor_size_;
 }
 
 void ConstraintSetConfig::SetCachedSize(int size) const {
@@ -579,9 +586,12 @@ void ConstraintSetConfig::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  armor_size_.Clear();
+  if (has_armor_size()) {
+    GOOGLE_DCHECK(armor_size_ != NULL);
+    armor_size_->::test::ArmorSize::Clear();
+  }
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 3u) {
+  if (cached_has_bits & 6u) {
     ::memset(&using_hsv_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&num_) -
         reinterpret_cast<char*>(&using_hsv_)) + sizeof(num_));
@@ -628,12 +638,12 @@ bool ConstraintSetConfig::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .test.ArmorSize armor_size = 3;
+      // required .test.ArmorSize armor_size = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_armor_size()));
+               input, mutable_armor_size()));
         } else {
           goto handle_unusual;
         }
@@ -668,20 +678,19 @@ void ConstraintSetConfig::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required bool using_hsv = 1;
-  if (cached_has_bits & 0x00000001u) {
+  if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->using_hsv(), output);
   }
 
   // required float num = 2;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->num(), output);
   }
 
-  // repeated .test.ArmorSize armor_size = 3;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->armor_size_size()); i < n; i++) {
+  // required .test.ArmorSize armor_size = 3;
+  if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, this->armor_size(static_cast<int>(i)), output);
+      3, *this->armor_size_, output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -700,21 +709,20 @@ void ConstraintSetConfig::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required bool using_hsv = 1;
-  if (cached_has_bits & 0x00000001u) {
+  if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->using_hsv(), target);
   }
 
   // required float num = 2;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->num(), target);
   }
 
-  // repeated .test.ArmorSize armor_size = 3;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->armor_size_size()); i < n; i++) {
+  // required .test.ArmorSize armor_size = 3;
+  if (cached_has_bits & 0x00000001u) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, this->armor_size(static_cast<int>(i)), deterministic, target);
+        3, *this->armor_size_, deterministic, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -728,6 +736,13 @@ void ConstraintSetConfig::SerializeWithCachedSizes(
 size_t ConstraintSetConfig::RequiredFieldsByteSizeFallback() const {
 // @@protoc_insertion_point(required_fields_byte_size_fallback_start:test.ConstraintSetConfig)
   size_t total_size = 0;
+
+  if (has_armor_size()) {
+    // required .test.ArmorSize armor_size = 3;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->armor_size_);
+  }
 
   if (has_using_hsv()) {
     // required bool using_hsv = 1;
@@ -750,7 +765,12 @@ size_t ConstraintSetConfig::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+    // required .test.ArmorSize armor_size = 3;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->armor_size_);
+
     // required bool using_hsv = 1;
     total_size += 1 + 1;
 
@@ -760,17 +780,6 @@ size_t ConstraintSetConfig::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  // repeated .test.ArmorSize armor_size = 3;
-  {
-    unsigned int count = static_cast<unsigned int>(this->armor_size_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->armor_size(static_cast<int>(i)));
-    }
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -800,13 +809,15 @@ void ConstraintSetConfig::MergeFrom(const ConstraintSetConfig& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  armor_size_.MergeFrom(from.armor_size_);
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 3u) {
+  if (cached_has_bits & 7u) {
     if (cached_has_bits & 0x00000001u) {
-      using_hsv_ = from.using_hsv_;
+      mutable_armor_size()->::test::ArmorSize::MergeFrom(from.armor_size());
     }
     if (cached_has_bits & 0x00000002u) {
+      using_hsv_ = from.using_hsv_;
+    }
+    if (cached_has_bits & 0x00000004u) {
       num_ = from.num_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -828,8 +839,10 @@ void ConstraintSetConfig::CopyFrom(const ConstraintSetConfig& from) {
 }
 
 bool ConstraintSetConfig::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
-  if (!::google::protobuf::internal::AllAreInitialized(this->armor_size())) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if (has_armor_size()) {
+    if (!this->armor_size_->IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -839,7 +852,7 @@ void ConstraintSetConfig::Swap(ConstraintSetConfig* other) {
 }
 void ConstraintSetConfig::InternalSwap(ConstraintSetConfig* other) {
   using std::swap;
-  armor_size_.InternalSwap(&other->armor_size_);
+  swap(armor_size_, other->armor_size_);
   swap(using_hsv_, other->using_hsv_);
   swap(num_, other->num_);
   swap(_has_bits_[0], other->_has_bits_[0]);
@@ -857,13 +870,13 @@ void ConstraintSetConfig::InternalSwap(ConstraintSetConfig* other) {
 
 // required bool using_hsv = 1;
 bool ConstraintSetConfig::has_using_hsv() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
 void ConstraintSetConfig::set_has_using_hsv() {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
 }
 void ConstraintSetConfig::clear_has_using_hsv() {
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 void ConstraintSetConfig::clear_using_hsv() {
   using_hsv_ = false;
@@ -881,13 +894,13 @@ void ConstraintSetConfig::set_using_hsv(bool value) {
 
 // required float num = 2;
 bool ConstraintSetConfig::has_num() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 void ConstraintSetConfig::set_has_num() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 void ConstraintSetConfig::clear_has_num() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 void ConstraintSetConfig::clear_num() {
   num_ = 0;
@@ -903,34 +916,50 @@ void ConstraintSetConfig::set_num(float value) {
   // @@protoc_insertion_point(field_set:test.ConstraintSetConfig.num)
 }
 
-// repeated .test.ArmorSize armor_size = 3;
-int ConstraintSetConfig::armor_size_size() const {
-  return armor_size_.size();
+// required .test.ArmorSize armor_size = 3;
+bool ConstraintSetConfig::has_armor_size() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void ConstraintSetConfig::set_has_armor_size() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void ConstraintSetConfig::clear_has_armor_size() {
+  _has_bits_[0] &= ~0x00000001u;
 }
 void ConstraintSetConfig::clear_armor_size() {
-  armor_size_.Clear();
+  if (armor_size_ != NULL) armor_size_->::test::ArmorSize::Clear();
+  clear_has_armor_size();
 }
-const ::test::ArmorSize& ConstraintSetConfig::armor_size(int index) const {
+const ::test::ArmorSize& ConstraintSetConfig::armor_size() const {
+  const ::test::ArmorSize* p = armor_size_;
   // @@protoc_insertion_point(field_get:test.ConstraintSetConfig.armor_size)
-  return armor_size_.Get(index);
+  return p != NULL ? *p : *reinterpret_cast<const ::test::ArmorSize*>(
+      &::test::_ArmorSize_default_instance_);
 }
-::test::ArmorSize* ConstraintSetConfig::mutable_armor_size(int index) {
+::test::ArmorSize* ConstraintSetConfig::mutable_armor_size() {
+  set_has_armor_size();
+  if (armor_size_ == NULL) {
+    armor_size_ = new ::test::ArmorSize;
+  }
   // @@protoc_insertion_point(field_mutable:test.ConstraintSetConfig.armor_size)
-  return armor_size_.Mutable(index);
-}
-::test::ArmorSize* ConstraintSetConfig::add_armor_size() {
-  // @@protoc_insertion_point(field_add:test.ConstraintSetConfig.armor_size)
-  return armor_size_.Add();
-}
-::google::protobuf::RepeatedPtrField< ::test::ArmorSize >*
-ConstraintSetConfig::mutable_armor_size() {
-  // @@protoc_insertion_point(field_mutable_list:test.ConstraintSetConfig.armor_size)
-  return &armor_size_;
-}
-const ::google::protobuf::RepeatedPtrField< ::test::ArmorSize >&
-ConstraintSetConfig::armor_size() const {
-  // @@protoc_insertion_point(field_list:test.ConstraintSetConfig.armor_size)
   return armor_size_;
+}
+::test::ArmorSize* ConstraintSetConfig::release_armor_size() {
+  // @@protoc_insertion_point(field_release:test.ConstraintSetConfig.armor_size)
+  clear_has_armor_size();
+  ::test::ArmorSize* temp = armor_size_;
+  armor_size_ = NULL;
+  return temp;
+}
+void ConstraintSetConfig::set_allocated_armor_size(::test::ArmorSize* armor_size) {
+  delete armor_size_;
+  armor_size_ = armor_size;
+  if (armor_size) {
+    set_has_armor_size();
+  } else {
+    clear_has_armor_size();
+  }
+  // @@protoc_insertion_point(field_set_allocated:test.ConstraintSetConfig.armor_size)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

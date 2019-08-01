@@ -8,14 +8,19 @@ find_package(Protobuf REQUIRED)
 #protoc test.proto --cpp_out=.
 set(PROTO_FILES
         proto/test.proto
+        proto/HDMap.proto
+        proto/LaneMarking.proto
+        proto/SourceInfo.proto
+        proto/TrafficLight.proto
+        proto/Divider.proto
         )
 
 set(SRC_FILES
-        src/prototest.cpp
+        src/map_read.cpp
         )
 
 set(HDR_FILES
-        )
+        src/map_read.h)
 
 
 PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HDR ${PROTO_FILES})
