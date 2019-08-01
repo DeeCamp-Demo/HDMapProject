@@ -1,0 +1,6 @@
+set(hd_map_SETUP_PY_VERSION "0.0.1")
+set(hd_map_SETUP_PY_SCRIPTS "")
+set(hd_map_SETUP_PY_PACKAGES "hd_map")
+set(hd_map_SETUP_PY_PACKAGE_DIRS "src/hd_map")
+set(hd_map_SETUP_PY_MODULES "")
+set(hd_map_SETUP_PY_MODULE_DIRS "")

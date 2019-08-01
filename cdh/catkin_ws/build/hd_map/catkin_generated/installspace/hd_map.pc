@@ -1,0 +1,8 @@
+prefix=/home/apple/catkin_ws/install
+
+Name: hd_map
+Description: Description of hd_map
+Version: 0.0.1
+Cflags: 
+Libs: -L/home/apple/catkin_ws/install/lib 
+Requires: 

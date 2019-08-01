@@ -1,2 +1,7 @@
 # ignore macos storage file
 .DS_Store
+
+# add for ros and catkin_make
+.catkin*
+.built*
+.ros*
