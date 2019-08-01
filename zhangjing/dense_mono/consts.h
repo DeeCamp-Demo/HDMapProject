@@ -24,6 +24,7 @@ const double min_cov = 0.1;    // 收敛判定：最小方差
 const double max_cov = 10;    // 发散判定：最大方差
 
 const int max_frames = 200;
+const int neighbor_frames = 20;
 
 const double init_depth   = 3.0;    // 深度初始值
 const double init_cov2    = 3.0;    // 方差初始值

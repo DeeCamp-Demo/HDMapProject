@@ -1,3 +1,17 @@
+/* 
+Author: Joey.
+Created Date: 7/30/2019.
+Modified Date: 8/1/2019.
+Description: 
+This is a class to be constructed from:
+        1. ref              目标frame（要做深度估计的）
+        2. currs            相邻frames（分别与目标frame形成对以估计深度）
+        3. pose_ref         目标frame的位资
+        4. poses_curr       相邻frames对应的位资
+        5. points_target    目标区域的像素点坐标
+Then it can compute the depth of the target frame(ref) by using its internal method: build_depthMap.
+*/
+
 #ifndef __DepthMapping_H__
 #define __DepthMapping_H__
 
