@@ -3,6 +3,6 @@ prefix=/home/apple/catkin_ws/install
 Name: hd_map
 Description: Description of hd_map
 Version: 0.0.1
-Cflags: 
+Cflags: -I/home/apple/catkin_ws/install/include
 Libs: -L/home/apple/catkin_ws/install/lib 
-Requires: 
+Requires: message_runtime

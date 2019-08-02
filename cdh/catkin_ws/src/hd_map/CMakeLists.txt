@@ -13,11 +13,31 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   visualization_msgs
+  message_generation
   tf
+  sensor_msgs
 )
 
-catkin_package()
+add_message_files(
+  FILES
+  element.msg
+  elements.msg
+)
+
 catkin_python_setup()
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  sensor_msgs
+)
+
+catkin_package(
+   DEPENDS system_lib
+   CATKIN_DEPENDS message_runtime
+)
+
+
 
 
 

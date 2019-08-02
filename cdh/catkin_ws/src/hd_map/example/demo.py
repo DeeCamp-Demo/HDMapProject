@@ -34,7 +34,7 @@ def cleanup_node():
 markers = rviz_tools.RvizMarkers('/map', 'visualization_marker')
 message = readpb.read_from_pb_debug()
 points = readpb.read_divider(message)
-
+print(points)
 
 while not rospy.is_shutdown():
 
@@ -53,5 +53,20 @@ while not rospy.is_shutdown():
     markers.publishAxis(P, axis_length, axis_radius, 5.0) # pose, axis length, radius, lifetime
 
     rviz_tools.genPublishPath_simple(points, markers)
+
+
+    # Path:
+
+    # Publish a path using a list of ROS Point Msgs
+    # path = []
+    # path.append( Point(0,-0.5,0) )
+    # path.append( Point(1,-0.5,0) )
+    # path.append( Point(1.5,-0.2,0) )
+    # path.append( Point(2,-0.5,0) )
+    # path.append( Point(2.5,-0.2,0) )
+    # path.append( Point(3,-0.5,0) )
+    # path.append( Point(4,-0.5,0) )
+    # width = 0.02
+    # markers.publishPath(path, 'orange', width, 5.0) # path, color, width, lifetime
     
     rospy.Rate(1).sleep() #1 Hz
