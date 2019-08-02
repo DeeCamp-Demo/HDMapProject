@@ -5,9 +5,7 @@
 #include <iostream>
 #include <cstring>        // for strcat()
 #include "fstream"
-//#include "string.h"
-//#include <dirent.h>
-//#include <stdio.h>
+
 
 #ifndef HDMAP_TEST_H
 #define HDMAP_TEST_H

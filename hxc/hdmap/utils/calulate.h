@@ -119,17 +119,18 @@ namespace calulate {
 
     bool getAllFiles(string path, vector<string> &fileNames)
     {
+//        cout << "getFile:" << path<<endl;
         if (path.empty()||path.length()==0||path=="")
         {
             cout << "Error filePath!" << endl;
-            return -1;
+            return false;
         } else
         {
             DIR *directory_pointer;
             struct dirent *entry;
             if((directory_pointer=opendir(path.c_str()))==NULL){
                 cout << "Error open!" << endl;
-                return -1;
+                return false;
             } else {
                 while((entry=readdir(directory_pointer))!=NULL){
                     if(entry->d_name[0]=='.') continue;
@@ -138,7 +139,7 @@ namespace calulate {
 //                    cout << " d_name: " << d_name << endl;
                     fileNames.push_back(d_name);
                 }
-                return 0;
+                return true;
             }
         }
     }
