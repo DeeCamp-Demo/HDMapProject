@@ -19,6 +19,14 @@ int main(){
 
     string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
+//    取GPS第一个点 (起始位置)
+  /*  vector<GPSInfoEach> gpsInfo_vec;
+    bool flag = ReadHDMap::getGPSInfo(gpsInfo_vec);
+    if (flag)
+    {
+        GPSPointEach gpsPointEach = gpsInfo_vec[0].gpsPoints[0];
+        cout<< "gpsPointEach:"<<gpsPointEach.points.x << " y, " << gpsPointEach.points.y<< " z, " << gpsPointEach.points.z << endl;
+    }*/
 /*
 //    根据scene_id显示此帧gps数据点
     GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
@@ -119,11 +127,16 @@ int main(){
 //    bool flag6= ReadHDMap::getGpsImageBatchByImageId(scene_id, 2, gpsImageBatch);
 //    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
 
-
-
-    DetectionBatch detectionBatch;
-    bool flag7= ReadHDMap::getDetectionBatchBySceneId(scene_id, detectionBatch);
-
+/************************************************************************************************************
+ *    获取中间节点
+ ************************************************************************************************************/
+   /* DetectionDividerPerCapture detectionDividerPerCapture;
+    bool flag7= ReadHDMap::getDetectionBatchBySceneId(scene_id, detectionDividerPerCapture);
+*/
+    DetectionTrafficPerCapture detectionTrafficPerCapture;
+    bool flag8 = ReadHDMap::getDetctionTrafficlights(scene_id, detectionTrafficPerCapture);
+    TrafficLightEachShow &trafficLightEachShow = detectionTrafficPerCapture.trafficPerFrame_vec[1].trafficLight_vec[0];
+    cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;
 
   /*  // 坐标转换部分
     Utils::new3s_PointXYZ original;
@@ -202,6 +215,6 @@ int main(){
 //    cv::Mat now_pose = poseCompute.updatePose(pose, header_former, header_now, add_t);
 //    cv::Mat camera_pose = mTcb * now_pose;
 
-
+    return 0;
 }
 

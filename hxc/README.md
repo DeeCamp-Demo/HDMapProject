@@ -3,7 +3,9 @@
 
 > hdmap :项目工程总目录
 >
-> 将proto目录,utils目录下三个.h头文件全部拷贝到自己的工程目录里面
+> 将proto目录,utils目录下三个.h头文件全部拷贝到自己的工程目录里面,并此目录下的删除.h和.cc文件.
+>
+> 安装protobuf,在此目录下执行 protoc --cpp-out=.  *.proto生成.h和.cc文件
 >
 > data目录下的文件夹需要严格保持一致.
 >
