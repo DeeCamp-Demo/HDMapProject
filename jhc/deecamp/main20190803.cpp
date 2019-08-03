@@ -76,6 +76,8 @@ int main() {
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
 
+    mRbw = poseCompute.convertAngleToR(header_start_former);
+    mRbw.copyTo(mTbw.rowRange(0, 3).colRange(0, 3));
     //////////////////////////////////////////////////////////
 
     string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
@@ -87,23 +89,58 @@ int main() {
     vector<ImageBatch> imgs;
     //bool flag = ReadHDMap::getImageBatchBySceneId(scene_id, imgs);
     for (int k = 0; k < points.size(); ++k) {
-        double header_angle = points[k].heading;
+        double header_now = points[k].heading;
 
+//        double delata_add_angle = header_now - header_former;
+//        mRbw = poseCompute.convertAngleToR(delata_add_angle);
+//        mRbw.copyTo(mTbw.rowRange(0, 3).colRange(0, 3));
         // 这个是返回的NEU坐标系的点的差
-        scene_point_start.set_x(points[k].points.x);
-        scene_point_start.set_y(points[k].points.y);
-        scene_point_start.set_z(points[k].points.z);
-        transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
+        double add_t[3];
 
-        std::cout<<"delta_angle: "<<header_angle<<std::endl;
-        cv::Mat tempRstart = poseCompute.convertAngleToR(header_angle);
-        tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
-        pose.row(0).col(3) = enu_coord_1.get_x();
-        pose.row(1).col(3) = enu_coord_1.get_y();
-        pose.row(2).col(3) = 0;
+        // 对于初始的pose 给出初始的航向角和GPS值
+        if(k == 0)
+        {
+            //double delta_angle = header_now - header_start_former;
+            double delta_angle = header_now;
+            std::cout<<"delta_angle: "<<delta_angle<<std::endl;
+            cv::Mat tempRstart = poseCompute.convertAngleToR(delta_angle);
+            //std::cout<<"tempRstart: "<<tempRstart<<std::endl;
+            pose = mTbw;
+            scene_point_start.set_x(points[k].points.x);
+            scene_point_start.set_y(points[k].points.y);
+            scene_point_start.set_z(points[k].points.z);
+            transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
+            std::cout<<"enu_coord_1: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
+            pose.row(0).col(3) = enu_coord_1.get_x();
+            pose.row(1).col(3) = enu_coord_1.get_y();
+            pose.row(2).col(3) = 0;
+            tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
+            //pose = initial_pose * pose;
+            header_former = header_now;
+            continue;
+        }
+
+        Utils::new3s_PointXYZ point_now;
+        point_now.set_x(points[k].points.x);
+        point_now.set_y(points[k].points.y);
+        point_now.set_z(points[k].points.z);
+
+        transform.convertCJC02ToENU(point_now, enu_coord_2, original);
+        std::cout<<"enu_coord_2: "<<enu_coord_2.get_x()<<" "<<enu_coord_2.get_y()<<" "<<enu_coord_2.get_z()<<std::endl;
+
+        add_t[0] = enu_coord_2.get_x() - enu_coord_1.get_x();
+        add_t[1] = enu_coord_2.get_y() - enu_coord_1.get_y();
+        add_t[2] = 0;
+        std::cout<<"add_t: "<<add_t[0]<<" "<<add_t[1]<<" "<<add_t[2]<<std::endl;
         std::cout<<"pose: "<<pose<<std::endl;
-        cv::Mat camera_pose = mTcb * pose;
+        cv::Mat now_pose = poseCompute.updatePose(pose, header_former, header_now, add_t);
+        std::cout<<"now pose: "<<now_pose<<std::endl;
+        cv::Mat camera_pose = mTcb * now_pose;
         //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
+
+        header_former = header_now;
+        enu_coord_1 = enu_coord_2;
+        pose = now_pose.clone();
 
     }
 
