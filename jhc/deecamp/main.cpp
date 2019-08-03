@@ -101,6 +101,7 @@ int main() {
             double delta_angle = header_now - header_start_former;
             std::cout<<"delta_angle: "<<delta_angle<<std::endl;
             cv::Mat tempRstart = poseCompute.convertAngleToR(delta_angle);
+            //std::cout<<"tempRstart: "<<tempRstart<<std::endl;
             pose  = mTbw;
             scene_point_start.set_x(points[k].points.x);
             scene_point_start.set_y(points[k].points.y);
@@ -109,7 +110,7 @@ int main() {
             std::cout<<"enu_coord_1: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
             pose.row(0).col(3) = enu_coord_1.get_x();
             pose.row(1).col(3) = enu_coord_1.get_y();
-            pose.row(2).col(3) = enu_coord_1.get_z();
+            pose.row(2).col(3) = 0;
             tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
             header_former = header_now;
             continue;
@@ -127,9 +128,11 @@ int main() {
         add_t[1] = enu_coord_2.get_y() - enu_coord_1.get_y();
         add_t[2] = 0;
         std::cout<<"add_t: "<<add_t[0]<<" "<<add_t[1]<<" "<<add_t[2]<<std::endl;
+        std::cout<<"pose: "<<pose<<std::endl;
         cv::Mat now_pose = poseCompute.updatePose(pose, header_former, header_now, add_t);
+        std::cout<<"now pose: "<<now_pose<<std::endl;
         cv::Mat camera_pose = mTcb * now_pose;
-        std::cout<<"camera_pose: "<<camera_pose<<std::endl;
+        //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
 
         header_former = header_now;
         enu_coord_1 = enu_coord_2;
