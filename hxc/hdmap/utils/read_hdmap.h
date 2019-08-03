@@ -139,7 +139,6 @@ typedef struct
     vector<DividerEach> divider_vec;
     vector<TrafficLightEach> traffic_lights_vec;
 }DetectionBatch;
-
 typedef struct {
 //    gps帧id
     string scene_id;
@@ -147,8 +146,6 @@ typedef struct {
     string image_name;
     GPSPointEach gpsPoint;
 }GpsImageBatch;
-
-
 
 typedef struct {
     string frame_id;
@@ -180,13 +177,15 @@ namespace ReadHDMap {
     const string gps_file_folder = "../data/gps";
     const string images_file_folder = "../data/images";
     const string detection_result_flie_folder = "../data/detection_result";
+    const std::string hdmap_file_name = "../data/hdmap/hdmap_deecamp.pb";
 
-//    GPSInfoEach getGPSInfoBySceneId(string scene_id);
-//    HDMAP getLandMarkingInHDMAP();
+    /**
+     * 解析高精地图所有元素,按index顺序输出
+     * @return
+     */
     HDMAP getHDMAP() {
-        std::string file_name = "../data/hdmap/hdmap_deecamp.pb";
 
-        fstream input(file_name, ios::in | ios::binary);
+        fstream input(hdmap_file_name, ios::in | ios::binary);
         hdmap::HDMap map;
         map.ParseFromIstream(&input);
 
@@ -203,10 +202,8 @@ namespace ReadHDMap {
         for (int i = 0; i < map.lanemarkings_size(); ++i) {
             hdmap::LaneMarking laneMarking = map.lanemarkings(i);
             string geometry = laneMarking.geometry();
-
             laneMarkingEach.id = laneMarking.id();
             laneMarkingEach.type = laneMarking.type();
-
 //        提取geomery字段中的坐标数据
             vector<double> geom;
             calulate::extractFiguresFromStr2Vec(laneMarking.geometry(), geom);
@@ -351,6 +348,11 @@ namespace ReadHDMap {
 
 
     }
+    /**
+     * 获取每一帧GPS信息并按时间顺序输出
+     * @param gpsInfo_vec
+     * @return
+     */
     bool getGPSInfo(vector<GPSInfoEach> &gpsInfo_vec)
     {
         vector<string> gpsFileNames; //GPS文件名
@@ -406,6 +408,11 @@ namespace ReadHDMap {
     }
 
 
+    /**
+     * 获取每一帧Gps对应的image图片集,按vector index索引顺序输出
+     * @param imageBatch_vec image文件名(不包括后缀)
+     * @return
+     */
     bool getAllImageBatch(vector<ImageBatch> &imageBatch_vec) {
 
         vector<string> gpsFileNames; //GPS文件名
@@ -458,6 +465,12 @@ namespace ReadHDMap {
 //        return dataFiles;
     }
 
+    /**
+     * 通过scene_id获取对应的vetor图片集合
+     * @param scene_id2
+     * @param imageBatch
+     * @return
+     */
     bool getImageBatchBySceneId(string scene_id2, ImageBatch &imageBatch) {
         vector<string> gpsFileNames; //GPS文件名
         vector<string> imagesFileNames;//所有image文件名
@@ -505,6 +518,11 @@ namespace ReadHDMap {
         }
     }
 
+    /**
+     * 获取每一个GPS点对应的image
+     * @param gpsImageBatch_vec
+     * @return
+     */
     bool getAllGpsImageBatch(vector<GpsImageBatch> &gpsImageBatch_vec) {
         vector<string> gpsFileNames; //GPS文件名
         vector<string> imagesFileNames;//所有image文件名
@@ -577,7 +595,11 @@ namespace ReadHDMap {
             return false;
         }
     }
-
+    /**
+       * 通过images_id获取每一个GPS点对应的image
+       * @param gpsImageBatch_vec
+       * @return
+       */
     bool getGpsImageBatchByImageId(string scene_id2, int index, GpsImageBatch &gpsImageBatch) {
         vector<string> gpsFileNames; //GPS文件名
         vector<string> imagesFileNames;//所有image文件名
@@ -620,7 +642,7 @@ namespace ReadHDMap {
     }
 
     /**
-     *
+     *  根据scene_id读取车道线检测结果
      * @param scene_id 读取的frame_id
      * @param detectionDividerPerCapture  收到的frame数据包
      * @return
@@ -703,13 +725,13 @@ namespace ReadHDMap {
 //        获取文件名
         string traffic_file_name = detection_result_flie_folder + "/trafficlight/" + scene_id + "detect_trafficlight.pb";
 //         从文件夹列表中匹配scene_id
-        std::cout << "trafficlight_size: " << traffic_file_name.size() << endl;
+//        std::cout << "trafficlight_size: " << traffic_file_name.size() << endl;
         hdmap::TrafficLightPerCapture trafficLightPerCapture_origin;
 //       解析出来的PerCapture
         fstream input_traffic(traffic_file_name, ios::in | ios::binary);
         trafficLightPerCapture_origin.ParseFromIstream(&input_traffic);
 //        遍历perCapure
-        std::cout << "traffic_frames_size: " << trafficLightPerCapture_origin.traffic_light_frames_size() << endl;
+//        std::cout << "traffic_frames_size: " << trafficLightPerCapture_origin.traffic_light_frames_size() << endl;
 
         if (flag) {
             vector<DetectionDividerPerFrame> trafficFrame_vec;
@@ -718,15 +740,11 @@ namespace ReadHDMap {
             for (int i = 0; i < trafficFileNames.size(); ++i) {
                 if (scene_id.compare(trafficFileNames[i])) {
                     index = i;
+                    cout << "获取成功" << endl;
                 }
             }
 
             if (index>0) {
-//            解析此帧
-//         读取此帧pb文件中间结果PerCapture
-//          循环中间结果取PerFrame
-//          取Trafficlights
-//          取lights
                 vector<DetectionDividerPerFrame> trafficPerFrame_vec;
                 for (int j = 0; j < trafficLightPerCapture_origin.traffic_light_frames_size(); ++j) {
                     DetectionTrafficPerFrame trafficPerFrame;
@@ -769,13 +787,14 @@ namespace ReadHDMap {
                                 light_point_vec.push_back(point2);
                             }
                             light_vec.push_back(lightEach);
-//                            cout << "------ light:------------" << geomery2 << endl;
                         }
                         trafficPerFrame.trafficLight_vec.push_back(trafficLightEach);
-                        std::cout << "trafficLight_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
+                        std::cout << "light_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
                     }
                     detectionTrafficPerCapture.trafficPerFrame_vec.push_back(trafficPerFrame);
+                    std::cout << "trafficLight_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
                 }
+                cout << "trafficPerFrame_vec_size: " << trafficFrame_vec.size() << endl;
                 return true;
             } else{
                 cout << "未找到此帧数据" << endl;
@@ -783,10 +802,6 @@ namespace ReadHDMap {
             }
         }
     }
-
-    void showGpsPathBySceneId(const string scene_id){
-
-    };
 }
 
 
