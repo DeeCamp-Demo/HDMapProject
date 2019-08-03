@@ -14,7 +14,7 @@ cv::Mat pose = cv::Mat::eye(4, 4, CV_64F);
 //string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
 int main(){
-
+//----------------------------------------------------------------------------------------------------------------------
     // 确定东北天坐标系原点和header的入口
     Utils::new3s_PointXYZ original;
 //    vector<GPSInfoEach> gpsInfo_vec;
@@ -107,6 +107,21 @@ int main(){
         cv::Mat camera_pose = mTcb * pose;
         //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
     }
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return 0;
 }
 
