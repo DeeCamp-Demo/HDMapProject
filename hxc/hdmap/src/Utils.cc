@@ -201,6 +201,7 @@ void Utils::convertCJC02ToENU(const Utils::new3s_PointXYZ CJC02_coord, Utils::ne
     transform.convertXYZToENU(Original_WGS, Original_XYZ, Origianl_ENU);
     transform.convertXYZToENU(Original_WGS, XYZ_coord, ENU_coord);
     ENU_coord = ENU_coord - Origianl_ENU;
+    ENU_coord.set_z(0);
 }
 
 
@@ -214,6 +215,7 @@ void Utils::readImgAndDoRectify(const cv::Mat Original, cv::Mat& TargetImg, cv::
 cv::Mat Utils::convertAngleToR(double delta)
 {
     cv::Mat R;
+    delta = Utils::deg2rad(delta);
     R = (cv::Mat_<float>(3, 3) <<
             cos(delta), sin(delta), 0.0,
             -sin(delta), cos(delta), 0.0,
@@ -232,6 +234,7 @@ cv::Mat Utils::updatePose(cv::Mat pose, double header_former, double header_now,
     Tb1b2.row(0).col(3) = t[0];
     Tb1b2.row(1).col(3) = t[1];
     Tb1b2.row(2).col(3) = t[2];
+    std::cout<<"delta_R: "<<Tb1b2<<std::endl;
     return Tb1b2*pose;
 }
 

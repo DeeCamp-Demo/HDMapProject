@@ -119,7 +119,6 @@ namespace calulate {
 
     bool getAllFiles(string path, vector<string> &fileNames)
     {
-//        cout << "getFile:" << path<<endl;
         if (path.empty()||path.length()==0||path=="")
         {
             cout << "Error filePath!" << endl;

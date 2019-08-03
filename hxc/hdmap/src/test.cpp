@@ -3,38 +3,42 @@
 //
 #include "test.h"
 #include "utils/Utils.h"
-#include<pcl/visualization/pcl_visualizer.h>
-#include<pcl/point_types.h>
 using namespace std;
-typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
 cv::Mat K;
 cv::Mat distCoeffs;
 cv::Mat Rcb;
 cv::Mat mTcb = cv::Mat::eye(4, 4, CV_64F);
-string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
+double header_former;
+cv::Mat pose = cv::Mat::eye(4, 4, CV_64F);
+//string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
 int main(){
 
-  /*  // 坐标转换部分
+    // 确定东北天坐标系原点和header的入口
     Utils::new3s_PointXYZ original;
-    Utils::new3s_PointXYZ object1, object2, object3, object4;
+//    vector<GPSInfoEach> gpsInfo_vec;
+//    bool flag = ReadHDMap::getGPSInfo(gpsInfo_vec);
+//    if (flag)
+//    {
+//        GPSPointEach gpsPointEach = gpsInfo_vec[0].gpsPoints[0];
+//        gpsPointEach.heading;
+//        original.set_x(gpsPointEach.points.x);
+//        original.set_y(gpsPointEach.points.y);
+//        original.set_z(0);
+//        header_former = gpsPointEach.heading;
+//    }
 
-    original.set_x(22.68253240);
-    original.set_y(114.37142933);
+    double header_start_former = 77.0464;
+    original.set_x(22.68085991);
+    original.set_y(114.36478212);
     original.set_z(0);
-    // lon是经度 lat是纬度
-    object1.set_x(22.68253905);
-    object1.set_y(114.37144419);
-    object1.set_z(0);
 
-    Utils::new3s_PointXYZ enu_coord_1;
+
+    Utils::new3s_PointXYZ enu_coord_1, enu_coord_2;
     Utils transform;
-    transform.convertCJC02ToENU(object1, enu_coord_1, original);
 
-    //    位姿解算
-    std::cout<<std::setprecision(11)<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
-
+    // 相机参数加载和相关参数初始化
     const std::string strCameraPath = "../config/param.yml";
     cv::FileStorage fSettings(strCameraPath, cv::FileStorage::READ);
     float fx = fSettings["Camera.fx"];
@@ -59,6 +63,11 @@ int main(){
     distCoeffs = (cv::Mat_<float>(4, 1) << k1, k2, p1, p2);
 
     // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
+
+    cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mRbw;
+    Utils poseCompute;
+
     Eigen::Vector3d ea0(yaw,pitch,roll);
     Eigen::Matrix3d Rcb;
     cv::Mat mRcb;
@@ -68,30 +77,39 @@ int main(){
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
 
-    std::cout<<"mTcb: "<<mTcb<<std::endl;*/
+    //////////////////////////////////////////////////////////
 
-//    string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
+    string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
-    //    获取gps点与对应一张图片
-/*    vector<GpsImageBatch> gpsImageBatch_vec = ReadHDMap::getAllGpsImageBatch();
-    GpsImageBatch gpsImageBatch = ReadHDMap::getGpsImageBatchByImageId(scene_id, 2);
-    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
-    cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
-    cv::Mat mRbw;
-    Utils poseCompute;*/
-//    // 这里读取到第一个帧的车的偏角
-//    double header_former;
-//    mRbw = poseCompute.convertAngleToR(header_former);
-//    mRbw.copyTo(mTbw.rowRange(0, 3).colRange(0, 3));
-//    // 这里假定我得到了第二个帧的车的偏角
-//    double header_now;
-//    // 这个是返回的NEU坐标系的点的差
-//    double add_t[3];
-//    // 对于初始的pose
-//    cv::Mat pose = mTbw;
+    //    根据scene_id显示此帧gps数据点
+    Utils::new3s_PointXYZ  scene_point_start;
+    GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
+    vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
+    vector<ImageBatch> imgs;
+    //bool flag = ReadHDMap::getImageBatchBySceneId(scene_id, imgs);
+    for (int k = 0; k < points.size(); ++k) {
+        double header_angle = points[k].heading;
 
-//    cv::Mat now_pose = poseCompute.updatePose(pose, header_former, header_now, add_t);
-//    cv::Mat camera_pose = mTcb * now_pose;
+        // 这个是返回的NEU坐标系的点的差
+        scene_point_start.set_x(points[k].points.x);
+        scene_point_start.set_y(points[k].points.y);
+        scene_point_start.set_z(points[k].points.z);
+        transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
+        std::cout<<"enu_coord1: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
+
+        std::cout<<"delta_angle: "<<header_angle<<std::endl;
+        cv::Mat tempRstart = poseCompute.convertAngleToR(header_angle);
+        tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
+        pose.row(0).col(3) = enu_coord_1.get_x();
+        pose.row(1).col(3) = enu_coord_1.get_y();
+        pose.row(2).col(3) = 0;
+        std::cout<<"pose: "<<pose<<std::endl;
+        cv::Mat camera_pose = mTcb * pose;
+        //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
+    }
+    return 0;
+}
+
 /************************************************************************************************************
  *    根据scene_id获取GPS数据
  ************************************************************************************************************/
@@ -181,6 +199,5 @@ int main(){
     TrafficLightEachShow &trafficLightEachShow = detectionTrafficPerCapture.trafficPerFrame_vec[0].trafficLight_vec[0];
     cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;*/
 
-    return 0;
-}
+
 
