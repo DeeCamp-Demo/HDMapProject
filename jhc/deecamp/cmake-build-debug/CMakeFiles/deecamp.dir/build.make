@@ -60,39 +60,114 @@ include CMakeFiles/deecamp.dir/flags.make
 CMakeFiles/deecamp.dir/main.cpp.o: CMakeFiles/deecamp.dir/flags.make
 CMakeFiles/deecamp.dir/main.cpp.o: ../main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/deecamp.dir/main.cpp.o"
-	g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/main.cpp.o -c /home/jianghc/testproject/deecamp/main.cpp
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/main.cpp.o -c /home/jianghc/testproject/deecamp/main.cpp
 
 CMakeFiles/deecamp.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/main.cpp.i"
-	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/main.cpp > CMakeFiles/deecamp.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/main.cpp > CMakeFiles/deecamp.dir/main.cpp.i
 
 CMakeFiles/deecamp.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/main.cpp.s"
-	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/main.cpp -o CMakeFiles/deecamp.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/main.cpp -o CMakeFiles/deecamp.dir/main.cpp.s
 
-CMakeFiles/deecamp.dir/Utils.cc.o: CMakeFiles/deecamp.dir/flags.make
-CMakeFiles/deecamp.dir/Utils.cc.o: ../Utils.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/deecamp.dir/Utils.cc.o"
-	g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/Utils.cc.o -c /home/jianghc/testproject/deecamp/Utils.cc
+CMakeFiles/deecamp.dir/utils/Utils.cc.o: CMakeFiles/deecamp.dir/flags.make
+CMakeFiles/deecamp.dir/utils/Utils.cc.o: ../utils/Utils.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/deecamp.dir/utils/Utils.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/utils/Utils.cc.o -c /home/jianghc/testproject/deecamp/utils/Utils.cc
 
-CMakeFiles/deecamp.dir/Utils.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/Utils.cc.i"
-	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/Utils.cc > CMakeFiles/deecamp.dir/Utils.cc.i
+CMakeFiles/deecamp.dir/utils/Utils.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/utils/Utils.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/utils/Utils.cc > CMakeFiles/deecamp.dir/utils/Utils.cc.i
 
-CMakeFiles/deecamp.dir/Utils.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/Utils.cc.s"
-	g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/Utils.cc -o CMakeFiles/deecamp.dir/Utils.cc.s
+CMakeFiles/deecamp.dir/utils/Utils.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/utils/Utils.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/utils/Utils.cc -o CMakeFiles/deecamp.dir/utils/Utils.cc.s
+
+CMakeFiles/deecamp.dir/proto/Divider.pb.cc.o: CMakeFiles/deecamp.dir/flags.make
+CMakeFiles/deecamp.dir/proto/Divider.pb.cc.o: ../proto/Divider.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/deecamp.dir/proto/Divider.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/proto/Divider.pb.cc.o -c /home/jianghc/testproject/deecamp/proto/Divider.pb.cc
+
+CMakeFiles/deecamp.dir/proto/Divider.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/proto/Divider.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/proto/Divider.pb.cc > CMakeFiles/deecamp.dir/proto/Divider.pb.cc.i
+
+CMakeFiles/deecamp.dir/proto/Divider.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/proto/Divider.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/proto/Divider.pb.cc -o CMakeFiles/deecamp.dir/proto/Divider.pb.cc.s
+
+CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.o: CMakeFiles/deecamp.dir/flags.make
+CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.o: ../proto/HDMap.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.o -c /home/jianghc/testproject/deecamp/proto/HDMap.pb.cc
+
+CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/proto/HDMap.pb.cc > CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.i
+
+CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/proto/HDMap.pb.cc -o CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.s
+
+CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.o: CMakeFiles/deecamp.dir/flags.make
+CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.o: ../proto/LaneMarking.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.o -c /home/jianghc/testproject/deecamp/proto/LaneMarking.pb.cc
+
+CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/proto/LaneMarking.pb.cc > CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.i
+
+CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/proto/LaneMarking.pb.cc -o CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.s
+
+CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.o: CMakeFiles/deecamp.dir/flags.make
+CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.o: ../proto/SourceInfo.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.o -c /home/jianghc/testproject/deecamp/proto/SourceInfo.pb.cc
+
+CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/proto/SourceInfo.pb.cc > CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.i
+
+CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/proto/SourceInfo.pb.cc -o CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.s
+
+CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.o: CMakeFiles/deecamp.dir/flags.make
+CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.o: ../proto/TrafficLight.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.o -c /home/jianghc/testproject/deecamp/proto/TrafficLight.pb.cc
+
+CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jianghc/testproject/deecamp/proto/TrafficLight.pb.cc > CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.i
+
+CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jianghc/testproject/deecamp/proto/TrafficLight.pb.cc -o CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.s
 
 # Object files for target deecamp
 deecamp_OBJECTS = \
 "CMakeFiles/deecamp.dir/main.cpp.o" \
-"CMakeFiles/deecamp.dir/Utils.cc.o"
+"CMakeFiles/deecamp.dir/utils/Utils.cc.o" \
+"CMakeFiles/deecamp.dir/proto/Divider.pb.cc.o" \
+"CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.o" \
+"CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.o" \
+"CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.o" \
+"CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.o"
 
 # External object files for target deecamp
 deecamp_EXTERNAL_OBJECTS =
 
 deecamp: CMakeFiles/deecamp.dir/main.cpp.o
-deecamp: CMakeFiles/deecamp.dir/Utils.cc.o
+deecamp: CMakeFiles/deecamp.dir/utils/Utils.cc.o
+deecamp: CMakeFiles/deecamp.dir/proto/Divider.pb.cc.o
+deecamp: CMakeFiles/deecamp.dir/proto/HDMap.pb.cc.o
+deecamp: CMakeFiles/deecamp.dir/proto/LaneMarking.pb.cc.o
+deecamp: CMakeFiles/deecamp.dir/proto/SourceInfo.pb.cc.o
+deecamp: CMakeFiles/deecamp.dir/proto/TrafficLight.pb.cc.o
 deecamp: CMakeFiles/deecamp.dir/build.make
 deecamp: /usr/local/lib/libopencv_stitching.so.3.4.3
 deecamp: /usr/local/lib/libopencv_superres.so.3.4.3
@@ -120,6 +195,7 @@ deecamp: /usr/local/lib/libopencv_ccalib.so.3.4.3
 deecamp: /usr/local/lib/libopencv_img_hash.so.3.4.3
 deecamp: /usr/local/lib/libopencv_aruco.so.3.4.3
 deecamp: /usr/local/lib/libopencv_dpm.so.3.4.3
+deecamp: /usr/local/protobuf/lib/libprotobuf.so
 deecamp: /usr/local/lib/libopencv_shape.so.3.4.3
 deecamp: /usr/local/lib/libopencv_datasets.so.3.4.3
 deecamp: /usr/local/lib/libopencv_plot.so.3.4.3
@@ -141,7 +217,7 @@ deecamp: /usr/local/lib/libopencv_imgcodecs.so.3.4.3
 deecamp: /usr/local/lib/libopencv_imgproc.so.3.4.3
 deecamp: /usr/local/lib/libopencv_core.so.3.4.3
 deecamp: CMakeFiles/deecamp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable deecamp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jianghc/testproject/deecamp/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable deecamp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/deecamp.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

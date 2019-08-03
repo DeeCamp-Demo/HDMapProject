@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include <math.h>
 #include <iomanip>
+#include "utils/read_hdmap.h"
 
 cv::Mat K;
 cv::Mat distCoeffs;
@@ -11,19 +12,22 @@ cv::Mat mTcb = cv::Mat::eye(4, 4, CV_64F);
 int main() {
     // 坐标转换部分
     Utils::new3s_PointXYZ original;
-    Utils::new3s_PointXYZ object1;
+    Utils::new3s_PointXYZ object1, object2, object3, object4;
 
-    original.set_x(22.68085797);
-    original.set_y(114.36477538);
+    original.set_x(22.68253240);
+    original.set_y(114.37142933);
     original.set_z(0);
     // lon是经度 lat是纬度
-    object1.set_x(22.68085991);
-    object1.set_y(114.36478212);
-    object1.set_z(1.32000000);
+    object1.set_x(22.68253905);
+    object1.set_y(114.37144419);
+    object1.set_z(0);
+
 
     Utils::new3s_PointXYZ enu_coord_1;
     Utils transform;
     transform.convertCJC02ToENU(object1, enu_coord_1, original);
+
+
     std::cout<<std::setprecision(11)<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
 
     const std::string strCameraPath = "../Config/param.yml";
@@ -60,6 +64,17 @@ int main() {
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
 
+    std::cout<<"mTcb: "<<mTcb<<std::endl;
+
+    string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
+
+    //    获取gps点与对应一张图片
+   /* vector<GpsImageBatch> gpsImageBatch_vec = ReadHDMap::getAllGpsImageBatch();
+    GpsImageBatch gpsImageBatch = ReadHDMap::getGpsImageBatchByImageId(scene_id, 2);
+    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;*/
+    GpsImageBatch gpsImageBatch=ReadHDMap::getGpsImageBatchByImageId(scene_id);
+
+
     cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
     cv::Mat mRbw;
     Utils poseCompute;
@@ -67,13 +82,14 @@ int main() {
     double header_former;
     mRbw = poseCompute.convertAngleToR(header_former);
     mRbw.copyTo(mTbw.rowRange(0, 3).colRange(0, 3));
-    // 这里假定我得到了第二个帧的车的偏角
-    double header_now;
-    // 这个是返回的NEU坐标系的点的差
-    double add_t[3];
-    // 对于初始的pose
-    cv::Mat pose = mTbw;
-    cv::Mat now_pose = poseCompute.updatePose(pose, header_former, header_now, add_t);
-    cv::Mat camera_pose = mTcb * now_pose;
+//    // 这里假定我得到了第二个帧的车的偏角
+//    double header_now;
+//    // 这个是返回的NEU坐标系的点的差
+//    double add_t[3];
+//    // 对于初始的pose
+//    cv::Mat pose = mTbw;
+
+//    cv::Mat now_pose = poseCompute.updatePose(pose, header_former, header_now, add_t);
+//    cv::Mat camera_pose = mTcb * now_pose;
     return 0;
 }

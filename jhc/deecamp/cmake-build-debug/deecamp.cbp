@@ -34,6 +34,8 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/home/jianghc/testproject/deecamp/cmake-build-debug"/>
+					<Add directory="/usr/local/protobuf/include"/>
 					<Add directory="/usr/local/include/eigen3"/>
 					<Add directory="/usr/local/include/opencv"/>
 					<Add directory="/usr/include/c++/5"/>
@@ -59,6 +61,8 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/home/jianghc/testproject/deecamp/cmake-build-debug"/>
+					<Add directory="/usr/local/protobuf/include"/>
 					<Add directory="/usr/local/include/eigen3"/>
 					<Add directory="/usr/local/include/opencv"/>
 					<Add directory="/usr/include/c++/5"/>
@@ -88,13 +92,52 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/jianghc/testproject/deecamp/Utils.cc">
-			<Option target="deecamp"/>
-		</Unit>
-		<Unit filename="/home/jianghc/testproject/deecamp/Utils.h">
-			<Option target="deecamp"/>
-		</Unit>
 		<Unit filename="/home/jianghc/testproject/deecamp/main.cpp">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/Divider.pb.cc">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/Divider.proto">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/HDMap.pb.cc">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/HDMap.proto">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/LaneMarking.pb.cc">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/LaneMarking.proto">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/SourceInfo.pb.cc">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/SourceInfo.proto">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/TrafficLight.pb.cc">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/proto/TrafficLight.proto">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/utils/Utils.cc">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/utils/Utils.h">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/utils/calulate.h">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/utils/proto.h">
+			<Option target="deecamp"/>
+		</Unit>
+		<Unit filename="/home/jianghc/testproject/deecamp/utils/read_hdmap.h">
 			<Option target="deecamp"/>
 		</Unit>
 		<Unit filename="/home/jianghc/testproject/deecamp/CMakeLists.txt">
