@@ -8,7 +8,7 @@
 JokerJohn : 胡想成
 ustc-keyanjie ：柯延杰
 yohoochen : 王友辰
-smartfish.liu@gmail.com ：刘欢鲤
+smartfish.liu@gmail.com ：刘欢锂
 jhch1995 : 姜昊辰
 joy427 ：陈卓
 LiuFG : 刘丰刚
