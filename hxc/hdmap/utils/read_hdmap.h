@@ -125,6 +125,12 @@ typedef struct {
     GPSPointEach gpsPoint;
 }GpsImageBatch;
 
+typedef struct {
+    string scene_id;
+//    vector<>
+
+}DetectionTrafficLight;
+
 namespace ReadHDMap{
     const string  gps_file_folder = "../data/gps";
     const string  images_file_folder = "../data/images";
@@ -542,7 +548,6 @@ namespace ReadHDMap{
         //    1.读gps, 2读image
         bool flag = calulate::getAllFiles(detection_result_flie_folder+"/trafficlight", trafficFileNames);
         bool flag2 = calulate::getAllFiles(detection_result_flie_folder+"/divider", dividerFileNames);
-
 //        获取文件名
         string traffic_file_name = detection_result_flie_folder+"/trafficlight/"+scene_id+"detect_trafficlight.pb";
         string divider_file_name = detection_result_flie_folder+"/divider/"+scene_id+ "divider.pb";
@@ -621,6 +626,12 @@ namespace ReadHDMap{
             cout << "fail to get divider and trafficlight" << endl;
             return false;
         }
+    }
+
+    bool getDetctionTrafficlights(string scene_id, DetectionBatch)
+
+    void showGpsPathBySceneId(const string scene_id){
+
     }
 }
 

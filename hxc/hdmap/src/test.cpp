@@ -3,6 +3,13 @@
 //
 #include "test.h"
 #include "utils/Utils.h"
+#include<pcl/visualization/pcl_visualizer.h>
+#include<pcl/point_types.h>
+#include<boost/thread/thread.hpp>
+#include <pcl/visualization/cloud_viewer.h>
+using namespace std;
+typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
+
 cv::Mat K;
 cv::Mat distCoeffs;
 cv::Mat Rcb;
@@ -13,33 +20,76 @@ int main(){
     string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
 /*
-//*
-///    根据scene_id获取GPS数据
+//    根据scene_id显示此帧gps数据点
     GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
     vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
     for (int k = 0; k < points.size(); ++k) {
-//        cout << " points:" << points[k].points.x<<"," << points[k].points.y << "," << points[k].points.z << endl;
-//        cout << " heading:" << points[k].heading << endl;
+        cout << " points:" << points[k].points.x<<"," << points[k].points.y << "," << points[k].points.z << endl;
+        cout << " heading:" << points[k].heading << endl;
+
     }
 
-//    读取hdMap
-    HDMAP readMap = ReadHDMap::getHDMAP();
+    PointCloud::Ptr cloud(new PointCloud);
+//    pcl::visualization::CloudViewer * viewer("gpsPath_viewer");
+    pcl::visualization::PCLVisualizer viewer1("PCL Viewer");          // viewer initialization
+
+    while (!viewer1.wasStopped ())
+
+    {
+//        cloud=getpoint();//实时获取点云
+        viewer1.removeAllShapes();
+//        pcl::getMinMax3D(*cloud, minPt, maxPt);
+
+        pcl::PointXYZ origin(0, 0, 0);
+        pcl::PointXYZ last(1,2,3);
+        boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer (new pcl::visualization::PCLVisualizer ("line Viewer"));
+
+//        viewer->setBackgroundColor(r,g,b); //背景色
+
+        viewer->addLine<pcl::PointXYZ>(origin, last, 255, 0, 0); //红色线段,线的名字叫做"line1
+
+        viewer->spinOnce(100);
+    }
+*/
+
+
+
+/************************************************************************************************************
+ *    根据scene_id获取GPS数据
+ ************************************************************************************************************/
+/*    GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
+    vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
+    for (int k = 0; k < points.size(); ++k) {
+        cout << " points:" << points[k].points.x<<"," << points[k].points.y << "," << points[k].points.z << endl;
+        cout << " heading:" << points[k].heading << endl;
+    }*/
+
+
+/************************************************************************************************************
+*    读取整张hdmap高精地图元素
+************************************************************************************************************/
+    /*HDMAP readMap = ReadHDMap::getHDMAP();
     vector<DividerEach> dividerEach = readMap.dividers;
     for (int j = 0; j < dividerEach.size(); ++j) {
-//        std::cout << "test hd map:" << readMap.dividers[19].divider_vec[5].x << endl;
-    }
+        std::cout << "test hd map:" << readMap.dividers[19].divider_vec[5].x << endl;
+    }*/
 
-//    根据scene_id获取相应图片名称集合,按顺序存储
-    vector<ImageBatch> imageBatch_vec;
+/************************************************************************************************************
+ *    获取每一帧GPS及其对应的图片名称集合,按顺序存储
+ ************************************************************************************************************/
+/*    vector<ImageBatch> imageBatch_vec;
     bool flag3 = ReadHDMap::getAllImageBatch(imageBatch_vec);
 //    cout << "dfgfb:"<< dataFiles.size()<<" dfgfd:"<< dataFiles[100].images_vec.size()<< endl;
 
     if(flag3)
     {
         cout << "image batch ok" << endl;
-    }
-// 根据指定id查询一帧gps数据点
-    const string  gps_file_folder = "../data/gps";
+    }*/
+
+/************************************************************************************************************
+ *    // 根据指定scene_id查询此帧gps数据点,按顺序输出
+ ************************************************************************************************************/
+/*    const string  gps_file_folder = "../data/gps";
     vector<string> gps_vec;
     bool flag = calulate::getAllFiles(gps_file_folder,gps_vec);
 //  需要自行判断fileName是否存在 flag 0正确查询  -1 错误查询
@@ -50,11 +100,8 @@ int main(){
 //            cout << "gps files:" << gps_files[i]<<endl;
         }
     }
-
     int num = gps_vec[10].find_last_of(".");
     string id = gps_vec[10].substr(0, num-14);
-
-    //    imageBatch要判空
     ImageBatch imageBatch;
     bool flag4 = ReadHDMap::getImageBatchBySceneId(id, imageBatch);
     if (flag4)
@@ -62,19 +109,23 @@ int main(){
         for (int i = 0; i < imageBatch.images_vec.size(); ++i) {
 //        cout << "image batch " << imageBatch.images_vec[i] << endl;
         }
-    }
-
-//    获取gps点与对应一张图片
-    vector<GpsImageBatch> gpsImageBatch_vec;
-     bool flag5= ReadHDMap::getAllGpsImageBatch(gpsImageBatch_vec);
-    GpsImageBatch gpsImageBatch;
-    bool flag6= ReadHDMap::getGpsImageBatchByImageId(scene_id, 2, gpsImageBatch);
-
+    }*/
+/************************************************************************************************************
+ *    获取每一个gps点+对应一张图片
+ ************************************************************************************************************/
+//    vector<GpsImageBatch> gpsImageBatch_vec;
+//    bool flag5= ReadHDMap::getAllGpsImageBatch(gpsImageBatch_vec);
+//    GpsImageBatch gpsImageBatch;
+//    bool flag6= ReadHDMap::getGpsImageBatchByImageId(scene_id, 2, gpsImageBatch);
 //    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
-//    DetectionBatch detectionBatch;
-//    bool flag7= ReadHDMap::getDetectionBatchBySceneId(scene_id, detectionBatch);
-*/
-    // 坐标转换部分
+
+
+
+    DetectionBatch detectionBatch;
+    bool flag7= ReadHDMap::getDetectionBatchBySceneId(scene_id, detectionBatch);
+
+
+  /*  // 坐标转换部分
     Utils::new3s_PointXYZ original;
     Utils::new3s_PointXYZ object1, object2, object3, object4;
 
@@ -90,7 +141,7 @@ int main(){
     Utils transform;
     transform.convertCJC02ToENU(object1, enu_coord_1, original);
 
-
+    //    位姿解算
     std::cout<<std::setprecision(11)<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
 
     const std::string strCameraPath = "../config/param.yml";
@@ -117,7 +168,6 @@ int main(){
     distCoeffs = (cv::Mat_<float>(4, 1) << k1, k2, p1, p2);
 
     // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
-
     Eigen::Vector3d ea0(yaw,pitch,roll);
     Eigen::Matrix3d Rcb;
     cv::Mat mRcb;
@@ -127,17 +177,17 @@ int main(){
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
 
-    std::cout<<"mTcb: "<<mTcb<<std::endl;
+    std::cout<<"mTcb: "<<mTcb<<std::endl;*/
 
 //    string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
     //    获取gps点与对应一张图片
-//    vector<GpsImageBatch> gpsImageBatch_vec = ReadHDMap::getAllGpsImageBatch();
-//    GpsImageBatch gpsImageBatch = ReadHDMap::getGpsImageBatchByImageId(scene_id, 2);
-//    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
-//    cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
-//    cv::Mat mRbw;
-//    Utils poseCompute;
+/*    vector<GpsImageBatch> gpsImageBatch_vec = ReadHDMap::getAllGpsImageBatch();
+    GpsImageBatch gpsImageBatch = ReadHDMap::getGpsImageBatchByImageId(scene_id, 2);
+    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
+    cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mRbw;
+    Utils poseCompute;*/
 //    // 这里读取到第一个帧的车的偏角
 //    double header_former;
 //    mRbw = poseCompute.convertAngleToR(header_former);
