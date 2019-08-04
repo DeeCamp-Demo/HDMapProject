@@ -34,7 +34,6 @@ int main(){
     original.set_y(114.36478212);
     original.set_z(0);
 
-
     Utils::new3s_PointXYZ enu_coord_1, enu_coord_2;
     Utils transform;
 
@@ -63,7 +62,6 @@ int main(){
     distCoeffs = (cv::Mat_<float>(4, 1) << k1, k2, p1, p2);
 
     // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
-
     cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
     cv::Mat mRbw;
     Utils poseCompute;
@@ -78,7 +76,6 @@ int main(){
     mTcb.row(2).col(3) = 1.32;
 
     //////////////////////////////////////////////////////////
-
     string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
     //    根据scene_id显示此帧gps数据点
@@ -95,35 +92,29 @@ int main(){
         scene_point_start.set_y(points[k].points.y);
         scene_point_start.set_z(points[k].points.z);
         transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
-        std::cout<<"enu_coord1: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
+        std::cout << "enu_coord1: " << enu_coord_1.get_x() << " " << enu_coord_1.get_y() << " " << enu_coord_1.get_z()
+                  << std::endl;
 
-        std::cout<<"delta_angle: "<<header_angle<<std::endl;
+        std::cout << "delta_angle: " << header_angle << std::endl;
         cv::Mat tempRstart = poseCompute.convertAngleToR(header_angle);
         tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
         pose.row(0).col(3) = enu_coord_1.get_x();
         pose.row(1).col(3) = enu_coord_1.get_y();
         pose.row(2).col(3) = 0;
-        std::cout<<"pose: "<<pose<<std::endl;
+        std::cout << "pose: " << pose << std::endl;
         cv::Mat camera_pose = mTcb * pose;
         //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
+//    }
     }
 //--------------------------------------------------------------------------------------------------------------------
+//坐标转换
+/*    PointT point;
+    point.x =  22.68214216 ;
+    point.y = 114.37055086;
+    point.z =   6.00000000;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return 0;
-}
+    PointT pointT = ReadHDMap::transform2ENU(point);
+    cout << pointT.x << "," << pointT.y << "," << pointT.z;*/
 
 /************************************************************************************************************
  *    根据scene_id获取GPS数据
@@ -148,10 +139,16 @@ int main(){
 /************************************************************************************************************
 *    读取整张hdmap高精地图元素
 ************************************************************************************************************/
-    /*HDMAP readMap = ReadHDMap::getHDMAP();
+/*    HDMAP readMap = ReadHDMap::getHDMAP();
     vector<DividerEach> dividerEach = readMap.dividers;
     for (int j = 0; j < dividerEach.size(); ++j) {
-        std::cout << "test hd map:" << readMap.dividers[19].divider_vec[5].x << endl;
+        vector <PointT> divider_vec = dividerEach[j].divider_vec;
+        std::cout << " " << dividerEach[j].id << " " << dividerEach[j].type << " "<< dividerEach[j].color << ", ";
+        for (int i = 0; i < divider_vec.size() ; ++i) {
+            std::cout << "  "
+            << divider_vec[i].x << " " << divider_vec[i].y << " "<< divider_vec[i].z << " , ";
+        }
+        cout << endl;
     }*/
 
 /************************************************************************************************************
@@ -215,4 +212,5 @@ int main(){
     cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;*/
 
 
-
+    return 0;
+}

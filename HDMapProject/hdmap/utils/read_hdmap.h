@@ -11,6 +11,7 @@
 #include "proto/TrafficLight.pb.h"
 #include "tiff.h"
 #include <vector>
+#include "utils/Utils.h"
 
 //点位置
 typedef struct{
@@ -179,6 +180,29 @@ namespace ReadHDMap {
     const string detection_result_flie_folder = "../data/detection_result";
     const std::string hdmap_file_name = "../data/hdmap/hdmap_deecamp.pb";
 
+
+    PointT transform2ENU(PointT point)
+    {
+        Utils::new3s_PointXYZ original;
+        original.set_x(22.68085991);
+        original.set_y(114.36478212);
+        original.set_z(0);
+
+        Utils::new3s_PointXYZ enu_coord_1;
+        Utils transform;
+
+        Utils::new3s_PointXYZ xyz;
+        xyz.set_x(point.x);
+        xyz.set_y(point.y);
+        xyz.set_z(point.z);
+        transform.convertCJC02ToENU(xyz, enu_coord_1,original);
+        PointT point2;
+
+        point2.x =  enu_coord_1.get_x();
+        point2.y =  enu_coord_1.get_y();
+        point2.z =  enu_coord_1.get_z();
+        return point2;
+    }
     /**
      * 解析高精地图所有元素,按index顺序输出
      * @return
@@ -197,7 +221,7 @@ namespace ReadHDMap {
         TrafficLightEach trafficLightEach;//高精地图中的所有交通灯
         DividerEach dividerEach;//高精地图中的所有车道线
 
-        cout << "lanemarkings_size size:" << map.lanemarkings_size() << endl;
+//        cout << "lanemarkings_size size:" << map.lanemarkings_size() << endl;
         //    读取所有的地面标识
         for (int i = 0; i < map.lanemarkings_size(); ++i) {
             hdmap::LaneMarking laneMarking = map.lanemarkings(i);
@@ -212,11 +236,17 @@ namespace ReadHDMap {
             if (geom.size() == 15) {
 //            cout << geom[0] << " " << geom[1] << " " << geom[2] << endl;
                 for (int j = 0; j < 5; ++j) {
-                    laneMarkingEach.points[j].x = geom[3 * j];
-                    laneMarkingEach.points[j].y = geom[3 * j + 1];
-                    laneMarkingEach.points[j].z = geom[3 * j + 2];
-//                cout << std::setprecision(14)<<  laneMarkingEach.points[j].x << " " << laneMarkingEach.points[j].y
-//                     << " " << laneMarkingEach.points[j].z << endl;
+                    PointT point;
+                    point.x = geom[3 * j];
+                    point.y = geom[3 * j + 1];
+                    point.z = geom[3 * j + 2];
+
+                    PointT pointT = transform2ENU(point);
+                    laneMarkingEach.points[j].x = pointT.x;
+                    laneMarkingEach.points[j].y = pointT.y;
+                    laneMarkingEach.points[j].z = pointT.z;
+/*                cout << std::setprecision(14)<< ""<< laneMarkingEach.points[j].x << " " << laneMarkingEach.points[j].y
+                     << " " << laneMarkingEach.points[j].z << endl;*/
                 }
                 readMap.lanemarkings.push_back(laneMarkingEach);
             } else {
@@ -237,12 +267,18 @@ namespace ReadHDMap {
 
             if (geom.size() == 3) {
 //                trafficLightEach.point_vec
-                trafficLightEach.point.x = geom[0];
-                trafficLightEach.point.y = geom[1];
-                trafficLightEach.point.z = geom[2];
+                PointT point1,pointT1;
+                point1.x = geom[0];
+                point1.y = geom[1];
+                point1.z = geom[2];
 
-//            cout << std::setprecision(14)<<  trafficLightEach.point.x << " " << trafficLightEach.point.y
-//                 << " " << trafficLightEach.point.z << endl;
+                pointT1 = transform2ENU(point1);
+                trafficLightEach.point.x = pointT1.x;
+                trafficLightEach.point.y = pointT1.y;
+                trafficLightEach.point.z = pointT1.z;
+
+            cout << std::setprecision(14) << ""<<  trafficLightEach.point.x << " " << trafficLightEach.point.y
+                 << " " << trafficLightEach.point.z << endl;
 //            Light 里面的数据继续查询
 
                 LightEach lightEach; //第二次进来，lightEach归0
@@ -259,9 +295,15 @@ namespace ReadHDMap {
                         point.y = geom2[1];
                         point.z = geom2[2];
 
-                        lightEach.points.x = geom2[0];
+                        PointT pointT = transform2ENU(point);
+                        cout << " " << pointT.x << "," << pointT.y << ", " << pointT.z << endl;
+
+                       /* lightEach.points.x = geom2[0];
                         lightEach.points.y = geom2[1];
-                        lightEach.points.z = geom2[2];
+                        lightEach.points.z = geom2[2];*/
+                         lightEach.points.x = pointT.x;
+                         lightEach.points.y = pointT.y;
+                         lightEach.points.z = pointT.z;
                         lights_vector.push_back(lightEach);
                     }
                     trafficLightEach.lights = lights_vector;
@@ -273,6 +315,7 @@ namespace ReadHDMap {
             readMap.tafficlights.push_back(trafficLightEach);
         }
 
+//        ------------------------------------------------------------------
         cout << "dividers_size size:" << map.dividers_size() << endl;
         for (int l = 0; l < map.dividers_size(); ++l) {
             hdmap::Divider divider = map.dividers(l);
@@ -281,24 +324,22 @@ namespace ReadHDMap {
             dividerEach.color = divider.color();
             dividerEach.occlusion = divider.occlusion();
 
+
+//        cout << "geom----"<<geom.size()/3 <<" ----" << geom[0] << " " << geom[1] << " " << geom[2] << endl;
+//            int pointsNum = geom.size() / 3;
+            cout << "----divider geomery-----" <<divider.geometry()<<endl;
             vector<double> geom;
             calulate::extractFiguresFromStr2Vec(divider.geometry(), geom);
-//        cout << "geom----"<<geom.size()/3 <<" ----" << geom[0] << " " << geom[1] << " " << geom[2] << endl;
-            int pointsNum = geom.size() / 3;
-//        cout << "----id----"<< dividerEach.id <<"-----" <<pointsNum << "------"<<endl;
-            vector<PointT> vetor;
-            for (int i = 0; i < geom.size(); ++i) {
-                PointT point;
-                point.x = geom[i * 3];
-                point.y = geom[i * 3 + 1];
-                point.z = geom[i * 3 + 2];
-                if (i % 3 == 0) {
-                    vetor.push_back(point);
-                }
-//            cout <<std::setprecision(14) << geom[i*3] <<" " << geom[i*3+1] << " " << geom[i*3+2] << endl;
+//            cout << "----geom size-----" <<geom.size()<<endl;
+            for (int i = 0; i < geom.size()/3; ++i) {
+                PointT point3;
+                point3.x = geom[i * 3];
+                point3.y = geom[i * 3 + 1];
+                point3.z = geom[i * 3 + 2];
+                PointT pointT3 = transform2ENU(point3);
+                dividerEach.divider_vec.push_back(pointT3);
+//                cout << "----divider pointT-----" << dividerEach.divider_vec[i].x << " ," << dividerEach.divider_vec[i].y << " , " << dividerEach.divider_vec[i].z << endl;
             }
-            dividerEach.divider_vec = vetor;
-
 //        cout << "----id----"<< dividerEach.id << endl;
             readMap.dividers.push_back(dividerEach);
         }
