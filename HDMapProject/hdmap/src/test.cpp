@@ -19,13 +19,12 @@ int main(){
     cout << "Welcome to Summoner's Rift" << endl;
     PointInt p;
     p.x = 1, p.y = 2, p.label = 3;
-
     PointDouble cam;
 
     cv::Mat K;
     double fx = 481.2, fy = -480.0, cx = 319.5, cy = 239.5;
     K = (cv::Mat_<double>(3, 3) <<
-            fx, 0.0, cx,
+                                fx, 0.0, cx,
             0.0, fy, cy,
             0.0, 0.0, 1.0);
     pixel2cam(p, cam, K);
@@ -41,7 +40,7 @@ int main(){
     coors_cam.label = cam.label;
     cv:: Mat R, t;
     R = (cv::Mat_<double>(3, 3) <<
-            1.0, 2.0, 3.0,
+                                1.0, 2.0, 3.0,
             4.0, 3.0, 1.0,
             2.0, 5.0, 1.2);
     t = (cv::Mat_<double>(3, 1) << 1.0, 2.0, 3.0);
@@ -52,6 +51,42 @@ int main(){
     cout << "Victory" << endl;
 
     // ------------------ test cam2enu --------------
+
+//----------------------------------------------------------------------------------------------------------------------
+    // 确定东北天坐标系原点和header的入口
+/*    Utils::new3s_PointXYZ original;
+//    vector<GPSInfoEach> gpsInfo_vec;
+//    bool flag = ReadHDMap::getGPSInfo(gpsInfo_vec);
+//    if (flag)
+//    {
+//        GPSPointEach gpsPointEach = gpsInfo_vec[0].gpsPoints[0];
+//        gpsPointEach.heading;
+//        original.set_x(gpsPointEach.points.x);
+//        original.set_y(gpsPointEach.points.y);
+//        original.set_z(0);
+//        header_former = gpsPointEach.heading;
+//    }
+
+    double header_start_former = 77.0464;
+    original.set_x(22.68085991);
+    original.set_y(114.36478212);
+    original.set_z(0);
+
+    Utils::new3s_PointXYZ enu_coord_1, enu_coord_2;
+    Utils transform;
+
+    // 相机参数加载和相关参数初始化
+    const std::string strCameraPath = "../config/param.yml";
+    cv::FileStorage fSettings(strCameraPath, cv::FileStorage::READ);
+    float fx = fSettings["Camera.fx"];
+    float fy = fSettings["Camera.fy"];
+    float cx = fSettings["Camera.cx"];
+    float cy = fSettings["Camera.cy"];
+
+    float k1 = fSettings["Camera.k1"];
+    float k2 = fSettings["Camera.k2"];
+    float p1 = fSettings["Camera.p1"];
+    float p2 = fSettings["Camera.p2"];
 
 ////----------------------------------------------------------------------------------------------------------------------
 //    // 确定东北天坐标系原点和header的入口
@@ -150,6 +185,64 @@ int main(){
 
     return 0;
 }
+=======
+    distCoeffs = (cv::Mat_<float>(4, 1) << k1, k2, p1, p2);
+
+    // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
+    cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mRbw;
+    Utils poseCompute;
+
+    Eigen::Vector3d ea0(yaw,pitch,roll);
+    Eigen::Matrix3d Rcb;
+    cv::Mat mRcb;
+    Rcb = Eigen::AngleAxisd(ea0[0], Eigen::Vector3d::UnitZ())*Eigen::AngleAxisd(ea0[1], Eigen::Vector3d::UnitY())*Eigen::AngleAxisd(ea0[2], Eigen::Vector3d::UnitX());
+    cv::eigen2cv(Rcb, mRcb);
+
+    mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
+    mTcb.row(2).col(3) = 1.32;
+
+    //////////////////////////////////////////////////////////
+    string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
+
+    //    根据scene_id显示此帧gps数据点
+    Utils::new3s_PointXYZ  scene_point_start;
+    GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
+    vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
+    vector<ImageBatch> imgs;
+    //bool flag = ReadHDMap::getImageBatchBySceneId(scene_id, imgs);
+    for (int k = 0; k < points.size(); ++k) {
+        double header_angle = points[k].heading;
+
+        // 这个是返回的NEU坐标系的点的差
+        scene_point_start.set_x(points[k].points.x);
+        scene_point_start.set_y(points[k].points.y);
+        scene_point_start.set_z(points[k].points.z);
+        transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
+        std::cout << "enu_coord1: " << enu_coord_1.get_x() << " " << enu_coord_1.get_y() << " " << enu_coord_1.get_z()
+                  << std::endl;
+
+        std::cout << "delta_angle: " << header_angle << std::endl;
+        cv::Mat tempRstart = poseCompute.convertAngleToR(header_angle);
+        tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
+        pose.row(0).col(3) = enu_coord_1.get_x();
+        pose.row(1).col(3) = enu_coord_1.get_y();
+        pose.row(2).col(3) = 0;
+        std::cout << "pose: " << pose << std::endl;
+        cv::Mat camera_pose = mTcb * pose;
+        //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
+//    }
+    }*/
+//--------------------------------------------------------------------------------------------------------------------
+//坐标转换
+/*    PointT point;
+    point.x =  22.68214216 ;
+    point.y = 114.37055086;
+    point.z =   6.00000000;
+
+    PointT pointT = ReadHDMap::transform2ENU(point);
+    cout << pointT.x << "," << pointT.y << "," << pointT.z;*/
+>>>>>>> 9bebbeeed6204855a1f0ec53a5908938c1e64972
 
 /************************************************************************************************************
  *    根据scene_id获取GPS数据
@@ -174,10 +267,16 @@ int main(){
 /************************************************************************************************************
 *    读取整张hdmap高精地图元素
 ************************************************************************************************************/
-    /*HDMAP readMap = ReadHDMap::getHDMAP();
+ /*   HDMAP readMap = ReadHDMap::getHDMAP();
     vector<DividerEach> dividerEach = readMap.dividers;
     for (int j = 0; j < dividerEach.size(); ++j) {
-        std::cout << "test hd map:" << readMap.dividers[19].divider_vec[5].x << endl;
+        vector <PointT> divider_vec = dividerEach[j].divider_vec;
+        std::cout << "" << dividerEach[j].id << "," << dividerEach[j].type << ","<< dividerEach[j].color << ",";
+        for (int i = 0; i < divider_vec.size() ; ++i) {
+            std::cout
+            << divider_vec[i].x << "," << divider_vec[i].y << ","<< divider_vec[i].z << ",";
+        }
+        cout << endl;
     }*/
 
 /************************************************************************************************************
@@ -239,6 +338,15 @@ int main(){
     bool flag8 = ReadHDMap::getDetctionTrafficlights("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4", detectionTrafficPerCapture);
     TrafficLightEachShow &trafficLightEachShow = detectionTrafficPerCapture.trafficPerFrame_vec[0].trafficLight_vec[0];
     cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;*/
+/************************************************************************************************************
+  *   根据image_name/scene_id+index获取指定帧的gps 及检测中心结果
+  ************************************************************************************************************/
+    DetchBatch detchBatch;
+    bool flag8 = ReadHDMap::getAllDetectionBatchByIndex("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4",0, detchBatch);
+    cout<<"batch point:" <<detchBatch.point.points.x <<" " <<detchBatch.point.points.y<<" " <<detchBatch.point.points.z << endl;
+    cout<<"batch image_name:" <<detchBatch.image_name <<endl;
+    cout <<"trafficPerFrame " << detchBatch.trafficPerFrame.trafficLight_vec.size() << endl;
+    cout <<"dividerPerFrame " << detchBatch.dividerPerFrame.dividerEach_vec.size() << endl;
 
-
-
+    return 0;
+}
