@@ -134,12 +134,12 @@ typedef struct {
     vector<LaneMarkingEach> lanemarkings;
     string  version;
 }HDMAP;
-typedef struct
+/*typedef struct
 {
     string scene_id;
     vector<DividerEach> divider_vec;
-    vector<TrafficLightEach> traffic_lights_vec;
-}DetectionBatch;
+    vector<TrafficLightEachShow> traffic_lights_vec;
+}DetectionBatch;*/
 typedef struct {
 //    gps帧id
     string scene_id;
@@ -147,6 +147,7 @@ typedef struct {
     string image_name;
     GPSPointEach gpsPoint;
 }GpsImageBatch;
+
 
 typedef struct {
     string frame_id;
@@ -173,6 +174,16 @@ typedef struct {
     vector<DetectionTrafficPerFrame> trafficPerFrame_vec;
 
 }DetectionTrafficPerCapture;
+
+typedef struct {
+//    gps帧id
+    string scene_id;
+//    对应图片文件名
+    string image_name;
+    GPSPointEach point;
+    DetectionTrafficPerFrame trafficPerFrame;
+    DetectionDividerPerFrame dividerPerFrame;
+}DetchBatch;
 
 namespace ReadHDMap {
     const string gps_file_folder = "../data/gps";
@@ -245,8 +256,8 @@ namespace ReadHDMap {
                     laneMarkingEach.points[j].x = pointT.x;
                     laneMarkingEach.points[j].y = pointT.y;
                     laneMarkingEach.points[j].z = pointT.z;
-/*                cout << std::setprecision(14)<< ""<< laneMarkingEach.points[j].x << " " << laneMarkingEach.points[j].y
-                     << " " << laneMarkingEach.points[j].z << endl;*/
+//                cout << std::setprecision(14)<< ""<< laneMarkingEach.points[j].x << "," << laneMarkingEach.points[j].y
+//                     << "," << laneMarkingEach.points[j].z << endl;
                 }
                 readMap.lanemarkings.push_back(laneMarkingEach);
             } else {
@@ -277,8 +288,8 @@ namespace ReadHDMap {
                 trafficLightEach.point.y = pointT1.y;
                 trafficLightEach.point.z = pointT1.z;
 
-            cout << std::setprecision(14) << ""<<  trafficLightEach.point.x << " " << trafficLightEach.point.y
-                 << " " << trafficLightEach.point.z << endl;
+//            cout << std::setprecision(14) << ""<<  trafficLightEach.point.x << "," << trafficLightEach.point.y
+//                 << "," << trafficLightEach.point.z << endl;
 //            Light 里面的数据继续查询
 
                 LightEach lightEach; //第二次进来，lightEach归0
@@ -296,7 +307,7 @@ namespace ReadHDMap {
                         point.z = geom2[2];
 
                         PointT pointT = transform2ENU(point);
-                        cout << " " << pointT.x << "," << pointT.y << ", " << pointT.z << endl;
+                        cout << "" << pointT.x << "," << pointT.y << "," << pointT.z << endl;
 
                        /* lightEach.points.x = geom2[0];
                         lightEach.points.y = geom2[1];
@@ -688,7 +699,7 @@ namespace ReadHDMap {
      * @param detectionDividerPerCapture  收到的frame数据包
      * @return
      */
-    bool getDetectionBatchBySceneId(string scene_id, DetectionDividerPerCapture &detectionDividerPerCapture) {
+    bool getDetectionDividerBySceneId(const string scene_id, DetectionDividerPerCapture &detectionDividerPerCapture) {
         vector<string> dividerFileNames;//所有divider文件名
         vector<DetectionDividerPerFrame> detectionBatch_vec; //装好的scieId和Image集合
         bool flag = calulate::getAllFiles(detection_result_flie_folder + "/divider", dividerFileNames);
@@ -758,7 +769,7 @@ namespace ReadHDMap {
      * @param detectionTrafficPerCapture
      * @return
      */
-    bool getDetctionTrafficlights(string scene_id, DetectionTrafficPerCapture &detectionTrafficPerCapture)
+    bool getDetctionTrafficlights(const string scene_id, DetectionTrafficPerCapture &detectionTrafficPerCapture)
     {
 //        获取文件夹列表并排序
         vector<string> trafficFileNames;//所有divider文件名
@@ -841,6 +852,38 @@ namespace ReadHDMap {
                 cout << "未找到此帧数据" << endl;
                 return false;
             }
+        }
+    }
+
+    /**
+     * 取一个GPS点对应的图片的所有检测结果
+     */
+     bool getAllDetectionBatchByIndex( string scene_id, int index,DetchBatch &detectionBatch)
+    {
+//        遍历pb
+        GpsImageBatch gpsImageBatch;
+        bool flag = getGpsImageBatchByImageId(scene_id, index, gpsImageBatch);
+
+//        根据index和scene_id  取trafficlight
+        DetectionTrafficPerCapture detectionTrafficPerCapture;
+        getDetctionTrafficlights(scene_id, detectionTrafficPerCapture);
+        DetectionDividerPerCapture detectionDividerPerCapture;
+        bool flag2 = getDetectionDividerBySceneId(scene_id, detectionDividerPerCapture);
+
+        if (index < detectionTrafficPerCapture.trafficPerFrame_vec.size() && index >= 0 && index < detectionTrafficPerCapture.trafficPerFrame_vec.size())
+        {
+            DetectionTrafficPerFrame trafficPerFrame = detectionTrafficPerCapture.trafficPerFrame_vec[index];
+            DetectionDividerPerFrame dividerPerFrame = detectionDividerPerCapture.dividerPerFrame_vec[index];
+            detectionBatch.scene_id = scene_id;
+            detectionBatch.dividerPerFrame.dividerEach_vec = dividerPerFrame.dividerEach_vec;
+            detectionBatch.trafficPerFrame.trafficLight_vec = trafficPerFrame.trafficLight_vec;
+
+            ImageBatch imageBatch;
+            getImageBatchBySceneId(scene_id, imageBatch);
+            detectionBatch.image_name = imageBatch.images_vec[index];
+
+            GPSInfoEach gpsInfo = getGPSInfoBySceneId(scene_id);
+            detectionBatch.point = gpsInfo.gpsPoints[index];
         }
     }
 }

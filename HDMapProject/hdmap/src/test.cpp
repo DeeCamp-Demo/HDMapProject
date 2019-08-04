@@ -16,7 +16,7 @@ cv::Mat pose = cv::Mat::eye(4, 4, CV_64F);
 int main(){
 //----------------------------------------------------------------------------------------------------------------------
     // 确定东北天坐标系原点和header的入口
-    Utils::new3s_PointXYZ original;
+/*    Utils::new3s_PointXYZ original;
 //    vector<GPSInfoEach> gpsInfo_vec;
 //    bool flag = ReadHDMap::getGPSInfo(gpsInfo_vec);
 //    if (flag)
@@ -105,7 +105,7 @@ int main(){
         cv::Mat camera_pose = mTcb * pose;
         //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
 //    }
-    }
+    }*/
 //--------------------------------------------------------------------------------------------------------------------
 //坐标转换
 /*    PointT point;
@@ -139,14 +139,14 @@ int main(){
 /************************************************************************************************************
 *    读取整张hdmap高精地图元素
 ************************************************************************************************************/
-/*    HDMAP readMap = ReadHDMap::getHDMAP();
+ /*   HDMAP readMap = ReadHDMap::getHDMAP();
     vector<DividerEach> dividerEach = readMap.dividers;
     for (int j = 0; j < dividerEach.size(); ++j) {
         vector <PointT> divider_vec = dividerEach[j].divider_vec;
-        std::cout << " " << dividerEach[j].id << " " << dividerEach[j].type << " "<< dividerEach[j].color << ", ";
+        std::cout << "" << dividerEach[j].id << "," << dividerEach[j].type << ","<< dividerEach[j].color << ",";
         for (int i = 0; i < divider_vec.size() ; ++i) {
-            std::cout << "  "
-            << divider_vec[i].x << " " << divider_vec[i].y << " "<< divider_vec[i].z << " , ";
+            std::cout
+            << divider_vec[i].x << "," << divider_vec[i].y << ","<< divider_vec[i].z << ",";
         }
         cout << endl;
     }*/
@@ -210,7 +210,15 @@ int main(){
     bool flag8 = ReadHDMap::getDetctionTrafficlights("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4", detectionTrafficPerCapture);
     TrafficLightEachShow &trafficLightEachShow = detectionTrafficPerCapture.trafficPerFrame_vec[0].trafficLight_vec[0];
     cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;*/
-
+/************************************************************************************************************
+  *   根据image_name/scene_id+index获取指定帧的gps 及检测中心结果
+  ************************************************************************************************************/
+    DetchBatch detchBatch;
+    bool flag8 = ReadHDMap::getAllDetectionBatchByIndex("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4",0, detchBatch);
+    cout<<"batch point:" <<detchBatch.point.points.x <<" " <<detchBatch.point.points.y<<" " <<detchBatch.point.points.z << endl;
+    cout<<"batch image_name:" <<detchBatch.image_name <<endl;
+    cout <<"trafficPerFrame " << detchBatch.trafficPerFrame.trafficLight_vec.size() << endl;
+    cout <<"dividerPerFrame " << detchBatch.dividerPerFrame.dividerEach_vec.size() << endl;
 
     return 0;
 }
