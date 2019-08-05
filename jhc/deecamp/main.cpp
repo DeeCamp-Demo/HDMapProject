@@ -17,6 +17,8 @@ PointT pixel2Cam(const PointT& p, const cv::Mat K)
     PointT cameraCoord;
     cameraCoord.x = (p.x - K.at<double>(0,2)) / K.at<double>(0,0);
     cameraCoord.y = (p.y - K.at<double>(1,2)) / K.at<double>(1,1);
+
+//    std::cout<<"Point: "<<p.y<<std::endl;
     cameraCoord.z = 1;
     return cameraCoord;
 
@@ -77,10 +79,11 @@ int main() {
 
     // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
     cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mTcam = (cv::Mat_<double>(4, 1)<<0, 0, 0, 1);
     cv::Mat mRbw;
     Utils poseCompute;
 
-    Eigen::Vector3d ea0(yaw,pitch,roll);
+    Eigen::Vector3d ea0(roll,pitch,yaw);
     Eigen::Matrix3d Rcb;
     cv::Mat mRcb;
     Rcb = Eigen::AngleAxisd(ea0[0], Eigen::Vector3d::UnitZ())*Eigen::AngleAxisd(ea0[1], Eigen::Vector3d::UnitY())*Eigen::AngleAxisd(ea0[2], Eigen::Vector3d::UnitX());
@@ -89,7 +92,7 @@ int main() {
 
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
-//    std::cout<<"mTcb: "<<mTcb<<std::endl;
+    std::cout<<"mTcb: "<<mTcb<<std::endl;
 
     //////////////////////////////////////////////////////////
 
@@ -105,25 +108,25 @@ int main() {
 
     Utils::new3s_PointXYZ  scene_point_start;
     GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
-    vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
+    vector<GPSPointEach> points_GPS = gpsInfoEach.gpsPoints;
     vector<ImageBatch> imgs;
     cv::Mat driverlineENU = (cv::Mat_<double>(3, 1)<<0, 0, 0);
     Utils::new3s_PointXYZ driverline_ENU;
     //bool flag = ReadHDMap::getImageBatchBySceneId(scene_id, imgs);
-    for (int k = 0; k < points.size(); ++k) {
-        double header_angle = points[k].heading;
+    for (int k = 0; k < points_GPS.size(); ++k) {
+        double header_angle = points_GPS[k].heading;
         DetchBatch detchBatch;
         bool flag8 = ReadHDMap::getAllDetectionBatchByIndex(scene_id,k, detchBatch);
         vector<DividerEach> divider_vec = detchBatch.dividerPerFrame.dividerEach_vec;
 //        std::cout<<" GPS 1:"<<detchBatch.point.points.x<<" "<<detchBatch.point.points.y<<" "<<detchBatch.point.points.z<<std::endl;
 
         // 这个是返回的NEU坐标系的点的差
-        scene_point_start.set_x(points[k].points.x);
-        scene_point_start.set_y(points[k].points.y);
-        scene_point_start.set_z(points[k].points.z);
+        scene_point_start.set_x(points_GPS[k].points.x);
+        scene_point_start.set_y(points_GPS[k].points.y);
+        scene_point_start.set_z(points_GPS[k].points.z);
         transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
 //        std::cout<<"GPS 2:"<<points[k].points.x<<" "<<points[k].points.y<<" "<<points[k].points.z<<std::endl;
-//        std::cout<<"enu_coord: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
+        std::cout<<"enu_coord: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
 
 
         //std::cout<<"delta_angle: "<<header_angle<<std::endl;
@@ -132,30 +135,38 @@ int main() {
         pose.row(0).col(3) = enu_coord_1.get_x();
         pose.row(1).col(3) = enu_coord_1.get_y();
         pose.row(2).col(3) = 0;
-//        std::cout<<"pose: "<<pose<<std::endl;
+        std::cout<<"pose: "<<pose<<std::endl;
         // body ------> camera
         for (int i = 0; i < divider_vec.size(); i++) {
-            vector<PointT> points =  divider_vec[i].divider_vec;
-            for (int j = 0; j <points.size() ; j++) {
-                PointT cameraPoint = pixel2Cam(points[j], K);
+            vector<PointT> points_uv =  divider_vec[i].divider_vec;
+            for (int j = 0; j <points_uv.size() ; j++) {
+                PointT cameraPoint = pixel2Cam(points_uv[j], K);
                 cv::Mat Point3dCam = (cv::Mat_<double>(3, 1) << cameraPoint.x, cameraPoint.y, cameraPoint.z);
-//                std::cout<<"cameraPoint: "<<cameraPoint.x<<" "<<cameraPoint.y<<" "<<cameraPoint.z<< std::endl;
-                cv::Mat tempCam = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*Point3dCam;
+                std::cout<<"cameraPoint: "<<cameraPoint.x<<" "<<cameraPoint.y<<" "<<cameraPoint.z<< std::endl;
+                cv::Mat tempCam = (mTcb.rowRange(0, 3).colRange(0, 3)).inv()*Point3dCam;
 //                cv::Mat tempAdd = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*mTcb.col(3).rowRange(0, 3);
-//                std::cout<<"temp 1: "<<temp<<std::endl;
+                std::cout<<"temp 1: "<<tempCam<<std::endl;
 //                tempCam = tempCam * (tempAdd.row(2)/tempCam.row(2));
 //                tempCam = tempCam - tempAdd;
                 tempCam = tempCam * (-1.32/tempCam.row(2));
+//                std::cout<<"tempCam 1: "<<tempCam<<std::endl;
                 tempCam.row(2) = 0;
-//                std::cout<<"tempCam : "<<tempCam<<std::endl;
+//                tempCam.copyTo(mTcam.col(0).rowRange(0, 3));
+                double tempValue;
+                tempValue = tempCam.at<double>(1);
+                tempCam.row(1) = tempCam.row(0);
+                tempCam.row(0) = tempValue;
+                std::cout<<"tempCam 2: "<<tempCam<<std::endl;
+//                std::cout<<"mTcam: "<<mTcam<<std::endl;
 //                driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).t() * (tempCam - pose.col(3).rowRange(0, 3));
-                driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).t() * tempCam + pose.col(3).rowRange(0, 3);
+                driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).inv() * tempCam + pose.col(3).rowRange(0, 3);
+//                driverlineENU = pose*mTcam;
 //                std::cout<<"driverlineENU: "<<driverlineENU<<std::endl;
                 driverline_ENU.set_x(driverlineENU.at<double>(0));
                 driverline_ENU.set_y(driverlineENU.at<double>(1));
-//                std::cout<<" driver_ENU: "<<driverline_ENU.get_x()<<" "<<driverline_ENU.get_y()<<std::endl;
-                f << std::setprecision(11) <<enu_coord_1.get_x() << " "<< enu_coord_1.get_y()<<" ";
-                f << std::setprecision(11) <<driverline_ENU.get_x()<< " "<< driverline_ENU.get_y()<<std::endl;
+                std::cout<<" driver_ENU: "<<driverline_ENU.get_x()<<" "<<driverline_ENU.get_y()<<std::endl;
+//                f << std::setprecision(11) <<enu_coord_1.get_x() << " "<< enu_coord_1.get_y()<<" ";
+//                f << std::setprecision(11) <<driverline_ENU.get_x()<< " "<< driverline_ENU.get_y()<<std::endl;
 //                std::cout<<"temp 2: "<<temp<<std::endl;
 
             }
