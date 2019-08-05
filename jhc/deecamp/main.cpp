@@ -11,6 +11,16 @@ cv::Mat mTcb = cv::Mat::eye(4, 4, CV_64F);
 double header_former;
 cv::Mat pose = cv::Mat::eye(4, 4, CV_64F);
 
+// 归一化像素坐标系
+PointT pixel2Cam(const PointT& p, const cv::Mat K)
+{
+    PointT cameraCoord;
+    cameraCoord.x = (p.x - K.at<double>(0,2)) / K.at<double>(0,0);
+    cameraCoord.y = (p.y - K.at<double>(1,2)) / K.at<double>(1,1);
+    cameraCoord.z = 1;
+    return cameraCoord;
+
+}
 
 int main() {
     // 确定东北天坐标系原点和header的入口
@@ -40,29 +50,32 @@ int main() {
     // 相机参数加载和相关参数初始化
     const std::string strCameraPath = "../Config/param.yml";
     cv::FileStorage fSettings(strCameraPath, cv::FileStorage::READ);
-    float fx = fSettings["Camera.fx"];
-    float fy = fSettings["Camera.fy"];
-    float cx = fSettings["Camera.cx"];
-    float cy = fSettings["Camera.cy"];
+    double fx = fSettings["Camera.fx"];
+    double fy = fSettings["Camera.fy"];
+    double cx = fSettings["Camera.cx"];
+    double cy = fSettings["Camera.cy"];
 
-    float k1 = fSettings["Camera.k1"];
-    float k2 = fSettings["Camera.k2"];
-    float p1 = fSettings["Camera.p1"];
-    float p2 = fSettings["Camera.p2"];
+    double k1 = fSettings["Camera.k1"];
+    double k2 = fSettings["Camera.k2"];
+    double p1 = fSettings["Camera.p1"];
+    double p2 = fSettings["Camera.p2"];
 
-    float yaw = fSettings["Cam.yaw"];
-    float pitch = fSettings["Cam.pitch"];
-    float roll = fSettings["Cam.roll"];
+    double yaw = fSettings["Cam.yaw"];
+    double pitch = fSettings["Cam.pitch"];
+    double roll = fSettings["Cam.roll"];
+
+    pitch = pitch + M_PI/2.0;
 
     // 这里的K和distCoeffs都是全局变量
-    K = (cv::Mat_<float>(3, 3) <<
+    K = (cv::Mat_<double>(3, 3) <<
                                fx, 0.0, cx,
             0.0, fy, cy,
             0.0, 0.0, 1.0);
-    distCoeffs = (cv::Mat_<float>(4, 1) << k1, k2, p1, p2);
+    distCoeffs = (cv::Mat_<double>(4, 1) << k1, k2, p1, p2);
+
+//    std::cout<<"K: "<<K<<std::endl;
 
     // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
-
     cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
     cv::Mat mRbw;
     Utils poseCompute;
@@ -71,42 +84,142 @@ int main() {
     Eigen::Matrix3d Rcb;
     cv::Mat mRcb;
     Rcb = Eigen::AngleAxisd(ea0[0], Eigen::Vector3d::UnitZ())*Eigen::AngleAxisd(ea0[1], Eigen::Vector3d::UnitY())*Eigen::AngleAxisd(ea0[2], Eigen::Vector3d::UnitX());
+//    Rcb.transpose();
     cv::eigen2cv(Rcb, mRcb);
 
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
+//    std::cout<<"mTcb: "<<mTcb<<std::endl;
+
+    //////////////////////////////////////////////////////////
+
+    std::ofstream f;
+    f.open("../GPStrafficLine.txt");
 
     //////////////////////////////////////////////////////////
 
     string scene_id = "20190123112838_3faf30bde99e0f126cda2432ec90a621_4";
 
-    //    根据scene_id显示此帧gps数据点
+//  20190123112838_3faf30bde99e0f126cda2432ec90a621_4
+    // 根据scene_id显示此帧gps数据点
+
     Utils::new3s_PointXYZ  scene_point_start;
     GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
     vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
     vector<ImageBatch> imgs;
+    cv::Mat driverlineENU = (cv::Mat_<double>(3, 1)<<0, 0, 0);
+    Utils::new3s_PointXYZ driverline_ENU;
     //bool flag = ReadHDMap::getImageBatchBySceneId(scene_id, imgs);
     for (int k = 0; k < points.size(); ++k) {
         double header_angle = points[k].heading;
+        DetchBatch detchBatch;
+        bool flag8 = ReadHDMap::getAllDetectionBatchByIndex(scene_id,k, detchBatch);
+        vector<DividerEach> divider_vec = detchBatch.dividerPerFrame.dividerEach_vec;
+//        std::cout<<" GPS 1:"<<detchBatch.point.points.x<<" "<<detchBatch.point.points.y<<" "<<detchBatch.point.points.z<<std::endl;
 
         // 这个是返回的NEU坐标系的点的差
         scene_point_start.set_x(points[k].points.x);
         scene_point_start.set_y(points[k].points.y);
         scene_point_start.set_z(points[k].points.z);
         transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
+//        std::cout<<"GPS 2:"<<points[k].points.x<<" "<<points[k].points.y<<" "<<points[k].points.z<<std::endl;
+//        std::cout<<"enu_coord: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
 
-        std::cout<<"delta_angle: "<<header_angle<<std::endl;
+
+        //std::cout<<"delta_angle: "<<header_angle<<std::endl;
         cv::Mat tempRstart = poseCompute.convertAngleToR(header_angle);
         tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
         pose.row(0).col(3) = enu_coord_1.get_x();
         pose.row(1).col(3) = enu_coord_1.get_y();
         pose.row(2).col(3) = 0;
-        std::cout<<"pose: "<<pose<<std::endl;
-        cv::Mat camera_pose = mTcb * pose;
-        //std::cout<<"camera_pose: "<<camera_pose<<std::endl;
+//        std::cout<<"pose: "<<pose<<std::endl;
+        // body ------> camera
+        for (int i = 0; i < divider_vec.size(); i++) {
+            vector<PointT> points =  divider_vec[i].divider_vec;
+            for (int j = 0; j <points.size() ; j++) {
+                PointT cameraPoint = pixel2Cam(points[j], K);
+                cv::Mat Point3dCam = (cv::Mat_<double>(3, 1) << cameraPoint.x, cameraPoint.y, cameraPoint.z);
+//                std::cout<<"cameraPoint: "<<cameraPoint.x<<" "<<cameraPoint.y<<" "<<cameraPoint.z<< std::endl;
+                cv::Mat tempCam = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*Point3dCam;
+//                cv::Mat tempAdd = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*mTcb.col(3).rowRange(0, 3);
+//                std::cout<<"temp 1: "<<temp<<std::endl;
+//                tempCam = tempCam * (tempAdd.row(2)/tempCam.row(2));
+//                tempCam = tempCam - tempAdd;
+                tempCam = tempCam * (-1.32/tempCam.row(2));
+                tempCam.row(2) = 0;
+//                std::cout<<"tempCam : "<<tempCam<<std::endl;
+//                driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).t() * (tempCam - pose.col(3).rowRange(0, 3));
+                driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).t() * tempCam + pose.col(3).rowRange(0, 3);
+//                std::cout<<"driverlineENU: "<<driverlineENU<<std::endl;
+                driverline_ENU.set_x(driverlineENU.at<double>(0));
+                driverline_ENU.set_y(driverlineENU.at<double>(1));
+//                std::cout<<" driver_ENU: "<<driverline_ENU.get_x()<<" "<<driverline_ENU.get_y()<<std::endl;
+                f << std::setprecision(11) <<enu_coord_1.get_x() << " "<< enu_coord_1.get_y()<<" ";
+                f << std::setprecision(11) <<driverline_ENU.get_x()<< " "<< driverline_ENU.get_y()<<std::endl;
+//                std::cout<<"temp 2: "<<temp<<std::endl;
+
+            }
+
+//            std::cout<<"11111"<<std::endl;
+
+        }
+//        cv::Mat camera_pose =  pose * mTcb;
+//        for (int j = 0; j < ; ++j) {
+//
+//        }
+//        std::cout<<"camera pose: "<<camera_pose<<std::endl;
 
     }
+//    vector<DividerEach> diver_vec = detchBatch.dividerPerFrame.dividerEach_vec;
+//
+//
+//    std::cout<<"divider point: "<<detchBatch.dividerPerFrame.dividerEach_vec[0].divider_vec[0].x<<" "<<detchBatch.dividerPerFrame.dividerEach_vec[0].divider_vec[0].y<<std::endl;
+//    PointT cameraPoint = pixel2Cam(detchBatch.dividerPerFrame.dividerEach_vec[0].divider_vec[0], K);
+//    std::cout<<"cameraPoint: "<<cameraPoint.x<<" "<<cameraPoint.y<<" "<<cameraPoint.z<< std::endl;
+//    cv::Mat Point3dCam = (cv::Mat_<double>(3, 1) << cameraPoint.x, cameraPoint.y, cameraPoint.z);
+//    cv::Mat temp = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*Point3dCam;
+////    std::cout<<"temp: "<<temp<<std::endl;
+////    std::cout<<"temp 3: "<<temp.row(2)<<std::endl;
+//    temp = temp * (1.32/temp.row(2));
+//    std::cout<<"temp: "<<temp<<std::endl;
+//    cv::Mat Point3dBod = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*(Point3dCam - mTcb.col(3).rowRange(0, 3));
 
+//    std::cout<<"Point3dBod: "<<Point3dBod<<std::endl;
+
+
+
+
+    /************************************************************************************************************
+  *   根据image_name/scene_id+index获取指定帧的gps 及检测中心结果
+  ************************************************************************************************************/
+
+
+
+   /*  DetectionDividerPerCapture detectionDividerPerCapture;
+     bool flag7= ReadHDMap::getDetectionBatchBySceneId("20190123112752_7ac6ab9d61d94314188426910d324c39_4", detectionDividerPerCapture);
+
+//     一个pb里面所有的车道线
+     vector <DividerEach> divider_vec;
+//     一个frame
+    for (int i = 0; i < detectionDividerPerCapture.dividerPerFrame_vec.size(); ++i) {
+        DetectionDividerPerFrame dividerPerFrame = detectionDividerPerCapture.dividerPerFrame_vec[i];
+
+//        一个devider
+        for (int j = 0; j < dividerPerFrame.dividerEach_vec.size(); ++j) {
+            DividerEach dividerEach = dividerPerFrame.dividerEach_vec[j];
+            vector<PointT> points = dividerEach.divider_vec;
+            cout<< "points:"<< points[1].x << " " << points[1].y << " " << points[1].z << endl;
+            divider_vec.push_back(dividerEach);
+        }
+
+    }
+    cout << "divider size:--" << divider_vec.size() << endl;
+    cout << "point size:--" << divider_vec[0].divider_vec.size() << endl;
+*/
+/*
+    for (int i = 0; i < ; ++i) {
+
+    }*/
 
     /************************************************************************************************************
      *    根据scene_id获取GPS数据
@@ -172,6 +285,20 @@ int main() {
     //    GpsImageBatch gpsImageBatch;
     //    bool flag6= ReadHDMap::getGpsImageBatchByImageId(scene_id, 2, gpsImageBatch);
     //    cout << "gps heading"<<gpsImageBatch.gpsPoint.heading<<endl;
+/************************************************************************************************************
+ *    根据scene_id获取车道线检测的中间结果,中间结果是像素坐标(仅x,y有效),需要转换
+ ************************************************************************************************************/
+    /* DetectionDividerPerCapture detectionDividerPerCapture;
+     bool flag7= ReadHDMap::getDetectionBatchBySceneId(scene_id, detectionDividerPerCapture);
+ */
+/************************************************************************************************************
+  *    根据scene_id获取车道线检测的中间结果,中间结果是像素坐标(仅x,y有效),需要转换
+  *    1帧scene_id 对应一个TrafficPerCapture,多个TrafficPerFrame,一个Frame对应多个TrafficLight ,一个Tflight对应多个light
+  ************************************************************************************************************/
+    /*  DetectionTrafficPerCapture detectionTrafficPerCapture;
+      bool flag8 = ReadHDMap::getDetctionTrafficlights("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4", detectionTrafficPerCapture);
+      TrafficLightEachShow &trafficLightEachShow = detectionTrafficPerCapture.trafficPerFrame_vec[0].trafficLight_vec[0];
+      cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;*/
 
 
     return 0;
