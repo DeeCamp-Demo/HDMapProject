@@ -26,13 +26,27 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        pcl_viewer.cpp
+        pcl_viewer.cpp \
+    pcl_handle.cpp
 
 HEADERS += \
-        pcl_viewer.h
+        pcl_viewer.h \
+    pcl_handle.h \
+    dbscan.h
 
 FORMS += \
         pcl_viewer.ui
+
+INCLUDEPATH += /usr/include/eigen3
+
+INCLUDEPATH += /usr/include/vtk-6.2
+LIBS += /usr/lib/x86_64-linux-gnu/libvtk*.so
+
+INCLUDEPATH += /usr/include/boost
+LIBS += /usr/lib/x86_64-linux-gnu/libboost_*.so
+
+INCLUDEPATH += /usr/include/pcl-1.7
+LIBS += /usr/lib/x86_64-linux-gnu/libpcl_*.so
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

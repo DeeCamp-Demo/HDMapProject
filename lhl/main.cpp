@@ -3,15 +3,15 @@
 #include <random>
 
 using std::default_random_engine;
-using std::uniform_int_distribution;
+using std::uniform_real_distribution;
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
     default_random_engine e;
-    uniform_real_distribution<double> u(0, 1); //随机数分布对象
+    uniform_real_distribution<double> u(0, 10); //随机数分布对象
 
-    DBScan cluster(3, 2);
+    DBScan cluster(5, 2);
 
     for (int i = 0;i < 100;i++)
     {

@@ -15,3 +15,4 @@
 - ~DBScan(){} : 析构函数，为空
 - void append_datapoint(float x, float y, float z) : 填充数据点，xyz分别表示三轴坐标
 - bool start_dbscan(void) : 启动dbscan进行聚类，返回是否成功
+- void clear_datapoint(void) : 清空数据集

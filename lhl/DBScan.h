@@ -70,11 +70,19 @@ public:
     ~DBScan(){}
 
     vector<DataPoint> dataset;
+    int clusterId = 0;                        // 聚类id计数，初始化为0
     // 喂数据点
     void append_datapoint(float x, float y, float z)
     {
         DataPoint data(x, y, z, dataset.size());
         dataset.push_back(data);
+    }
+
+    // clear data point
+    void clear_datapoint(void)
+    {
+        clusterId = 0;
+        dataset.clear();
     }
 
     // 开始dbscan
@@ -91,7 +99,7 @@ public:
         }
 
         // Step2: 开始逐点聚类
-        unsigned long clusterId = 0;                        // 聚类id计数，初始化为0
+        clusterId = 0;
         for(unsigned long i = 0; i < dataset.size();i++)
         {
             DataPoint& dp = dataset[i];
