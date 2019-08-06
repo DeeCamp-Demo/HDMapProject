@@ -374,7 +374,7 @@ namespace ReadHDMap {
         fstream input_gps(file_name, ios::in | ios::binary);
         source::GPSInfo gpsInfo;
 
-        if (gpsInfo.scene_id().compare(scene_id)) {
+        if (gpsInfo.scene_id()==scene_id) {
             gpsInfo.ParseFromIstream(&input_gps);
             source::GPSPoint gpsPoint;
             gpsPoint.ParseFromIstream(&input_gps);
@@ -396,6 +396,15 @@ namespace ReadHDMap {
                 gpsPointEach.points.x = geom[0];
                 gpsPointEach.points.y = geom[1];
                 gpsPointEach.points.z = geom[2];
+//                坐标转换
+                PointT pointT3 = transform2ENU(gpsPointEach.points);
+                gpsPointEach.points.x = pointT3.x;
+                gpsPointEach.points.y = pointT3.y;
+                gpsPointEach.points.z = pointT3.z;
+
+             /*   cout << "原始:" << gpsPointEach.points.x << " , " << gpsPointEach.points.y << " ," << gpsPointEach.points.z << endl;
+                cout << "enu:" << pointT3.x << " , " <<pointT3.y << " ," << pointT3.z << endl;*/
+
                 gpsInfoEach.gpsPoints.push_back(gpsPointEach);
 
 //            std::cout << std::setprecision(14) <<geom[0] << " " << geom[1] << " " <<geom[2]<<endl;
@@ -424,7 +433,7 @@ namespace ReadHDMap {
             // 读取之后对vector内的image和gps进行排序
             calulate::sortedVector(gpsFileNames);
 //        遍历每一帧gps获取sceneId
-            for (int i = 0; i < gpsFileNames.size(); ++i) {
+            for (int i = 0; i < gpsFileNames.size(); i++) {
 //            获取scene id
                 int nops = gpsFileNames[i].find_first_of(".");
                 string scene_id = gpsFileNames[i].substr(0, nops-11);
@@ -434,14 +443,15 @@ namespace ReadHDMap {
                 gpsInfo.ParseFromIstream(&input_gps);
                 source::GPSPoint pts;
 
+//                cout << "-----gps scene_id:------" << scene_id<<endl;
 //                读每一帧的gps点 存在gpsInfoEach里面
                 GPSInfoEach gpsInfoEach;
                 vector<GPSPointEach> gpsPoint_vec = gpsInfoEach.gpsPoints;
                 gpsInfoEach.scene_id = scene_id;
-//                cout << "-----gpsInfoEach!------" << gpsInfoEach.gpsPoints.size()<<endl;
+//                cout << "-----gps point size:------" << gpsInfo.pts_size()<<endl;
 
 //每一帧gps点集封装
-                for (int j = 1; j < gpsInfo.pts_size(); ++j) {
+                for (int j = 0; j < gpsInfo.pts_size(); j++) {
                     GPSPointEach gpsPointEach;
                     gpsPointEach.heading = gpsInfo.pts(j).heading();
                     gpsPointEach.gpstime = gpsInfo.pts(j).gpstime();
@@ -454,8 +464,17 @@ namespace ReadHDMap {
                     gpsPointEach.points.x = geom[0];
                     gpsPointEach.points.y = geom[1];
                     gpsPointEach.points.z = geom[2];
+//                    cout << "原始:" << gpsPointEach.points.x << " , " << gpsPointEach.points.y << " ," << gpsPointEach.points.z << endl;
+//                    坐标转换
+                    PointT pointT3 = transform2ENU(gpsPointEach.points);
+                    gpsPointEach.points.x = pointT3.x;
+                    gpsPointEach.points.y = pointT3.y;
+                    gpsPointEach.points.z = pointT3.z;
+
+//                    cout << "enu:" << pointT3.x << " , " <<pointT3.y << " ," << pointT3.z << endl;
                     gpsInfoEach.gpsPoints.push_back(gpsPointEach);
                     gpsPoint_vec.push_back(gpsPointEach);
+//                    transform2ENU(gpsPointEach);
                 }
                 gpsInfo_vec.push_back(gpsInfoEach);
 //                cout << "-----gpsPoint id------" << gpsPoint_vec.size() <<endl;
@@ -550,7 +569,7 @@ namespace ReadHDMap {
                 int nops = gpsFileNames[i].find_first_of(".");
                 string scene_id = gpsFileNames[i].substr(0, nops - 11);
 
-                if (scene_id.compare(scene_id2)) {
+                if (scene_id==scene_id2) {
 //                    cout << "查找到scene_id维 " << scene_id<< endl;
                     imageBatch.scene_id = scene_id2;
 
@@ -569,8 +588,6 @@ namespace ReadHDMap {
 //                    cout << "-----image_vec:------" << image_vec.size()<<endl;
 //                    imageBatch.images_vec = image_vec;
                     return true;
-                } else {
-                    return false;
                 }
             }
         } else {
@@ -679,7 +696,7 @@ namespace ReadHDMap {
                 int nops = gpsFileNames[i].find_first_of(".");
                 string scene_id = gpsFileNames[i].substr(0, nops - 11);
 
-                if (scene_id.compare(scene_id2)) {
+                if (scene_id==scene_id2) {
 //                    获取此帧的GPSInfo
                     gpsImageBatch.scene_id = scene_id2;
 //                    此帧的Point集合
@@ -728,7 +745,7 @@ namespace ReadHDMap {
 //           一帧divider_frames
             int index=0;
             for (int i = 0; i < dividerFileNames.size(); ++i) {
-                if (scene_id.compare(dividerFileNames[i])) {
+                if (scene_id==dividerFileNames[i]) {
 //                    找到此帧divider,开始解析
 //                    std::cout << "scene_id = dividerPerCapture_origin: " <<  flag<< endl;
                     index = i;
@@ -799,7 +816,7 @@ namespace ReadHDMap {
 //           一帧traffic_frames
             int index = 0;
             for (int i = 0; i < trafficFileNames.size(); ++i) {
-                if (scene_id.compare(trafficFileNames[i])) {
+                if (scene_id==trafficFileNames[i]) {
                     index = i;
 //                    cout << "获取成功" << endl;
                 }
@@ -894,6 +911,26 @@ namespace ReadHDMap {
             GPSInfoEach gpsInfo = getGPSInfoBySceneId(scene_id);
             detectionBatch.point = gpsInfo.gpsPoints[index];
         }
+    }
+
+    bool getIndexByImageId(string image_id, int & index)
+    {
+//        20190123112752_7ac6ab9d61d94314188426910d324c39_4_021
+        string scene_id = image_id.substr(0, image_id.length()-4);
+        cout << "scene_id:" << scene_id << endl;
+        ImageBatch imageBatch;
+        bool flag = getImageBatchBySceneId(scene_id,imageBatch);
+        vector<string> images_vec = imageBatch.images_vec;
+        cout << "image size:" << images_vec.size() << endl;
+        for (int i = 0; i < images_vec.size() ; i++) {
+            cout << "images_vec:" << images_vec[i] << " image_id:"<< image_id<<endl;
+
+            if (images_vec[i]==image_id)
+            {
+                index = i;
+            }
+        }
+//        return 0;
     }
 }
 
