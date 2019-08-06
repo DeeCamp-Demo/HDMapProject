@@ -366,22 +366,19 @@ namespace ReadHDMap {
         return readMap;
     }
 
-    GPSInfoEach getGPSInfoBySceneId(string scene_id) {
+    bool getGPSInfoBySceneId(string scene_id, GPSInfoEach &gps) {
 //        std::cout << "scene_id: " << scene_id << endl;
         string file_name = "../data/gps/" + scene_id + "deecamp_gps.pb";
 //        std::cout << "file_name: " << file_name << endl;
 
         fstream input_gps(file_name, ios::in | ios::binary);
         source::GPSInfo gpsInfo;
+        gpsInfo.ParseFromIstream(&input_gps);
+        source::GPSPoint gpsPoint;
 
         if (gpsInfo.scene_id()==scene_id) {
-            gpsInfo.ParseFromIstream(&input_gps);
-            source::GPSPoint gpsPoint;
-            gpsPoint.ParseFromIstream(&input_gps);
-
 //        一帧GPS数据信息
-            GPSInfoEach gpsInfoEach;
-            gpsInfoEach.scene_id = gpsInfo.scene_id();
+            gps.scene_id = gpsInfo.scene_id();
 
             for (int l = 0; l < gpsInfo.pts_size(); ++l) {
                 source::GPSPoint pts = gpsInfo.pts(l);
@@ -405,13 +402,13 @@ namespace ReadHDMap {
              /*   cout << "原始:" << gpsPointEach.points.x << " , " << gpsPointEach.points.y << " ," << gpsPointEach.points.z << endl;
                 cout << "enu:" << pointT3.x << " , " <<pointT3.y << " ," << pointT3.z << endl;*/
 
-                gpsInfoEach.gpsPoints.push_back(gpsPointEach);
+                gps.gpsPoints.push_back(gpsPointEach);
 
 //            std::cout << std::setprecision(14) <<geom[0] << " " << geom[1] << " " <<geom[2]<<endl;
 //            std::cout << "pts:" << pts.geometry().substr(9, 34)<< endl;
                 //        gpsInfoEach.gpsPoints.push_back(gpsPointEach);
             }
-            return gpsInfoEach;
+            return true;
         } else {
             std::cout << "不存在此帧数据: " << endl;
         }
@@ -640,7 +637,8 @@ namespace ReadHDMap {
                 }
                 calulate::sortedVector(image_vec);//图片编号排序
 //                读每一帧的gps点
-                GPSInfoEach gpsInfoEach = getGPSInfoBySceneId(scene_id);
+                GPSInfoEach gpsInfoEach;
+                bool flage = getGPSInfoBySceneId(scene_id, gpsInfoEach);
 
                 cout << "-----gpsInfoEach!------" << gpsInfoEach.gpsPoints.size() << "-------image------------"
                      << image_vec.size() << endl;
@@ -700,7 +698,9 @@ namespace ReadHDMap {
 //                    获取此帧的GPSInfo
                     gpsImageBatch.scene_id = scene_id2;
 //                    此帧的Point集合
-                    vector<GPSPointEach> gpsPointEach = getGPSInfoBySceneId(scene_id).gpsPoints;
+                    GPSInfoEach gpsInfoEach;
+                    bool flag = getGPSInfoBySceneId(scene_id, gpsInfoEach);
+                    vector<GPSPointEach> gpsPointEach = gpsInfoEach.gpsPoints;
                     int size = gpsPointEach.size();
                     if (size > 0 && index < size && index > 0) {
                         gpsImageBatch.gpsPoint.points = gpsPointEach[index].points;
@@ -725,63 +725,71 @@ namespace ReadHDMap {
      * @param detectionDividerPerCapture  收到的frame数据包
      * @return
      */
-    bool getDetectionDividerBySceneId(const string scene_id, DetectionDividerPerCapture &detectionDividerPerCapture) {
+    bool getDetectionDividerBySceneId(const string scene_id, DetectionDividerPerCapture &capture) {
         vector<string> dividerFileNames;//所有divider文件名
         vector<DetectionDividerPerFrame> detectionBatch_vec; //装好的scieId和Image集合
         bool flag = calulate::getAllFiles(detection_result_flie_folder + "/divider", dividerFileNames);
 //        获取文件名
         string divider_file_name = detection_result_flie_folder + "/divider/" + scene_id + "divider.pb";
-        std::cout << "divider_size: " << divider_file_name.size() << endl;
+//        std::cout << "divider_size: " << divider_file_name.size() << endl;
         fstream input_divider(divider_file_name, ios::in | ios::binary);
         hdmap::DividerPerCapture dividerPerCapture_origin;
-//       解析出来的PerCapture
         dividerPerCapture_origin.ParseFromIstream(&input_divider);
 //        遍历perCapure
-        std::cout << "divider_frames_size: " << dividerPerCapture_origin.divider_frames_size() << endl;
+//        std::cout << "divider_frames_size: " << dividerPerCapture_origin.divider_frames_size() << endl;
 
 
         if (flag) {
             vector<DetectionDividerPerFrame> dividerFrame_vec;
 //           一帧divider_frames
             int index=0;
+            bool flag=false;
             for (int i = 0; i < dividerFileNames.size(); ++i) {
-                if (scene_id==dividerFileNames[i]) {
+                string file_name = dividerFileNames[i].substr(0, dividerFileNames[i].length()-10);
+//                cout << "filenaem:" << file_name << endl;
+                if (scene_id==file_name) {
 //                    找到此帧divider,开始解析
-//                    std::cout << "scene_id = dividerPerCapture_origin: " <<  flag<< endl;
                     index = i;
+                    flag=true;
+//                    std::cout << "成功找到scene_id: " <<  file_name<< endl;
+//                    std::cout << "成功找到fileane: " <<  file_name<< endl;
+//                    std::cout << "成功找到index: " <<  index<< endl;
+
                 }
             }
 
-            if (index>0) {
+            if (flag) {
 //            解析此帧
-                vector<DetectionDividerPerFrame> dividerPerFrame_vec;
-                for (int j = 0; j < dividerPerCapture_origin.divider_frames_size(); ++j) {
-                    DetectionDividerPerFrame dividerPerFrame;
-                    dividerPerFrame.frame_id = j;
-                    for (int i = 0; i < dividerPerCapture_origin.divider_frames(j).dividers_size(); ++i) {
-                        DividerEach dividerEach;
-                        dividerEach.id = dividerPerCapture_origin.divider_frames(j).dividers(i).id();
-                        dividerEach.type = dividerPerCapture_origin.divider_frames(j).dividers(i).type();
-                        dividerEach.occlusion = dividerPerCapture_origin.divider_frames(j).dividers(i).occlusion();
-                        dividerEach.color = dividerPerCapture_origin.divider_frames(j).dividers(i).color();
 
-                        string geomery = dividerPerCapture_origin.divider_frames(j).dividers(i).geometry();
+//                解析frame
+                DetectionDividerPerFrame dividerPerFrame;
+                for (int j = 0; j < dividerPerCapture_origin.divider_frames_size(); ++j) {
+                    hdmap::DividerPerFrame frame= dividerPerCapture_origin.divider_frames(j);
+//                    解析divider
+                    for (int i = 0; i < frame.dividers_size(); ++i) {
+                        DividerEach dividerEach;
+                        dividerEach.id = frame.dividers(i).id();
+                        dividerEach.type = frame.dividers(i).type();
+                        dividerEach.occlusion = frame.dividers(i).occlusion();
+                        dividerEach.color = frame.dividers(i).color();
+
+                        string geomery = frame.dividers(i).geometry();
 //                        cout << "geomery" << geomery << endl;
                         vector<double> geom;
                         calulate::extractFiguresFromStr2Vec(geomery, geom);
-                        for (int k = 0; k < geom.size(); ++k) {
+                        for (int k = 0; k < geom.size()/2; k++) {
                             PointT point;
                             point.x = geom[2 * k];
                             point.y = geom[2 * k + 1];
                             dividerEach.points_vec.push_back(point);
                         }
-//                        std::cout << "points_size: " << dividerEach.divider_vec.size() << endl;
+//                        std::cout << "points_size: " << dividerEach.points_vec.size() << endl;
                         dividerPerFrame.dividerEach_vec.push_back(dividerEach);
                     }
-                    detectionDividerPerCapture.dividerPerFrame_vec.push_back(dividerPerFrame);
+                    capture.dividerPerFrame_vec.push_back(dividerPerFrame);
 //                    std::cout << "divider_size: " << dividerPerFrame.dividerEach_vec.size() << endl;
                 }
-//                std::cout << "dividerPerFrame_vec_size: " << detectionDividerPerCapture.dividerPerFrame_vec.size() << endl;
+                std::cout << "dividerPerFrame_vec_size: " << capture.dividerPerFrame_vec.size() << endl;
             } else{
                 cout << "未找到此帧数据" << endl;
             }
@@ -795,7 +803,7 @@ namespace ReadHDMap {
      * @param detectionTrafficPerCapture
      * @return
      */
-    bool getDetctionTrafficlights(const string scene_id, DetectionTrafficPerCapture &detectionTrafficPerCapture)
+    bool getDetctionTrafficlights(const string scene_id, DetectionTrafficPerCapture &capture)
     {
 //        获取文件夹列表并排序
         vector<string> trafficFileNames;//所有divider文件名
@@ -810,27 +818,33 @@ namespace ReadHDMap {
         trafficLightPerCapture_origin.ParseFromIstream(&input_traffic);
 //        遍历perCapure
 //        std::cout << "traffic_frames_size: " << trafficLightPerCapture_origin.traffic_light_frames_size() << endl;
-
+//20190123112752_7ac6ab9d61d94314188426910d324c39_4detect_trafficlight.pb
         if (flag) {
             vector<DetectionDividerPerFrame> trafficFrame_vec;
 //           一帧traffic_frames
+            bool flag2 = false;
             int index = 0;
             for (int i = 0; i < trafficFileNames.size(); ++i) {
-                if (scene_id==trafficFileNames[i]) {
+                string file_name = trafficFileNames[i].substr(0, trafficFileNames[i].length()-22);
+                if (scene_id==file_name) {
                     index = i;
-//                    cout << "获取成功" << endl;
+                    flag2 = true;
+//                    std::cout << "成功找到scene_id2: " <<  file_name<< endl;
+//                    std::cout << "成功找到fileane2: " <<  file_name<< endl;
+//                    std::cout << "成功找到index2: " <<  index<< endl;
                 }
             }
 
-            if (index>0) {
+            if (index>0 && flag2) {
                 vector<DetectionDividerPerFrame> trafficPerFrame_vec;
                 for (int j = 0; j < trafficLightPerCapture_origin.traffic_light_frames_size(); ++j) {
+                    hdmap::TrafficLightPerFrame frame = trafficLightPerCapture_origin.traffic_light_frames(j);
+
                     DetectionTrafficPerFrame trafficPerFrame;
-                    trafficPerFrame.frame_id = trafficLightPerCapture_origin.traffic_light_frames(j).frame_id();
-                    for (int i = 0;i < trafficLightPerCapture_origin.traffic_light_frames(j).traffic_lights_size(); ++i) {
+                    trafficPerFrame.frame_id = frame.frame_id();
+                    for (int i = 0;i < frame.traffic_lights_size(); i++) {
                         TrafficLightEachShow trafficLightEach;
-                        hdmap::TrafficLight trafficLight_origin = trafficLightPerCapture_origin.traffic_light_frames(
-                                j).traffic_lights(i);
+                        hdmap::TrafficLight trafficLight_origin = frame.traffic_lights(i);
                         trafficLightEach.id = trafficLight_origin.id();
                         trafficLightEach.motor_type = trafficLight_origin.motor_type();
 //                       计算traffic geomery
@@ -838,7 +852,7 @@ namespace ReadHDMap {
                         vector<double> geom;
                         vector<PointT> trafficLightEach_point_vec;
                         calulate::extractFiguresFromStr2Vec(geomery, geom);
-                        for (int k = 0; k < geom.size(); ++k) {
+                        for (int k = 0; k < geom.size()/2; ++k) {
                             PointT point;
                             point.x = geom[2 * k];
                             point.y = geom[2 * k + 1];
@@ -869,7 +883,7 @@ namespace ReadHDMap {
                         trafficPerFrame.trafficLight_vec.push_back(trafficLightEach);
 //                        std::cout << "light_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
                     }
-                    detectionTrafficPerCapture.trafficPerFrame_vec.push_back(trafficPerFrame);
+                    capture.trafficPerFrame_vec.push_back(trafficPerFrame);
 //                    std::cout << "trafficLight_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
                 }
 //                cout << "trafficPerFrame_vec_size: " << trafficFrame_vec.size() << endl;
@@ -884,7 +898,7 @@ namespace ReadHDMap {
     /**
      * 取一个GPS点对应的图片的所有检测结果
      */
-     bool getAllDetectionBatchByIndex( string scene_id, int index,DetchBatch &detectionBatch)
+     bool getAllDetectionBatchByIndex( string scene_id, int index,DetchBatch &batch)
     {
 //        遍历pb
         GpsImageBatch gpsImageBatch;
@@ -900,16 +914,17 @@ namespace ReadHDMap {
         {
             DetectionTrafficPerFrame trafficPerFrame = detectionTrafficPerCapture.trafficPerFrame_vec[index];
             DetectionDividerPerFrame dividerPerFrame = detectionDividerPerCapture.dividerPerFrame_vec[index];
-            detectionBatch.scene_id = scene_id;
-            detectionBatch.dividerPerFrame.dividerEach_vec = dividerPerFrame.dividerEach_vec;
-            detectionBatch.trafficPerFrame.trafficLight_vec = trafficPerFrame.trafficLight_vec;
+            batch.scene_id = scene_id;
+            batch.dividerPerFrame.dividerEach_vec = dividerPerFrame.dividerEach_vec;
+            batch.trafficPerFrame.trafficLight_vec = trafficPerFrame.trafficLight_vec;
 
             ImageBatch imageBatch;
             getImageBatchBySceneId(scene_id, imageBatch);
-            detectionBatch.image_name = imageBatch.images_vec[index];
+            batch.image_name = imageBatch.images_vec[index];
 
-            GPSInfoEach gpsInfo = getGPSInfoBySceneId(scene_id);
-            detectionBatch.point = gpsInfo.gpsPoints[index];
+            GPSInfoEach gpsInfo;
+            bool flag= getGPSInfoBySceneId(scene_id, gpsInfo);
+            batch.point = gpsInfo.gpsPoints[index];
         }
     }
 
