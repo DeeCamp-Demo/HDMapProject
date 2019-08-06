@@ -66,8 +66,9 @@ int main() {
     double pitch = fSettings["Cam.pitch"];
     double roll = fSettings["Cam.roll"];
 
-    pitch = pitch + M_PI/2.0;
+    pitch = pitch - M_PI/2.0;
 
+    // +号 -值在上有较好的效果
     // 这里的K和distCoeffs都是全局变量
     K = (cv::Mat_<double>(3, 3) <<
                                fx, 0.0, cx,
@@ -83,7 +84,7 @@ int main() {
     cv::Mat mRbw;
     Utils poseCompute;
 
-    Eigen::Vector3d ea0(roll,pitch,yaw);
+    Eigen::Vector3d ea0(yaw,pitch,roll);
     Eigen::Matrix3d Rcb;
     cv::Mat mRcb;
     Rcb = Eigen::AngleAxisd(ea0[0], Eigen::Vector3d::UnitZ())*Eigen::AngleAxisd(ea0[1], Eigen::Vector3d::UnitY())*Eigen::AngleAxisd(ea0[2], Eigen::Vector3d::UnitX());
@@ -92,7 +93,14 @@ int main() {
 
     mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
     mTcb.row(2).col(3) = 1.32;
-    std::cout<<"mTcb: "<<mTcb<<std::endl;
+//    std::cout<<"mTcb: "<<mTcb<<std::endl;
+    //////////////////////////////////////////////////////////
+    cv::Mat Rall = (cv::Mat_<double>(3, 3) <<
+            cos(yaw), -sin(yaw)*cos(pitch), sin(yaw)*sin(pitch),
+            sin(yaw), cos(yaw)*cos(pitch), -cos(yaw)*sin(pitch),
+            0.0, sin(pitch), cos(pitch));
+    std::cout<<"Rall: "<<Rall<<std::endl;
+
 
     //////////////////////////////////////////////////////////
 
@@ -126,12 +134,13 @@ int main() {
         scene_point_start.set_z(points_GPS[k].points.z);
         transform.convertCJC02ToENU(scene_point_start, enu_coord_1, original);
 //        std::cout<<"GPS 2:"<<points[k].points.x<<" "<<points[k].points.y<<" "<<points[k].points.z<<std::endl;
-        std::cout<<"enu_coord: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
+//        std::cout<<"enu_coord: "<<enu_coord_1.get_x()<<" "<<enu_coord_1.get_y()<<" "<<enu_coord_1.get_z()<<std::endl;
 
 
         //std::cout<<"delta_angle: "<<header_angle<<std::endl;
         cv::Mat tempRstart = poseCompute.convertAngleToR(header_angle);
         tempRstart.copyTo(pose.rowRange(0, 3).colRange(0, 3));
+//        std::cout<<"tempRstart: "<<tempRstart<<std::endl;
         pose.row(0).col(3) = enu_coord_1.get_x();
         pose.row(1).col(3) = enu_coord_1.get_y();
         pose.row(2).col(3) = 0;
@@ -142,8 +151,9 @@ int main() {
             for (int j = 0; j <points_uv.size() ; j++) {
                 PointT cameraPoint = pixel2Cam(points_uv[j], K);
                 cv::Mat Point3dCam = (cv::Mat_<double>(3, 1) << cameraPoint.x, cameraPoint.y, cameraPoint.z);
-                std::cout<<"cameraPoint: "<<cameraPoint.x<<" "<<cameraPoint.y<<" "<<cameraPoint.z<< std::endl;
-                cv::Mat tempCam = (mTcb.rowRange(0, 3).colRange(0, 3)).inv()*Point3dCam;
+//                std::cout<<"cameraPoint: "<<cameraPoint.x<<" "<<cameraPoint.y<<" "<<cameraPoint.z<< std::endl;
+//                cv::Mat tempCam = (mTcb.rowRange(0, 3).colRange(0, 3)).inv()*Point3dCam;
+                cv::Mat tempCam = Rall.inv()*Point3dCam;
 //                cv::Mat tempAdd = (mTcb.rowRange(0, 3).colRange(0, 3)).t()*mTcb.col(3).rowRange(0, 3);
                 std::cout<<"temp 1: "<<tempCam<<std::endl;
 //                tempCam = tempCam * (tempAdd.row(2)/tempCam.row(2));
@@ -152,11 +162,7 @@ int main() {
 //                std::cout<<"tempCam 1: "<<tempCam<<std::endl;
                 tempCam.row(2) = 0;
 //                tempCam.copyTo(mTcam.col(0).rowRange(0, 3));
-                double tempValue;
-                tempValue = tempCam.at<double>(1);
-                tempCam.row(1) = tempCam.row(0);
-                tempCam.row(0) = tempValue;
-                std::cout<<"tempCam 2: "<<tempCam<<std::endl;
+//                std::cout<<"tempCam 2: "<<tempCam<<std::endl;
 //                std::cout<<"mTcam: "<<mTcam<<std::endl;
 //                driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).t() * (tempCam - pose.col(3).rowRange(0, 3));
                 driverlineENU = (pose.rowRange(0, 3).colRange(0, 3)).inv() * tempCam + pose.col(3).rowRange(0, 3);
@@ -164,7 +170,7 @@ int main() {
 //                std::cout<<"driverlineENU: "<<driverlineENU<<std::endl;
                 driverline_ENU.set_x(driverlineENU.at<double>(0));
                 driverline_ENU.set_y(driverlineENU.at<double>(1));
-                std::cout<<" driver_ENU: "<<driverline_ENU.get_x()<<" "<<driverline_ENU.get_y()<<std::endl;
+//                std::cout<<" driver_ENU: "<<driverline_ENU.get_x()<<" "<<driverline_ENU.get_y()<<std::endl;
 //                f << std::setprecision(11) <<enu_coord_1.get_x() << " "<< enu_coord_1.get_y()<<" ";
 //                f << std::setprecision(11) <<driverline_ENU.get_x()<< " "<< driverline_ENU.get_y()<<std::endl;
 //                std::cout<<"temp 2: "<<temp<<std::endl;
