@@ -242,7 +242,7 @@ int main(){
 
     PointT pointT = ReadHDMap::transform2ENU(point);
     cout << pointT.x << "," << pointT.y << "," << pointT.z;*/
->>>>>>> 9bebbeeed6204855a1f0ec53a5908938c1e64972
+
 
 /************************************************************************************************************
  *    根据scene_id获取GPS数据
@@ -338,15 +338,24 @@ int main(){
     bool flag8 = ReadHDMap::getDetctionTrafficlights("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4", detectionTrafficPerCapture);
     TrafficLightEachShow &trafficLightEachShow = detectionTrafficPerCapture.trafficPerFrame_vec[0].trafficLight_vec[0];
     cout<<"traffic_light geomery:" <<trafficLightEachShow.point_vec.size() << endl;*/
+
 /************************************************************************************************************
   *   根据image_name/scene_id+index获取指定帧的gps 及检测中心结果
   ************************************************************************************************************/
     DetchBatch detchBatch;
-    bool flag8 = ReadHDMap::getAllDetectionBatchByIndex("20190130161123_c6a0dc163825d772bed42152c9e9b9f0_4",0, detchBatch);
+    bool flag9 = ReadHDMap::getAllDetectionBatchByIndex(scene_id, 2, detchBatch);
+
+    vector<DividerEach> divider_vec = detchBatch.dividerPerFrame.dividerEach_vec;
+    for (int i = 0; i < divider_vec.size(); ++i) {
+        vector<PointT> points =divider_vec[i].points_vec;
+        for (int j = 0; j < points.size(); ++j) {
+            points[j].x;
+        }
+    }
+
     cout<<"batch point:" <<detchBatch.point.points.x <<" " <<detchBatch.point.points.y<<" " <<detchBatch.point.points.z << endl;
     cout<<"batch image_name:" <<detchBatch.image_name <<endl;
     cout <<"trafficPerFrame " << detchBatch.trafficPerFrame.trafficLight_vec.size() << endl;
     cout <<"dividerPerFrame " << detchBatch.dividerPerFrame.dividerEach_vec.size() << endl;
 
     return 0;
-}

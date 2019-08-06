@@ -11,7 +11,15 @@
 #include "proto/TrafficLight.pb.h"
 #include "tiff.h"
 #include <vector>
-#include "utils/Utils.h"
+#include "Utils.h"
+#include<iostream>
+#include <vector>
+#include <fstream>
+#include <opencv2/opencv.hpp>
+//#include "consts.h"
+using namespace std;
+using namespace cv;
+//#include "read_detection.h"
 
 //点位置
 typedef struct{
@@ -26,7 +34,7 @@ typedef struct{
     //编号
     int32  id;
 //位置WKT
-    vector <PointT>  divider_vec;
+    vector <PointT>  points_vec;
 //    string geometry;
 //颜色，0：未知；1：白色；2：黄色
     int32  color;
@@ -184,6 +192,7 @@ typedef struct {
     DetectionTrafficPerFrame trafficPerFrame;
     DetectionDividerPerFrame dividerPerFrame;
 }DetchBatch;
+
 
 namespace ReadHDMap {
     const string gps_file_folder = "../data/gps";
@@ -348,7 +357,7 @@ namespace ReadHDMap {
                 point3.y = geom[i * 3 + 1];
                 point3.z = geom[i * 3 + 2];
                 PointT pointT3 = transform2ENU(point3);
-                dividerEach.divider_vec.push_back(pointT3);
+                dividerEach.points_vec.push_back(pointT3);
 //                cout << "----divider pointT-----" << dividerEach.divider_vec[i].x << " ," << dividerEach.divider_vec[i].y << " , " << dividerEach.divider_vec[i].z << endl;
             }
 //        cout << "----id----"<< dividerEach.id << endl;
@@ -474,7 +483,8 @@ namespace ReadHDMap {
         bool flag = calulate::getAllFiles(gps_file_folder, gpsFileNames);
         bool flag2 = calulate::getAllFiles(images_file_folder, imagesFileNames);
 
-        if (flag == 0 && flag2 == 0) {
+//        cout<<"flag1:"<< flag <<" flag2:"<< flag2<<endl;
+        if (flag && flag2) {
             //// 读取之后对vector内的image和gps进行排序
             calulate::sortedVector(gpsFileNames);
             calulate::sortedVector(imagesFileNames);
@@ -514,7 +524,6 @@ namespace ReadHDMap {
             cout << "fileName为空" << endl;
             return false;
         }
-//        return dataFiles;
     }
 
     /**
@@ -747,7 +756,7 @@ namespace ReadHDMap {
                             PointT point;
                             point.x = geom[2 * k];
                             point.y = geom[2 * k + 1];
-                            dividerEach.divider_vec.push_back(point);
+                            dividerEach.points_vec.push_back(point);
                         }
 //                        std::cout << "points_size: " << dividerEach.divider_vec.size() << endl;
                         dividerPerFrame.dividerEach_vec.push_back(dividerEach);
@@ -792,7 +801,7 @@ namespace ReadHDMap {
             for (int i = 0; i < trafficFileNames.size(); ++i) {
                 if (scene_id.compare(trafficFileNames[i])) {
                     index = i;
-                    cout << "获取成功" << endl;
+//                    cout << "获取成功" << endl;
                 }
             }
 
@@ -841,12 +850,12 @@ namespace ReadHDMap {
                             light_vec.push_back(lightEach);
                         }
                         trafficPerFrame.trafficLight_vec.push_back(trafficLightEach);
-                        std::cout << "light_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
+//                        std::cout << "light_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
                     }
                     detectionTrafficPerCapture.trafficPerFrame_vec.push_back(trafficPerFrame);
-                    std::cout << "trafficLight_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
+//                    std::cout << "trafficLight_vec_size: " << trafficPerFrame.trafficLight_vec.size() << endl;
                 }
-                cout << "trafficPerFrame_vec_size: " << trafficFrame_vec.size() << endl;
+//                cout << "trafficPerFrame_vec_size: " << trafficFrame_vec.size() << endl;
                 return true;
             } else{
                 cout << "未找到此帧数据" << endl;
