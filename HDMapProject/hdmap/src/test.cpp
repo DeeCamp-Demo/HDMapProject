@@ -6,9 +6,10 @@
 //#include "utils/read_detection.h"
 //#include "utils/build_depth.h"
 #include "utils/container.h"
+#include "utils/pix2enu.h"
 using namespace std;
 
-cv::Mat K;
+//cv::Mat K;
 cv::Mat distCoeffs;
 cv::Mat Rcb;
 //cv::Mat mTcb = cv::Mat::eye(4, 4, CV_64F);
@@ -208,7 +209,7 @@ int main() {
  *    根据scene_id获取GPS数据
  ************************************************************************************************************/
 //    取GPS第一个点 (起始位置)
-    vector<GPSInfoEach> gpsInfo_vec;
+/*    vector<GPSInfoEach> gpsInfo_vec;
     bool flag = ReadHDMap::getGPSInfo(gpsInfo_vec);
 
 //    string txt_name = "/home/catalina/gps.txt";
@@ -228,7 +229,7 @@ int main() {
         }
 
     }
-    file.close();
+    file.close();*/
 //}
 //    cout << "finished writing " << img_3d.points.size() << " points into " << txt_name << endl;
 
@@ -352,9 +353,19 @@ int main() {
   *   根据image_name/scene_id+index获取指定帧的gps 及检测中心结果
   ************************************************************************************************************/
 
-    int index;
+/*    int index;
     bool flsg = ReadHDMap::getIndexByImageId("20190123112752_7ac6ab9d61d94314188426910d324c39_4_021",index);
-    cout << "index " << index;
+    cout << "index " << index;*/
+
+/************************************************************************************************************
+  *   根据image_name/scene_id+index获取指定帧的divider检测中心结果
+  ************************************************************************************************************/
+    vector<DividerEach> divider_vec;
+    pix2enu2(divider_vec, scene_id, 3);
+    for (int i = 0; i < divider_vec.size() ; ++i) {
+        vector<PointT> points_vec = divider_vec[i].points_vec;
+        cout << " divider points size:" << divider_vec[i].points_vec.size() << endl;
+    }
 /*
     DetchBatch detchBatch;
     bool flag9 = ReadHDMap::getAllDetectionBatchByIndex(scene_id, 2, detchBatch);

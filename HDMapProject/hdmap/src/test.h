@@ -8,7 +8,6 @@
 
 #ifndef HDMAP_TEST_H
 #define HDMAP_TEST_H
-
 //其中d_type表明该文件的类型：文件(8)、目录(4)、链接文件(10)等
 class test {
 public:

@@ -118,6 +118,8 @@ public:
     cv::Mat updatePose(cv::Mat pose, double header_former, double header_now, double t[3]);
 
 
+
+
 private:
     const double PI = 3.14159265358979324;//圆周率
     const double a = 6378245.0;//克拉索夫斯基椭球参数长半轴a

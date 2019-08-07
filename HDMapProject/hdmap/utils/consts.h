@@ -68,6 +68,18 @@ typedef struct {
     Mat pose; //RT
     vector<Point3D> points;
 } Image3D;
+typedef struct{
+    double x;
+    double y;
+    int label;
+}PointDouble;
+
+typedef struct{
+    double x;
+    double y;
+    double z;
+    int label;
+}PointDepth;
 
 
 #endif /* consts_h */

@@ -411,6 +411,7 @@ namespace ReadHDMap {
             return true;
         } else {
             std::cout << "不存在此帧数据: " << endl;
+            return false;
         }
 
 
@@ -789,7 +790,7 @@ namespace ReadHDMap {
                     capture.dividerPerFrame_vec.push_back(dividerPerFrame);
 //                    std::cout << "divider_size: " << dividerPerFrame.dividerEach_vec.size() << endl;
                 }
-                std::cout << "dividerPerFrame_vec_size: " << capture.dividerPerFrame_vec.size() << endl;
+//                std::cout << "dividerPerFrame_vec_size: " << capture.dividerPerFrame_vec.size() << endl;
             } else{
                 cout << "未找到此帧数据" << endl;
             }

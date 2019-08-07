@@ -23,7 +23,7 @@ using namespace std;
 #include <boost/timer.hpp>
 
 // for sophus 
-#include <sophus/se3.h>
+#include "sophus/se3.h"
 using Sophus::SE3;
 
 // for eigen 

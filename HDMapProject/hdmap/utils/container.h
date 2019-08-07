@@ -5,7 +5,7 @@
 #ifndef DEECAMP_CONTAINER_H
 #define DEECAMP_CONTAINER_H
 
-#include <sophus/se3.h>
+#include "sophus/se3.h"
 using Sophus::SE3;
 
 // for eigen
@@ -17,8 +17,6 @@ using namespace Eigen;
 #include "Utils.h"
 #include <math.h>
 #include <iomanip>
-#include <consts.h>
-#include <read_hdmap.h>
 #include "read_hdmap.h"
 #include "build_depth.h"
 #include "read_detection.h"
@@ -26,6 +24,11 @@ using namespace Eigen;
 
 cv::Mat mTcb = cv::Mat::eye(4, 4, CV_64F);
 cv::Mat pose = cv::Mat::eye(4, 4, CV_64F);
+string double2Str(double& value) {
+    ostringstream oss;
+    oss << value;
+    return oss.str();
+}
 
 
 // get poses by scene_id corresponding to gps
@@ -37,7 +40,8 @@ vector<cv::Mat> getPosesBySceneId(string& scene_id, Utils::new3s_PointXYZ& origi
 
     //根据scene_id显示此帧gps数据点
     Utils::new3s_PointXYZ  scene_point_start;
-    GPSInfoEach gpsInfoEach = ReadHDMap::getGPSInfoBySceneId(scene_id);
+    GPSInfoEach gpsInfoEach;
+    bool flag = ReadHDMap::getGPSInfoBySceneId(scene_id,gpsInfoEach);
     vector<GPSPointEach> points = gpsInfoEach.gpsPoints;
 
     for (int k = 0; k < points.size(); ++k) {
@@ -183,7 +187,9 @@ void getDepthMapOfSingleImage(int gps_index, int ref_img_index, vector<ImageBatc
     vector<PointInt> points_target;
 
     getImagePathsAndPoses(gps_index, ref_img_index, imageBatch_vec, original, ref_img_path, curr_img_paths, ref_pose, curr_poses);
+//    换成中间结果
     bool flag_detection = readDetectionFiles(ref_img_path, points_target);
+//    换
     if (flag_detection) {
         cout << "Successfully detected traffic light or road lane!" << endl;
     }
@@ -197,7 +203,6 @@ void getDepthMapOfSingleImage(int gps_index, int ref_img_index, vector<ImageBatc
     //    std::cout << "curr_img_path: " << curr_img_paths[i] << endl;
     //    std::cout << "curr_pose: " << curr_poses[i] << endl;
     //}
-
 
     /*********** get "ref & currs" from "ref_img_path & curr_img_paths" ************/
     string ref_img_name = "../data/images/" + ref_img_path + ".jpeg";
