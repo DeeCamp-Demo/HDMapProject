@@ -26,7 +26,7 @@ set(HDR_FILES
         utils/read_hdmap.h
         utils/calulate.h src/test.h
         utils/Utils.h
-        )
+        utils/pix2enu.h)
 add_definitions(${PCL_DEFINITIONS})
 
 PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HDR ${PROTO_FILES})
@@ -36,9 +36,9 @@ target_include_directories(${PROJECT_NAME}
         PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
         PUBLIC ${PROTOBUF_INCLUDE_DIRS}
-#        ${Sophus_INCLUDE_DIRS}
+        #        ${Sophus_INCLUDE_DIRS}
         )
 target_link_libraries(${PROJECT_NAME} ${PROTOBUF_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARY_DIRS}
-        ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${Sophus_LIBRARIES} /usr/local/lib/libSophus.so
+        ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${Sophus_LIBRARIES}#[[ /usr/local/lib/libSophus.so]]
         )
 
