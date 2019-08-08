@@ -8,3 +8,4 @@
 
 # for Clion
 .idea*
+/HDMapProject/hdmap/cmake-build-debug/
