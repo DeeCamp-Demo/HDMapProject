@@ -28,8 +28,7 @@ Point2f pixel2cam ( const Point2d& p, const Mat& K )
 
 //根据输入的两张mat图片，进行orb关键点选取和匹配（基于BRIEF描述子之间的距离）
 void find_feature_matches ( const Mat& img_1, const Mat& img_2, vector<KeyPoint>& keypoints_1,
-                            vector<KeyPoint>& keypoints_2, vector< DMatch >& good_matches )
-{
+                            vector<KeyPoint>& keypoints_2, vector< DMatch >& good_matches ) {
     //-- 初始化
     Mat descriptors_1, descriptors_2;
     Ptr<FeatureDetector> detector = FeatureDetector::create ( "ORB" );
@@ -73,8 +72,11 @@ void find_feature_matches ( const Mat& img_1, const Mat& img_2, vector<KeyPoint>
     Mat img_goodmatch;
     drawMatches ( img_1, keypoints_1, img_2, keypoints_2, matches, img_match );
     drawMatches ( img_1, keypoints_1, img_2, keypoints_2, good_matches, img_goodmatch );
-    imshow ( "所有匹配点对", img_match );
+    //imshow ( "所有匹配点对", img_match );
+//    namedWindow("优化后匹配点对", 0);
+    cvResizeWindow("优化后匹配点对", 1500, 1200);
     imshow ( "优化后匹配点对", img_goodmatch );
+    //imwrite("../depth_results/vo/good_matches.png", img_goodmatch);
     waitKey(0);
 }
 
@@ -82,8 +84,7 @@ void find_feature_matches ( const Mat& img_1, const Mat& img_2, vector<KeyPoint>
 // 这里有一些参数需要修改！！！
 // 根据匹配到的matches, 将相对的R,t求出来。（此时的t是归一化之后得到的）
 void pose_estimation_2d2d (const vector<KeyPoint>& keypoints_1, const vector<KeyPoint>& keypoints_2,
-                           const vector< DMatch >& matches, Mat& R, Mat& t, Mat& K )
-{
+                           const vector< DMatch >& matches, Mat& R, Mat& t, Mat& K) {
     //-- 把匹配点转换为vector<Point2f>的形式
     vector<Point2f> points1;
     vector<Point2f> points2;
@@ -93,8 +94,6 @@ void pose_estimation_2d2d (const vector<KeyPoint>& keypoints_1, const vector<Key
         points2.push_back ( keypoints_2[matches[i].trainIdx].pt );
     }
 
-    //    Mat K = ( Mat_<double> ( 3,3 ) << 520.9, 0, 325.1, 0, 521.0, 249.7, 0, 0, 1 );
-
     //-- 计算基础矩阵
     Mat fundamental_matrix;
     fundamental_matrix = findFundamentalMat ( points1, points2, CV_FM_8POINT );
@@ -102,9 +101,10 @@ void pose_estimation_2d2d (const vector<KeyPoint>& keypoints_1, const vector<Key
 
     //-- 计算本质矩阵
     Point2d principal_point ( K.at<double>(0, 2), K.at<double>(1, 2) );
-    double focal_length = (K.at<double>(0,0) + K.at<double>(1,1)) / 2;	//根据经验定的(fx + fy) / 2;        					                                    //相机焦距, TUM dataset标定值
+//    double focal_length = (K.at<double>(0,0) + K.at<double>(1,1)) / 2;        					                                    //相机焦距, TUM dataset标定值
     Mat essential_matrix;
-    essential_matrix = findEssentialMat ( points1, points2, focal_length, principal_point );
+//    essential_matrix = findEssentialMat ( points1, points2, focal_length, principal_point );
+    essential_matrix = findEssentialMat ( points1, points2, K.at<double>(0,0), K.at<double>(1,1), principal_point );
     cout<<"essential_matrix is "<<endl<< essential_matrix<<endl;
 
     //-- 计算单应矩阵
@@ -113,29 +113,28 @@ void pose_estimation_2d2d (const vector<KeyPoint>& keypoints_1, const vector<Key
     cout<<"homography_matrix is "<<endl<<homography_matrix<<endl;
 
     //-- 从本质矩阵中恢复旋转和平移信息.
-    recoverPose ( essential_matrix, points1, points2, R, t, focal_length, principal_point );
+//    recoverPose ( essential_matrix, points1, points2, R, t, focal_length, principal_point );
+    recoverPose ( essential_matrix, points1, points2, R, t, K.at<double>(0,0), K.at<double>(1,1), principal_point );
     cout<<"R is "<<endl<<R<<endl;
     cout<<"t is "<<endl<<t<<endl;
 }
 
 //三角化计算深度, 但要考虑如何融入实际我们计算的R, t的绝对尺度。
 void triangulation (const vector< KeyPoint >& keypoint_1, const vector< KeyPoint >& keypoint_2, const Mat& K,
-                    const std::vector< DMatch >& matches, const Mat& R, const Mat& t, vector< Point3d >& points )
+                    const std::vector< DMatch >& matches, const Mat& T1, const Mat& T2, vector< Point3d >& points)
 {
-    Mat T1 = (Mat_<float> (3,4) <<
-            1,0,0,0,
-            0,1,0,0,
-            0,0,1,0);
-    Mat T2 = (Mat_<float> (3,4) <<
-            R.at<double>(0,0), R.at<double>(0,1), R.at<double>(0,2), t.at<double>(0,0),
-            R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2), t.at<double>(1,0),
-            R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2), t.at<double>(2,0)
-    );
+//    Mat T1 = (Mat_<float> (3,4) <<
+//            1,0,0,0,
+//            0,1,0,0,
+//            0,0,1,0);
+//    Mat T2 = (Mat_<float> (3,4) <<
+//            R.at<double>(0,0), R.at<double>(0,1), R.at<double>(0,2), t.at<double>(0,0),
+//            R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2), t.at<double>(1,0),
+//            R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2), t.at<double>(2,0)
+//    );
 
-//    Mat K = ( Mat_<double> ( 3,3 ) << 520.9, 0, 325.1, 0, 521.0, 249.7, 0, 0, 1 );
     vector<Point2f> pts_1, pts_2;
-    for ( DMatch m:matches )
-    {
+    for ( DMatch m:matches ) {
         // 将像素坐标转换至相机坐标
         pts_1.push_back ( pixel2cam( keypoint_1[m.queryIdx].pt, K) );
         pts_2.push_back ( pixel2cam( keypoint_2[m.trainIdx].pt, K) );
@@ -148,7 +147,7 @@ void triangulation (const vector< KeyPoint >& keypoint_1, const vector< KeyPoint
     for ( int i=0; i<pts_4d.cols; i++ )
     {
         Mat x = pts_4d.col(i);
-        x /= x.at<float>(3,0); // 归一化  //将绝对尺度拿到这里来？
+        x /= x.at<float>(3,0); // 归一化
         Point3d p (
                 x.at<float>(0,0),
                 x.at<float>(1,0),
@@ -158,41 +157,36 @@ void triangulation (const vector< KeyPoint >& keypoint_1, const vector< KeyPoint
     }
 }
 
-void calDepthByTriangulation(Mat& img_1, Mat& img_2, Mat& K, Mat& R, Mat& t, Mat& t_abs, vector<Point3d>& points) {
-    //-- 提取图像中的特征点且初步筛选
-    vector<KeyPoint> keypoints_1, keypoints_2;
-    vector<DMatch> good_matches;
-    find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, good_matches ); //matches在该函数内部定义的
-    cout<<"一共找到了" << good_matches.size() <<"组匹配点"<<endl;
+//    R1 = (Mat_<double> (3,3) <<
+//            pose1.at<double>(0,0), pose1.at<double>(0,1), pose1.at<double>(0,2),
+//            pose1.at<double>(1,0), pose1.at<double>(1,1), pose1.at<double>(1,2),
+//            pose1.at<double>(2,0), pose1.at<double>(2,1), pose1.at<double>(2,2));
+//    T1 = (Mat_<double> (3,4) <<
+//            pose1.at<double>(0,0), pose1.at<double>(0,1), pose1.at<double>(0,2), pose1.at<double>(0,3) ,
+//            pose1.at<double>(1,0), pose1.at<double>(1,1), pose1.at<double>(1,2), pose1.at<double>(1,3),
+//            pose1.at<double>(2,0), pose1.at<double>(2,1), pose1.at<double>(2,2), pose1.at<double>(2,3));
+//    T1 = K * T1;
+//    T1 = (Mat_<double> (3,4) <<
+//            R1.at<double>(0,0), R1.at<double>(0,1), R1.at<double>(0,2), pose1.at<double>(0,3),
+//            R1.at<double>(1,0), R1.at<double>(1,1), R1.at<double>(1,2), pose1.at<double>(1,3),
+//            R1.at<double>(2,0), R1.at<double>(2,1), R1.at<double>(2,2), pose1.at<double>(2,3));
 
-    //-- 估计两张图像间运动
-    pose_estimation_2d2d ( keypoints_1, keypoints_2, good_matches, R, t, K);
-    //cout << "R: " << R << "t: " << t << endl;
-
-    // 减少匹配到的点 - 比如对于红绿灯的深度估计，就只用红绿灯区域内的good_matches来进行三角测量。
-    // 这样的话，我就要先自己写函数把红绿灯检测区域的角点读出来。
-
-    //-- 三角化 - 通过gps算的t作为绝对尺度
-    triangulation( keypoints_1, keypoints_2, K, good_matches, R, t_abs, points );
-
-    //-- 验证三角化点与特征点的重投影关系
-    for ( int i=0; i < good_matches.size(); i++ )
-    {
-        Point2d pt1_cam = pixel2cam( keypoints_1[ good_matches[i].queryIdx ].pt, K );
-        Point2d pt1_cam_3d( points[i].x / points[i].z, points[i].y / points[i].z); //坐标归一化
-
-        cout << "point in the first camera frame: "<< pt1_cam << endl;
-        cout << "point projected from 3D " << pt1_cam_3d << ", depth = " << points[i].z << endl;
-
-        // 第二个图
-        Point2f pt2_cam = pixel2cam( keypoints_2[ good_matches[i].trainIdx ].pt, K );
-        Mat pt2_trans = R*( Mat_<double>(3,1) << points[i].x, points[i].y, points[i].z ) + t;
-        pt2_trans /= pt2_trans.at<double>(2,0);
-        cout << "point in the second camera frame: " << pt2_cam <<endl;
-        cout << "point reprojected from second frame: " << pt2_trans.t() <<endl;
-        cout << endl;
-    }
-}
+//    cout << "T1: " << T1 << endl;
+//    cout << "R1: " << R1 << endl;
+    //第一种思路： 用8点法估计的R相乘得到R2, 再和pose2自己的t组成T2。
+//    R2 = R * R1;
+//    cout << "R2: " << R2 << endl;
+//    T2 = (Mat_<double> (3,4) <<
+//            R2.at<double>(0,0), R2.at<double>(0,1), R2.at<double>(0,2), pose2.at<double>(0,3),
+//            R2.at<double>(1,0), R2.at<double>(1,1), R2.at<double>(1,2), pose2.at<double>(1,3),
+//            R2.at<double>(2,0), R2.at<double>(2,1), R2.at<double>(2,2), pose2.at<double>(2,3));
+//    //第二种思路： 直接给绝对的T2
+//    T2 = (Mat_<double> (3,4) <<
+//            pose2.at<double>(0,0), pose2.at<double>(0,1), pose2.at<double>(0,2), pose2.at<double>(0,3),
+//            pose2.at<double>(1,0), pose2.at<double>(1,1), pose2.at<double>(1,2), pose2.at<double>(1,3),
+//            pose2.at<double>(2,0), pose2.at<double>(2,1), pose2.at<double>(2,2), pose2.at<double>(2,3));
+//    T2 = K * T2;
+//    cout << "T2: " << T2 << endl;
 
 
 #endif //DEECAMP_VO_H

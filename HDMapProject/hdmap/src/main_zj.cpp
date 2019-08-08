@@ -12,6 +12,7 @@
 //#include <math.h>
 //#include <iomanip>
 
+#include <consts.h>
 #include "vo.h"
 #include "container.h"
 
@@ -77,86 +78,163 @@ double header_former;
 int main() {
     // 确定东北天坐标系原点和header的入口
     Utils::new3s_PointXYZ original;
-    double header_start_former = 77.0464;
     original.set_x(22.68085991);
     original.set_y(114.36478212);
     original.set_z(0);
 
-
     // 正常Tcb的值的初始化和计算只需进行一次，因此这里代码应该放在主函数里
     cv::Mat mTbw = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mTwb = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mTcb = cv::Mat::eye(4, 4, CV_64F);
+    cv::Mat mTbc = cv::Mat::eye(4, 4, CV_64F);
+
     cv::Mat mRbw;
-    Eigen::Vector3d ea0(camera_yaw, camera_pitch, camera_roll);
+    //Eigen::Vector3d ea0(camera_yaw, camera_pitch, camera_roll);
     Eigen::Matrix3d Rcb;
+    cv::Mat mRbc;
+    mRbc = (cv::Mat_<double>(3, 3) <<
+            cos(camera_yaw),sin(camera_yaw), 0,
+            -cos(camera_pitch)*sin(camera_yaw), cos(camera_pitch)*cos(camera_yaw), sin(camera_pitch),
+            sin(camera_pitch) *sin(camera_yaw), -sin(camera_pitch)*cos(camera_yaw), cos(camera_pitch));
+    /*
+     * cos(camera_yaw),-sin(camera_yaw), 0,
+            cos(camera_pitch)*sin(camera_yaw), cos(camera_pitch)*cos(camera_yaw), -sin(camera_pitch),
+            sin(camera_pitch) *sin(camera_yaw), sin(camera_pitch)*cos(camera_yaw), cos(camera_pitch));
+     * */
+
     cv::Mat mRcb;
-    Rcb = Eigen::AngleAxisd(ea0[0], Eigen::Vector3d::UnitZ()) * Eigen::AngleAxisd(ea0[1], Eigen::Vector3d::UnitY()) * Eigen::AngleAxisd(ea0[2], Eigen::Vector3d::UnitX());
-    cv::eigen2cv(Rcb, mRcb);
-    mRcb.copyTo(mTcb.rowRange(0, 3).colRange(0, 3));
-    mTcb.row(2).col(3) = 1.32;
+    mRcb = mRbc.inv();
+    mRbc.copyTo(mTbc.rowRange(0, 3).colRange(0, 3));
+    mTbc.row(2).col(3) = 1.32;
+    mTcb = mTbc.inv();
+    std::cout<<"mTcb"<<mTcb<<std::endl;
 
     /************ Test VO estimated relative pose between img1 and img2 **************/
-//    string basedir = "/home/joey/work/zhangjing/deecamp/data/vo_test/";
-//    string scene_id = "20190124164952_4b60fdd1db1a9fda118cfa078c552fa3_4";
-//    string image_id = scene_id + "_332";
-//    Mat img1 = imread ( basedir + scene_id + "_332.jpeg", CV_LOAD_IMAGE_COLOR );
-//    Mat img2 = imread ( basedir + scene_id + "_333.jpeg", CV_LOAD_IMAGE_COLOR );
-//
-//    int image_index;
-//    ReadHDMap::getIndexByImageId(image_id, image_index);
-//    cout << "image_index: " << image_index << endl;
-//
-//    GPSInfoEach gpsInfoEach;
-//    ReadHDMap::getGPSInfoBySceneId(scene_id, gpsInfoEach);
-//
-//    vector<cv::Mat> poses = getPosesBySceneId(scene_id, original);
-//    cv::Mat pose1 = poses[image_index];
-//    cv::Mat pose2 = poses[image_index + 1];
-//
-//    cv::Mat t_abs = (Mat_<double> (3,1) << pose2.at<double>(0, 3) - pose1.at<double>(0, 3),
-//                                           pose2.at<double>(1, 3) - pose1.at<double>(1, 3),
-//                                           pose2.at<double>(2, 3) - pose1.at<double>(2, 3));
-//    //目前是直接相减算absolute translation
-//    vector<Point3d> points;
-//    Mat R, t;
-//    calDepthByTriangulation(img1, img2, K, R, t, t_abs, points); //R是在内部的pose_estimation计算的
-//
-//    Mat rel_pose = (Mat_<double> (4,4) <<
-//            R.at<double>(0,0), R.at<double>(0,1), R.at<double>(0,2), t.at<double>(0,0),
-//            R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2), t.at<double>(1,0),
-//            R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2), t.at<double>(2,0),
-//            0.0, 0.0, 0.0, 1.0);
-//
-//    cout << "img1 pose: " << pose1 << endl;
-//    cout << "img2 pose: " << pose2 << endl;
-//    cout << "t_abs: " << t_abs << endl;
-//    cout << "estimated rel_pose from gps between img1 and 2: " <<  pose2  * pose1.inv() << endl;
-//
-//    cout << "estimated rel_pose from VO: " << rel_pose << endl;
-//    cout << "img2 pose predicted by VO: " << rel_pose * pose1 << endl;
+    string basedir = "/home/joey/work/zhangjing/deecamp/data/vo_test/undistort/";
+    string scene_id = "20190124164952_4b60fdd1db1a9fda118cfa078c552fa3_4";
+    Mat img_1 = imread ( basedir + scene_id + "_336.jpeg", CV_LOAD_IMAGE_COLOR );
+    Mat img_2 = imread ( basedir + scene_id + "_339.jpeg", CV_LOAD_IMAGE_COLOR );
+    /// get boxes of img_1 and img_2
+    vector<BBox> boxes;
+    string image_id = scene_id + "_336";
+    readBoxes(image_id, "traffic light", boxes);
+    cout << "boxes size: " << boxes.size() << endl;
+    for (BBox& box : boxes) {
+        rectangle(img_1, cvPoint(box.xmin, box.ymin), cvPoint(box.xmax, box.ymax), Scalar(0, 0, 255), 1, 1, 0);
+    }
+    /// get poses from gps
+    int image_index;
+    ReadHDMap::getIndexByImageId(image_id, image_index);
+    cout << "image_index: " << image_index << endl;
+    vector<cv::Mat> poses = getPosesBySceneId(scene_id, original);
+    cv::Mat pose1 = poses[image_index];
+    cv::Mat pose2 = poses[image_index + 1];
+
+    ///-- 提取图像中的特征点且初步筛选
+    vector<KeyPoint> keypoints_1, keypoints_2;
+    vector<DMatch> good_matches;
+    find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, good_matches); //matches在该函数内部定义的
+    ///-- 估计两张图像间运动
+    Mat R, t;
+    pose_estimation_2d2d ( keypoints_1, keypoints_2, good_matches, R, t, K);
+    ///-- 只关心目标区域内的点
+    vector<DMatch> target_matches;
+    for ( DMatch m : good_matches ) {
+        int x = keypoints_1[m.queryIdx].pt.x;
+        int y = keypoints_1[m.queryIdx].pt.y;
+        if (x > boxes[0].xmin && x < boxes[0].xmax && y > boxes[0].ymin && y < boxes[0].ymax) {
+            target_matches.push_back(m);
+        }
+    }
+//    for ( DMatch m : good_matches ) {
+//        int x = keypoints_1[m.queryIdx].pt.x;
+//        int y = keypoints_1[m.queryIdx].pt.y;
+//        if (x > boxes[1].xmin && x < boxes[1].xmax && y > boxes[1].ymin && y < boxes[1].ymax) {
+//            target_matches.push_back(m);
+//        }
+//    }
+    cout << "good matches: " << good_matches.size() << endl;
+    cout << "target matches: " << target_matches.size() << endl;
+    ///-- 三角化 - 通过gps算的t作为绝对尺度
+    Mat T1, T2;
+    // 第0种思路：
+//    T1 = (Mat_<float> (3,4) <<
+//            1,0,0,0,
+//            0,1,0,0,
+//            0,0,1,0);
+//    T2 = (Mat_<float> (3,4) <<
+//            R.at<double>(0,0), R.at<double>(0,1), R.at<double>(0,2), pose2.at<double>(0,3) - pose1.at<double>(0, 3),
+//            R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2), pose2.at<double>(1,3) - pose1.at<double>(1, 3),
+//            R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2), pose2.at<double>(2,3) - pose1.at<double>(2, 3));
+    // 第1种思路：
+    T1 = (Mat_<double> (3,4) <<
+            pose1.at<double>(0,0), pose1.at<double>(0,1), pose1.at<double>(0,2), pose1.at<double>(0,3) ,
+            pose1.at<double>(1,0), pose1.at<double>(1,1), pose1.at<double>(1,2), pose1.at<double>(1,3),
+            pose1.at<double>(2,0), pose1.at<double>(2,1), pose1.at<double>(2,2), pose1.at<double>(2,3));
+    cv::Mat RT1 = T1.colRange(0, 3).rowRange(0, 3);
+//    T1 = K * T1;
+    T2 = (Mat_<double> (3,4) <<
+            pose2.at<double>(0,0), pose2.at<double>(0,1), pose2.at<double>(0,2), pose2.at<double>(0,3),
+            pose2.at<double>(1,0), pose2.at<double>(1,1), pose2.at<double>(1,2), pose2.at<double>(1,3),
+            pose2.at<double>(2,0), pose2.at<double>(2,1), pose2.at<double>(2,2), pose2.at<double>(2,3));
+//    T2 = K * T2;
+    cv::Mat RT2 = T2.colRange(0, 3).rowRange(0, 3);
+    cv::Mat convertR;
+    convertR = RT2.t()*RT1;
+    cout << "convertR: " << convertR << endl;
+    cout << "T1: " << T1 << endl << "T2: " << T2 << endl;
+    //这里第四列减完之后要转到T1的相机坐标系中。
+    vector<Point3d> points;
+    triangulation( keypoints_1, keypoints_2, K, target_matches, T1, T2, points);
+
+    //-- 验证三角化点与特征点的重投影关系
+    double depth_total = 0;
+    for ( int i=0; i < target_matches.size(); i++ )
+    {
+        Point2d pt1_cam = pixel2cam( keypoints_1[ target_matches[i].queryIdx ].pt, K );
+        Point2d pt1_cam_3d( points[i].x / points[i].z, points[i].y / points[i].z); //坐标归一化
+
+        cout << "point in the first camera frame: "<< pt1_cam << endl;
+        cout << "point projected from 3D " << pt1_cam_3d << ", depth = " << points[i].z << endl;
+        depth_total += points[i].z;
+        putText(img_1, to_string(points[i].z), keypoints_1[target_matches[i].queryIdx].pt, cv::FONT_HERSHEY_PLAIN, 1.0, cv::Scalar(0,0,255),1, 8, 0);
+
+        // 第二个图
+        Point2f pt2_cam = pixel2cam( keypoints_2[ target_matches[i].trainIdx ].pt, K );
+        Mat pt2_trans = R*( Mat_<double>(3,1) << points[i].x, points[i].y, points[i].z ) + t;
+        pt2_trans /= pt2_trans.at<double>(2,0);
+        cout << "point in the second camera frame: " << pt2_cam <<endl;
+        cout << "point reprojected from second frame: " << pt2_trans.t() <<endl;
+        cout << endl;
+    }
+    cout << "depth average: " << depth_total / target_matches.size() << endl;
+    imshow("img_1", img_1);
+    waitKey(0);
 
 
 
     /************ For single image (specified by gps_index & ref_img_index): GET DEPTH MAP *********/
-    int gps_index, ref_img_index;
-    vector<ImageBatch> imageBatch_vec;
-    bool flag = ReadHDMap::getAllImageBatch(imageBatch_vec);
-    cout << "imageBatch_vec size: " << imageBatch_vec.size() << endl;
-    for (int i = 0; i < imageBatch_vec.size(); i++) {
-        if (imageBatch_vec[i].scene_id == "20190129104232_e58b8b3d6ac89c45c2a50d84ba822803_4") {
-            gps_index = i;
-            cout << "gps_index: " << i << endl;
-            break;
-        }
-    }
-    string image_id = "20190129104232_e58b8b3d6ac89c45c2a50d84ba822803_4_344";
-    ReadHDMap::getIndexByImageId(image_id, ref_img_index);
-    cout << "ref_img_index: " << ref_img_index << endl;
-
-    cv::Mat depth( image_height, image_width, CV_64F, init_depth );             // 初始化深度图
-    cv::Mat depth_cov( image_height, image_width, CV_64F, init_cov2 );          // 初始化深度方差图
-    Image3D image3D;
-    string mode = "full";
-    getDepthMapOfSingleImage(gps_index, ref_img_index, imageBatch_vec, original, depth, depth_cov, image3D, mode);
+//    int gps_index, ref_img_index;
+//    vector<ImageBatch> imageBatch_vec;
+//    bool flag = ReadHDMap::getAllImageBatch(imageBatch_vec);
+//    cout << "imageBatch_vec size: " << imageBatch_vec.size() << endl;
+//    cout << imageBatch_vec[23].scene_id << endl;
+//    for (int i = 0; i < imageBatch_vec.size(); i++) {
+//        if (imageBatch_vec[i].scene_id == "20190129104232_e58b8b3d6ac89c45c2a50d84ba822803_4") {
+//            gps_index = i;
+//            cout << "gps_index: " << i << endl;
+//            break;
+//        }
+//    }
+//    string image_id = "20190129104232_e58b8b3d6ac89c45c2a50d84ba822803_4_344";
+//    ReadHDMap::getIndexByImageId(image_id, ref_img_index);
+//    cout << "ref_img_index: " << ref_img_index << endl;
+//
+//    cv::Mat depth( image_height, image_width, CV_64F, init_depth );             // 初始化深度图
+//    cv::Mat depth_cov( image_height, image_width, CV_64F, init_cov2 );          // 初始化深度方差图
+//    Image3D image3D;
+//    string mode = "full";
+//    getDepthMapOfSingleImage(gps_index, ref_img_index, imageBatch_vec, original, depth, depth_cov, image3D, mode);
 
     /************ For single scene (specified by gps_index): Calculate Divider Points Depth *********/
 //    for (int i = 0; i < imageBatch_vec.size(); i++) {
