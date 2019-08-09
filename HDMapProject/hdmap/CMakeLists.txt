@@ -18,15 +18,24 @@ set(PROTO_FILES
         proto/Divider.proto
         )
 set(SRC_FILES
-        src/test.cpp
-        src/Utils.cc
+#        src/test.cpp
+#        src/Utils.cc
+        src/main_zj.cpp
         )
 
 set(HDR_FILES
-        utils/read_hdmap.h
-        utils/calulate.h src/test.h
+        utils/build_depth.h
+        utils/calulate.h
+        utils/consts.h
+        utils/pix2enu.h
+        utils/pixel2enu.h
+        utils/container.h
+        utils/proto.h
+        utils/read_detection.h
         utils/Utils.h
-        utils/pix2enu.h)
+        utils/read_hdmap.h
+        utils/vo.h
+        utils/vo_extra.h)
 add_definitions(${PCL_DEFINITIONS})
 
 PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HDR ${PROTO_FILES})

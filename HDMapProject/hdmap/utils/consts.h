@@ -33,9 +33,9 @@ const float fps = 30.0;
 const int RGB = 1;
 
 // Camera and body coordinate system transformation relationship (m)
-double yaw = -0.08726646;
-double pitch = 0.06981317;
-double roll = 0.00;
+double camera_yaw = -0.08726646;
+double camera_pitch = 0.06981317;
+double camera_roll = 0.00;
 double camera_height = 1.32;
 
 // Parameters for building depth map
