@@ -32,7 +32,7 @@ int main() {
     cv::Mat mRcb;
     mRcb = mRbc.inv();
     mRbc.copyTo(mTbc.rowRange(0, 3).colRange(0, 3));
-    mTbc.row(2).col(3) = -1.32;
+    mTbc.row(2).col(3) = 1.32;
     mTcb = mTbc.inv();
     std::cout<<"mTcb"<<mTcb<<std::endl;
 
