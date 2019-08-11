@@ -5,9 +5,7 @@
 #include <vector>
 using namespace std;
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 #include <math.h>
 
 using namespace cv;
@@ -25,10 +23,10 @@ const int border_y = 300;
 //const double cx = 976.2383478986866f;
 //const double cy = 530.589333254679f;
 
-const double fx = 914.84155f;    // 相机内参
-const double fy = 835.98254f;
-const double cx = 978.96393f;
-const double cy = 533.52551f;
+const double fx = 914.84155;    // 相机内参
+const double fy = 835.98254;
+const double cx = 978.96393;
+const double cy = 533.52551;
 
 const double focal_length = 0.0036f;               // 焦距（m）
 const double alpha = fx / focal_length;  // x方向每m多少个像素点（pixels/m）
@@ -49,7 +47,7 @@ const int RGB = 1;
 
 // Camera and body coordinate system transformation relationship (m)
 double camera_yaw = -0.08726646;
-double camera_pitch = 0.06981317 - M_PI/2;
+double camera_pitch = 0.06981317;
 double camera_roll = 0.00;
 double camera_height = 1.32;
 
@@ -98,11 +96,11 @@ typedef struct {
 
 // traffic light
 typedef struct {
-    double xmin;
-    double ymin;
-    double xmax;
-    double ymax;
-    double label;
+    int xmin;
+    int ymin;
+    int xmax;
+    int ymax;
+    int label;
     double score;
 } BBox;
 

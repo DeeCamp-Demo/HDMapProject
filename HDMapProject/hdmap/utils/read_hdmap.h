@@ -3,12 +3,12 @@
 //
 #ifndef PROTO_TEST_MAP_READ_H
 #define PROTO_TEST_MAP_READ_H
-#include "utils/proto.h"
-#include "utils/calulate.h"
-#include "proto/HDMap.pb.h"
-#include "proto/LaneMarking.pb.h"
-#include "proto/SourceInfo.pb.h"
-#include "proto/TrafficLight.pb.h"
+#include "../utils/proto.h"
+#include "../utils/calulate.h"
+#include "../proto/HDMap.pb.h"
+#include "../proto/LaneMarking.pb.h"
+#include "../proto/SourceInfo.pb.h"
+#include "../proto/TrafficLight.pb.h"
 #include "tiff.h"
 #include <vector>
 #include "Utils.h"
@@ -394,10 +394,10 @@ namespace ReadHDMap {
                 gpsPointEach.points.y = geom[1];
                 gpsPointEach.points.z = geom[2];
 //                坐标转换
-                PointT pointT3 = transform2ENU(gpsPointEach.points);
-                gpsPointEach.points.x = pointT3.x;
-                gpsPointEach.points.y = pointT3.y;
-                gpsPointEach.points.z = pointT3.z;
+//                PointT pointT3 = transform2ENU(gpsPointEach.points);
+//                gpsPointEach.points.x = pointT3.x;
+//                gpsPointEach.points.y = pointT3.y;
+//                gpsPointEach.points.z = pointT3.z;
 
              /*   cout << "原始:" << gpsPointEach.points.x << " , " << gpsPointEach.points.y << " ," << gpsPointEach.points.z << endl;
                 cout << "enu:" << pointT3.x << " , " <<pointT3.y << " ," << pointT3.z << endl;*/
@@ -939,7 +939,7 @@ namespace ReadHDMap {
         vector<string> images_vec = imageBatch.images_vec;
         cout << "image size:" << images_vec.size() << endl;
         for (int i = 0; i < images_vec.size() ; i++) {
-            cout << "images_vec:" << images_vec[i] << " image_id:"<< image_id<<endl;
+            //cout << "images_vec:" << images_vec[i] << " image_id:"<< image_id<<endl;
 
             if (images_vec[i]==image_id)
             {
